@@ -1,0 +1,1486 @@
+version: 1
+directus: 11.5.1
+vendor: postgres
+collections:
+  - collection: SiteSettings
+    meta:
+      collection: SiteSettings
+      singleton: true
+      hidden: false
+      sort: 1
+    schema:
+      name: SiteSettings
+  - collection: Hero
+    meta:
+      collection: Hero
+      singleton: true
+      hidden: false
+      sort: 2
+    schema:
+      name: Hero
+  - collection: Benefits
+    meta:
+      collection: Benefits
+      hidden: false
+      sort: 3
+    schema:
+      name: Benefits
+  - collection: ComparisonItems
+    meta:
+      collection: ComparisonItems
+      hidden: false
+      sort: 4
+    schema:
+      name: ComparisonItems
+  - collection: Projects
+    meta:
+      collection: Projects
+      hidden: false
+      sort: 5
+    schema:
+      name: Projects
+  - collection: KitchenStyles
+    meta:
+      collection: KitchenStyles
+      hidden: false
+      sort: 6
+    schema:
+      name: KitchenStyles
+  - collection: LayoutTypes
+    meta:
+      collection: LayoutTypes
+      hidden: false
+      sort: 7
+    schema:
+      name: LayoutTypes
+  - collection: Materials
+    meta:
+      collection: Materials
+      hidden: false
+      sort: 8
+    schema:
+      name: Materials
+  - collection: ProcessSteps
+    meta:
+      collection: ProcessSteps
+      hidden: false
+      sort: 9
+    schema:
+      name: ProcessSteps
+  - collection: ProductionStats
+    meta:
+      collection: ProductionStats
+      hidden: false
+      sort: 10
+    schema:
+      name: ProductionStats
+  - collection: Guarantees
+    meta:
+      collection: Guarantees
+      hidden: false
+      sort: 11
+    schema:
+      name: Guarantees
+  - collection: Reviews
+    meta:
+      collection: Reviews
+      hidden: false
+      sort: 12
+    schema:
+      name: Reviews
+  - collection: FAQ
+    meta:
+      collection: FAQ
+      hidden: false
+      sort: 13
+    schema:
+      name: FAQ
+  - collection: DistrictPages
+    meta:
+      collection: DistrictPages
+      hidden: false
+      sort: 14
+    schema:
+      name: DistrictPages
+  - collection: Leads
+    meta:
+      collection: Leads
+      hidden: false
+      sort: 15
+    schema:
+      name: Leads
+  - collection: QuizSubmissions
+    meta:
+      collection: QuizSubmissions
+      hidden: false
+      sort: 16
+    schema:
+      name: QuizSubmissions
+  - collection: ThankYouRecommendations
+    meta:
+      collection: ThankYouRecommendations
+      hidden: false
+      sort: 17
+    schema:
+      name: ThankYouRecommendations
+fields:
+  - collection: SiteSettings
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: SiteSettings
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: SiteSettings
+    field: companyName
+    type: string
+    schema:
+      name: companyName
+      table: SiteSettings
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: SiteSettings
+    field: description
+    type: text
+    schema:
+      name: description
+      table: SiteSettings
+      data_type: text
+      is_nullable: true
+  - collection: SiteSettings
+    field: phone
+    type: string
+    schema:
+      name: phone
+      table: SiteSettings
+      data_type: character varying
+      max_length: 80
+      is_nullable: true
+  - collection: SiteSettings
+    field: phoneHref
+    type: string
+    schema:
+      name: phoneHref
+      table: SiteSettings
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: SiteSettings
+    field: whatsappHref
+    type: string
+    schema:
+      name: whatsappHref
+      table: SiteSettings
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: SiteSettings
+    field: telegramHref
+    type: string
+    schema:
+      name: telegramHref
+      table: SiteSettings
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: SiteSettings
+    field: vkHref
+    type: string
+    schema:
+      name: vkHref
+      table: SiteSettings
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: SiteSettings
+    field: email
+    type: string
+    schema:
+      name: email
+      table: SiteSettings
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: SiteSettings
+    field: address
+    type: text
+    schema:
+      name: address
+      table: SiteSettings
+      data_type: text
+      is_nullable: true
+  - collection: SiteSettings
+    field: workingHours
+    type: string
+    schema:
+      name: workingHours
+      table: SiteSettings
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: SiteSettings
+    field: logo
+    type: string
+    schema:
+      name: logo
+      table: SiteSettings
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Hero
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Hero
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Hero
+    field: location
+    type: string
+    schema:
+      name: location
+      table: Hero
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Hero
+    field: title
+    type: string
+    schema:
+      name: title
+      table: Hero
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Hero
+    field: subtitle
+    type: text
+    schema:
+      name: subtitle
+      table: Hero
+      data_type: text
+      is_nullable: true
+  - collection: Hero
+    field: primaryCta
+    type: string
+    schema:
+      name: primaryCta
+      table: Hero
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Hero
+    field: secondaryCta
+    type: string
+    schema:
+      name: secondaryCta
+      table: Hero
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Hero
+    field: credibility
+    type: text
+    schema:
+      name: credibility
+      table: Hero
+      data_type: text
+      is_nullable: true
+  - collection: Hero
+    field: backgroundImage
+    type: string
+    schema:
+      name: backgroundImage
+      table: Hero
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Hero
+    field: imageAlt
+    type: string
+    schema:
+      name: imageAlt
+      table: Hero
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Hero
+    field: trustCards
+    type: json
+    schema:
+      name: trustCards
+      table: Hero
+      data_type: json
+      is_nullable: true
+  - collection: Benefits
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Benefits
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Benefits
+    field: title
+    type: string
+    schema:
+      name: title
+      table: Benefits
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Benefits
+    field: text
+    type: text
+    schema:
+      name: text
+      table: Benefits
+      data_type: text
+      is_nullable: true
+  - collection: Benefits
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: Benefits
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: Benefits
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: Benefits
+      data_type: integer
+      is_nullable: true
+  - collection: ComparisonItems
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: ComparisonItems
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: ComparisonItems
+    field: criterion
+    type: string
+    schema:
+      name: criterion
+      table: ComparisonItems
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: ComparisonItems
+    field: kit
+    type: text
+    schema:
+      name: kit
+      table: ComparisonItems
+      data_type: text
+      is_nullable: true
+  - collection: ComparisonItems
+    field: salon
+    type: text
+    schema:
+      name: salon
+      table: ComparisonItems
+      data_type: text
+      is_nullable: true
+  - collection: ComparisonItems
+    field: privateMaster
+    type: text
+    schema:
+      name: privateMaster
+      table: ComparisonItems
+      data_type: text
+      is_nullable: true
+  - collection: ComparisonItems
+    field: modular
+    type: text
+    schema:
+      name: modular
+      table: ComparisonItems
+      data_type: text
+      is_nullable: true
+  - collection: ComparisonItems
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: ComparisonItems
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: ComparisonItems
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: ComparisonItems
+      data_type: integer
+      is_nullable: true
+  - collection: Projects
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Projects
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Projects
+    field: slug
+    type: string
+    schema:
+      name: slug
+      table: Projects
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+      is_unique: true
+  - collection: Projects
+    field: title
+    type: string
+    schema:
+      name: title
+      table: Projects
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Projects
+    field: district
+    type: string
+    schema:
+      name: district
+      table: Projects
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Projects
+    field: area
+    type: string
+    schema:
+      name: area
+      table: Projects
+      data_type: character varying
+      max_length: 80
+      is_nullable: true
+  - collection: Projects
+    field: style
+    type: string
+    schema:
+      name: style
+      table: Projects
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Projects
+    field: layout
+    type: string
+    schema:
+      name: layout
+      table: Projects
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Projects
+    field: materials
+    type: text
+    schema:
+      name: materials
+      table: Projects
+      data_type: text
+      is_nullable: true
+  - collection: Projects
+    field: productionTime
+    type: string
+    schema:
+      name: productionTime
+      table: Projects
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Projects
+    field: priceFrom
+    type: string
+    schema:
+      name: priceFrom
+      table: Projects
+      data_type: character varying
+      max_length: 120
+      is_nullable: true
+  - collection: Projects
+    field: image
+    type: string
+    schema:
+      name: image
+      table: Projects
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Projects
+    field: alt
+    type: string
+    schema:
+      name: alt
+      table: Projects
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Projects
+    field: description
+    type: text
+    schema:
+      name: description
+      table: Projects
+      data_type: text
+      is_nullable: true
+  - collection: Projects
+    field: tags
+    type: json
+    schema:
+      name: tags
+      table: Projects
+      data_type: json
+      is_nullable: true
+  - collection: Projects
+    field: budgetGroup
+    type: string
+    schema:
+      name: budgetGroup
+      table: Projects
+      data_type: character varying
+      max_length: 80
+      is_nullable: true
+  - collection: Projects
+    field: isRealProject
+    type: boolean
+    schema:
+      name: isRealProject
+      table: Projects
+      data_type: boolean
+      default_value: false
+      is_nullable: true
+  - collection: Projects
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: Projects
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: Projects
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: Projects
+      data_type: integer
+      is_nullable: true
+  - collection: KitchenStyles
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: KitchenStyles
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: KitchenStyles
+    field: title
+    type: string
+    schema:
+      name: title
+      table: KitchenStyles
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: KitchenStyles
+    field: description
+    type: text
+    schema:
+      name: description
+      table: KitchenStyles
+      data_type: text
+      is_nullable: true
+  - collection: KitchenStyles
+    field: image
+    type: string
+    schema:
+      name: image
+      table: KitchenStyles
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: KitchenStyles
+    field: alt
+    type: string
+    schema:
+      name: alt
+      table: KitchenStyles
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: KitchenStyles
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: KitchenStyles
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: KitchenStyles
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: KitchenStyles
+      data_type: integer
+      is_nullable: true
+  - collection: LayoutTypes
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: LayoutTypes
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: LayoutTypes
+    field: title
+    type: string
+    schema:
+      name: title
+      table: LayoutTypes
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: LayoutTypes
+    field: description
+    type: text
+    schema:
+      name: description
+      table: LayoutTypes
+      data_type: text
+      is_nullable: true
+  - collection: LayoutTypes
+    field: image
+    type: string
+    schema:
+      name: image
+      table: LayoutTypes
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: LayoutTypes
+    field: alt
+    type: string
+    schema:
+      name: alt
+      table: LayoutTypes
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: LayoutTypes
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: LayoutTypes
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: LayoutTypes
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: LayoutTypes
+      data_type: integer
+      is_nullable: true
+  - collection: Materials
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Materials
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Materials
+    field: title
+    type: string
+    schema:
+      name: title
+      table: Materials
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Materials
+    field: description
+    type: text
+    schema:
+      name: description
+      table: Materials
+      data_type: text
+      is_nullable: true
+  - collection: Materials
+    field: image
+    type: string
+    schema:
+      name: image
+      table: Materials
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Materials
+    field: alt
+    type: string
+    schema:
+      name: alt
+      table: Materials
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Materials
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: Materials
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: Materials
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: Materials
+      data_type: integer
+      is_nullable: true
+  - collection: ProcessSteps
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: ProcessSteps
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: ProcessSteps
+    field: title
+    type: string
+    schema:
+      name: title
+      table: ProcessSteps
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: ProcessSteps
+    field: text
+    type: text
+    schema:
+      name: text
+      table: ProcessSteps
+      data_type: text
+      is_nullable: true
+  - collection: ProcessSteps
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: ProcessSteps
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: ProcessSteps
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: ProcessSteps
+      data_type: integer
+      is_nullable: true
+  - collection: ProductionStats
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: ProductionStats
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: ProductionStats
+    field: text
+    type: string
+    schema:
+      name: text
+      table: ProductionStats
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: ProductionStats
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: ProductionStats
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: ProductionStats
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: ProductionStats
+      data_type: integer
+      is_nullable: true
+  - collection: Guarantees
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Guarantees
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Guarantees
+    field: title
+    type: string
+    schema:
+      name: title
+      table: Guarantees
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Guarantees
+    field: text
+    type: text
+    schema:
+      name: text
+      table: Guarantees
+      data_type: text
+      is_nullable: true
+  - collection: Guarantees
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: Guarantees
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: Guarantees
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: Guarantees
+      data_type: integer
+      is_nullable: true
+  - collection: Reviews
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Reviews
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Reviews
+    field: name
+    type: string
+    schema:
+      name: name
+      table: Reviews
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Reviews
+    field: district
+    type: string
+    schema:
+      name: district
+      table: Reviews
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Reviews
+    field: text
+    type: text
+    schema:
+      name: text
+      table: Reviews
+      data_type: text
+      is_nullable: true
+  - collection: Reviews
+    field: source
+    type: string
+    schema:
+      name: source
+      table: Reviews
+      data_type: character varying
+      max_length: 80
+      is_nullable: true
+  - collection: Reviews
+    field: sourceUrl
+    type: string
+    schema:
+      name: sourceUrl
+      table: Reviews
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: Reviews
+    field: verified
+    type: boolean
+    schema:
+      name: verified
+      table: Reviews
+      data_type: boolean
+      default_value: false
+      is_nullable: true
+  - collection: Reviews
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: Reviews
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: Reviews
+    field: sort
+    type: integer
+    schema:
+      name: sort
+      table: Reviews
+      data_type: integer
+      is_nullable: true
+  - collection: FAQ
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: FAQ
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: FAQ
+    field: question
+    type: string
+    schema:
+      name: question
+      table: FAQ
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: FAQ
+    field: answer
+    type: text
+    schema:
+      name: answer
+      table: FAQ
+      data_type: text
+      is_nullable: true
+  - collection: FAQ
+    field: order
+    type: integer
+    schema:
+      name: order
+      table: FAQ
+      data_type: integer
+      is_nullable: true
+  - collection: FAQ
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: FAQ
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: DistrictPages
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: DistrictPages
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: DistrictPages
+    field: slug
+    type: string
+    schema:
+      name: slug
+      table: DistrictPages
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+      is_unique: true
+  - collection: DistrictPages
+    field: title
+    type: string
+    schema:
+      name: title
+      table: DistrictPages
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: DistrictPages
+    field: description
+    type: text
+    schema:
+      name: description
+      table: DistrictPages
+      data_type: text
+      is_nullable: true
+  - collection: DistrictPages
+    field: details
+    type: json
+    schema:
+      name: details
+      table: DistrictPages
+      data_type: json
+      is_nullable: true
+  - collection: DistrictPages
+    field: cta
+    type: string
+    schema:
+      name: cta
+      table: DistrictPages
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: DistrictPages
+    field: relatedProjectIds
+    type: json
+    schema:
+      name: relatedProjectIds
+      table: DistrictPages
+      data_type: json
+      is_nullable: true
+  - collection: DistrictPages
+    field: isDraft
+    type: boolean
+    schema:
+      name: isDraft
+      table: DistrictPages
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+  - collection: DistrictPages
+    field: hasUniqueContent
+    type: boolean
+    schema:
+      name: hasUniqueContent
+      table: DistrictPages
+      data_type: boolean
+      default_value: false
+      is_nullable: true
+  - collection: DistrictPages
+    field: approved
+    type: boolean
+    schema:
+      name: approved
+      table: DistrictPages
+      data_type: boolean
+      default_value: false
+      is_nullable: true
+  - collection: DistrictPages
+    field: seoTitle
+    type: string
+    schema:
+      name: seoTitle
+      table: DistrictPages
+      data_type: character varying
+      max_length: 255
+      is_nullable: true
+  - collection: DistrictPages
+    field: seoDescription
+    type: text
+    schema:
+      name: seoDescription
+      table: DistrictPages
+      data_type: text
+      is_nullable: true
+  - collection: Leads
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: Leads
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: Leads
+    field: name
+    type: string
+    schema:
+      name: name
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: phone
+    type: string
+    schema:
+      name: phone
+      table: Leads
+      data_type: character varying
+      max_length: 80
+      is_nullable: true
+  - collection: Leads
+    field: communicationMethod
+    type: string
+    schema:
+      name: communicationMethod
+      table: Leads
+      data_type: character varying
+      max_length: 40
+      is_nullable: true
+  - collection: Leads
+    field: comment
+    type: text
+    schema:
+      name: comment
+      table: Leads
+      data_type: text
+      is_nullable: true
+  - collection: Leads
+    field: quizAnswers
+    type: json
+    schema:
+      name: quizAnswers
+      table: Leads
+      data_type: json
+      is_nullable: true
+  - collection: Leads
+    field: selectedProjectId
+    type: string
+    schema:
+      name: selectedProjectId
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: sourcePage
+    type: string
+    schema:
+      name: sourcePage
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: utm_source
+    type: string
+    schema:
+      name: utm_source
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: utm_medium
+    type: string
+    schema:
+      name: utm_medium
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: utm_campaign
+    type: string
+    schema:
+      name: utm_campaign
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: utm_content
+    type: string
+    schema:
+      name: utm_content
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: utm_term
+    type: string
+    schema:
+      name: utm_term
+      table: Leads
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: Leads
+    field: referrer
+    type: string
+    schema:
+      name: referrer
+      table: Leads
+      data_type: character varying
+      max_length: 500
+      is_nullable: true
+  - collection: Leads
+    field: consent
+    type: boolean
+    schema:
+      name: consent
+      table: Leads
+      data_type: boolean
+      default_value: false
+      is_nullable: true
+  - collection: Leads
+    field: createdAt
+    type: timestamp
+    schema:
+      name: createdAt
+      table: Leads
+      data_type: timestamp with time zone
+      is_nullable: true
+  - collection: QuizSubmissions
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: QuizSubmissions
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: QuizSubmissions
+    field: leadId
+    type: string
+    schema:
+      name: leadId
+      table: QuizSubmissions
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: QuizSubmissions
+    field: quizAnswers
+    type: json
+    schema:
+      name: quizAnswers
+      table: QuizSubmissions
+      data_type: json
+      is_nullable: true
+  - collection: QuizSubmissions
+    field: selectedProjectId
+    type: string
+    schema:
+      name: selectedProjectId
+      table: QuizSubmissions
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: QuizSubmissions
+    field: sourcePage
+    type: string
+    schema:
+      name: sourcePage
+      table: QuizSubmissions
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: QuizSubmissions
+    field: createdAt
+    type: timestamp
+    schema:
+      name: createdAt
+      table: QuizSubmissions
+      data_type: timestamp with time zone
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: id
+    type: uuid
+    meta:
+      hidden: true
+      readonly: true
+      special:
+        - uuid
+    schema:
+      name: id
+      table: ThankYouRecommendations
+      data_type: uuid
+      default_value: gen_random_uuid()
+      is_primary_key: true
+      is_nullable: false
+  - collection: ThankYouRecommendations
+    field: selectedProjectId
+    type: string
+    schema:
+      name: selectedProjectId
+      table: ThankYouRecommendations
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: style
+    type: string
+    schema:
+      name: style
+      table: ThankYouRecommendations
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: layout
+    type: string
+    schema:
+      name: layout
+      table: ThankYouRecommendations
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: budget
+    type: string
+    schema:
+      name: budget
+      table: ThankYouRecommendations
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: sourceForm
+    type: string
+    schema:
+      name: sourceForm
+      table: ThankYouRecommendations
+      data_type: character varying
+      max_length: 160
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: recommendedProjectIds
+    type: json
+    schema:
+      name: recommendedProjectIds
+      table: ThankYouRecommendations
+      data_type: json
+      is_nullable: true
+  - collection: ThankYouRecommendations
+    field: visible
+    type: boolean
+    schema:
+      name: visible
+      table: ThankYouRecommendations
+      data_type: boolean
+      default_value: true
+      is_nullable: true
+relations: []

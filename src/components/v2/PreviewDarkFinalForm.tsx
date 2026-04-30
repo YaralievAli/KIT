@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { contactFormSchema, type ContactFormValues } from "@/lib/form-schemas";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const defaultValues: ContactFormValues = {
   name: "",
@@ -22,7 +23,6 @@ export function PreviewDarkFinalForm() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -40,7 +40,7 @@ export function PreviewDarkFinalForm() {
         ...collectLeadClientMeta(),
       });
       setStatus("success");
-      reset(defaultValues);
+      redirectToThankYou({ sourceForm: "preview-dark-final-cta" });
     } catch (error) {
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);
