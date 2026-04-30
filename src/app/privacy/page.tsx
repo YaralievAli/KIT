@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { privacyText } from "@/content/legal";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: privacyText.title,
   description: privacyText.description,
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { consentText } from "@/content/legal";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: consentText.title,
   description: consentText.description,
-};
+  path: "/personal-data-consent",
+});
 
 export default function ConsentPage() {
   return (
