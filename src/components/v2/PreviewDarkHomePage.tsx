@@ -73,30 +73,31 @@ export function PreviewDarkHomePage() {
 function Hero() {
   return (
     <section className="relative isolate overflow-hidden bg-[#061112] pt-[76px] text-white">
-      <div className="absolute inset-y-[76px] right-0 -z-10 hidden w-[58%] lg:block">
+      <div className="absolute inset-y-[76px] right-0 -z-10 hidden w-[61%] lg:block">
         <Image
           src={imageMap.hero.image}
           alt={imageMap.hero.alt}
           fill
           preload={imageMap.hero.preload}
-          sizes="(max-width: 1280px) 58vw, 1040px"
+          sizes="(max-width: 1280px) 61vw, 1080px"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#061112] via-[#061112]/18 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#061112] via-[#061112]/20 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#061112]/72 to-transparent" />
       </div>
       <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.24),transparent_34%)]" />
 
-      <div className={`${shell} grid min-h-[650px] items-center gap-8 py-8 lg:grid-cols-[0.49fr_0.51fr] xl:min-h-[690px]`}>
-        <div className="max-w-[650px]">
+      <div className={`${shell} grid min-h-[610px] items-center gap-8 py-7 lg:grid-cols-12 xl:min-h-[650px]`}>
+        <div className="max-w-[670px] lg:col-span-5">
           <p className="inline-flex items-center gap-2 rounded-full border border-teal/35 bg-teal/10 px-4 py-2 text-sm font-semibold text-teal-glow">
             <MapPin size={16} aria-hidden="true" />
             Санкт-Петербург и Ленинградская область
           </p>
-          <h1 className="mt-6 text-[46px] font-semibold leading-[0.98] tracking-tight sm:text-6xl xl:text-[76px]">
+          <h1 className="mt-5 text-[42px] font-semibold leading-[0.98] tracking-tight sm:text-6xl xl:text-[74px]">
             Кухни на заказ
             <span className="block text-teal-glow">в СПБ и ЛО</span>
           </h1>
-          <p className="mt-5 max-w-lg text-lg leading-7 text-white/75">
+          <p className="mt-5 max-w-xl text-lg leading-7 text-white/76">
             Подберём планировку, материалы и ориентировочный бюджет. Точная стоимость формируется после замера и проекта.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -109,11 +110,11 @@ function Hero() {
               <ArrowRight size={18} aria-hidden="true" />
             </a>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-[620px]">
             {heroCards.map(({ icon: Icon, title }) => (
-              <div key={title} className="min-h-[108px] rounded-xl border border-white/16 bg-white/8 p-4">
-                <Icon className="text-champagne" size={30} aria-hidden="true" />
-                <p className="mt-3 text-sm font-semibold leading-5 text-white">{title}</p>
+              <div key={title} className="min-h-[96px] rounded-2xl border border-white/14 bg-white/[0.075] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                <Icon className="text-champagne" size={28} aria-hidden="true" />
+                <p className="mt-2 text-sm font-semibold leading-5 text-white">{title}</p>
               </div>
             ))}
           </div>
@@ -126,9 +127,24 @@ function Hero() {
           </p>
         </div>
 
-        <div className="relative min-h-[340px] overflow-hidden rounded-[28px] border border-white/10 lg:hidden">
-          <Image src={imageMap.hero.image} alt={imageMap.hero.alt} fill sizes="100vw" preload={false} className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#061112] via-transparent to-transparent" />
+        <div className="relative min-h-[340px] lg:col-span-7">
+          <div className="relative min-h-[340px] overflow-hidden rounded-[28px] border border-white/10 lg:hidden">
+            <Image src={imageMap.hero.image} alt={imageMap.hero.alt} fill sizes="100vw" preload={false} className="object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061112] via-transparent to-transparent" />
+          </div>
+          <div className="hidden lg:absolute lg:bottom-6 lg:right-0 lg:block lg:w-[380px] xl:w-[430px]">
+            <div className="rounded-[28px] border border-white/14 bg-[#071314]/86 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
+              <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Предварительный расчёт</p>
+              <h2 className="mt-2 text-2xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
+              <p className="mt-3 text-sm leading-6 text-white/68">
+                Сначала выбираете планировку, стиль и бюджет. Контакт нужен только для отправки подборки.
+              </p>
+              <a href="#quiz" className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-teal-glow">
+                Начать расчёт
+                <ArrowRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -137,12 +153,12 @@ function Hero() {
 
 function TrustStrip() {
   return (
-    <section className="relative z-10 bg-[#f5f7f7] pb-5 pt-8">
+    <section className="relative z-10 bg-[#f5f7f7] pb-5 pt-5 lg:-mt-8">
       <div className={`${shell} grid gap-4 md:grid-cols-2 xl:grid-cols-4`}>
         {trustItems.map((item, index) => {
           const Icon = trustIcons[index] ?? CheckCircle2;
           return (
-            <article key={item.title} className="rounded-2xl border border-white bg-white p-5 shadow-[0_18px_45px_rgba(16,26,43,0.09)]">
+            <article key={item.title} className="rounded-[22px] border border-white bg-white p-5 shadow-[0_18px_45px_rgba(16,26,43,0.11)]">
               <div className="flex items-center gap-4">
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-teal/8 text-teal">
                   <Icon size={32} aria-hidden="true" />
@@ -162,11 +178,13 @@ function TrustStrip() {
 
 function TopCommercialBlock() {
   return (
-    <section id="quiz" className="pb-8 pt-4">
-      <div className={`${shell} grid gap-6 xl:grid-cols-[0.93fr_1.07fr]`}>
+    <section id="quiz" className="pb-8 pt-3">
+      <div className={`${shell} grid gap-6 xl:grid-cols-12`}>
+        <div className="xl:col-span-6">
         <PreviewDarkCalculator />
+        </div>
 
-        <article id="layouts" className="rounded-2xl bg-white p-6 shadow-[0_18px_45px_rgba(16,26,43,0.08)]">
+        <article id="layouts" className="rounded-[28px] bg-white p-5 shadow-[0_18px_45px_rgba(16,26,43,0.08)] md:p-6 xl:col-span-6">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-wide text-teal">Каталог</p>
@@ -177,9 +195,9 @@ function TopCommercialBlock() {
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
             {imageMap.layouts.map((layout, index) => (
-              <article key={layout.title} className="overflow-hidden rounded-xl border border-border bg-white shadow-sm">
+              <article key={layout.title} className="overflow-hidden rounded-[18px] border border-border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_20px_55px_rgba(16,26,43,0.12)]">
                 <div className="relative aspect-[4/3]">
                   <Image src={layout.image} alt={layout.alt} fill sizes={layout.sizes} loading="lazy" className="object-cover" />
                 </div>
@@ -204,10 +222,19 @@ function StylesShowcase() {
   return (
     <section className="pb-7">
       <div className={shell}>
-        <h2 className="text-3xl font-semibold text-navy">Стили будущей кухни</h2>
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-teal">Подбор образа</p>
+            <h2 className="mt-1 text-3xl font-semibold text-navy">Стили будущей кухни</h2>
+          </div>
+          <a href="#quiz" className="hidden items-center gap-2 text-sm font-semibold text-teal sm:inline-flex">
+            Подобрать стиль
+            <ArrowRight size={16} aria-hidden="true" />
+          </a>
+        </div>
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {imageMap.styles.map((style, index) => (
-            <article key={style.title} className="group relative min-h-[126px] overflow-hidden rounded-xl bg-navy shadow-sm">
+            <article key={style.title} className="group relative min-h-[154px] overflow-hidden rounded-[22px] bg-navy shadow-sm">
               <Image src={style.image} alt={style.alt} fill sizes={style.sizes} loading="lazy" className="object-cover opacity-82 transition group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 text-white">
@@ -232,18 +259,21 @@ function ProjectsShowcase({ title }: { title: string }) {
     <section id="projects" className="pb-7">
       <div className={shell}>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="text-3xl font-semibold text-navy">{title}</h2>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-teal">Примеры под разные задачи</p>
+            <h2 className="mt-1 text-3xl font-semibold text-navy">{title}</h2>
+          </div>
           <a href="#quiz" className="inline-flex items-center gap-2 text-sm font-semibold text-teal">
             Рассчитать похожий вариант
             <ArrowRight size={16} aria-hidden="true" />
           </a>
         </div>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-muted">
-          Текущие изображения используются как примеры исполнения. Реальными проектами станут только карточки, отмеченные как подтверждённые.
+          Смотрите сочетания планировок, материалов и настроения кухни. Для каждой карточки можно запросить похожий предварительный расчёт.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
           {projects.map((project) => (
-            <article key={project.id} className="overflow-hidden rounded-xl border border-border bg-white shadow-sm">
+            <article key={project.id} className="overflow-hidden rounded-[18px] border border-border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_20px_55px_rgba(16,26,43,0.12)]">
               <div className="relative aspect-[4/3]">
                 <Image src={project.image} alt={project.alt} fill sizes={project.sizes} loading="lazy" className="object-cover" />
                 <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-navy">{projectBadge(project)}</span>
@@ -265,10 +295,13 @@ function MaterialsShowcase() {
   return (
     <section className="pb-7">
       <div className={shell}>
-        <h2 className="text-3xl font-semibold text-navy">Материалы и фурнитура</h2>
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal">Практичные решения</p>
+          <h2 className="mt-1 text-3xl font-semibold text-navy">Материалы и фурнитура</h2>
+        </div>
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {imageMap.materials.map((item, index) => (
-            <article key={item.title} className="relative min-h-[132px] overflow-hidden rounded-xl bg-navy p-4 text-white shadow-sm">
+            <article key={item.title} className="relative min-h-[148px] overflow-hidden rounded-[22px] bg-navy p-4 text-white shadow-sm">
               <Image src={item.image} alt={item.alt} fill sizes={item.sizes} loading="lazy" className="object-cover opacity-70" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
               <div className="relative">
@@ -287,8 +320,9 @@ function ProcessStrip() {
   return (
     <section className="pb-7">
       <div className={shell}>
-        <h2 className="text-3xl font-semibold text-navy">Как мы работаем</h2>
-        <div className="mt-4 rounded-2xl bg-white px-5 py-4 shadow-sm">
+        <p className="text-sm font-semibold uppercase tracking-wide text-teal">Понятный маршрут</p>
+        <h2 className="mt-1 text-3xl font-semibold text-navy">Как мы работаем</h2>
+        <div className="mt-4 rounded-[24px] bg-white px-5 py-4 shadow-sm">
           <div className="grid gap-4 md:grid-cols-5">
             {processSteps.map(([title, text], index) => (
               <article key={title} className="relative">
@@ -312,8 +346,9 @@ function ProcessStrip() {
 function ProductionShowcase() {
   return (
     <section id="production" className="bg-[#062e30] py-10 text-white">
-      <div className={`${shell} grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-center`}>
-        <div>
+      <div className={`${shell} grid gap-8 lg:grid-cols-12 lg:items-center`}>
+        <div className="lg:col-span-5">
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Производственная база</p>
           <h2 className="text-3xl font-semibold md:text-4xl">Собственное производство</h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-white/75">
             Контролируем качество на каждом этапе — от проекта до установки. Условия и сроки фиксируются до запуска работ.
@@ -326,9 +361,9 @@ function ProductionShowcase() {
             ))}
           </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-3 lg:col-span-7">
           {imageMap.production.map((item) => (
-            <article key={item.title} className="overflow-hidden rounded-xl border border-white/15 bg-white/8">
+            <article key={item.title} className="overflow-hidden rounded-[20px] border border-white/15 bg-white/8 shadow-[0_18px_55px_rgba(0,0,0,0.22)]">
               <div className="relative aspect-[16/10]">
                 <Image src={item.image} alt={item.alt} fill sizes={item.sizes} loading="lazy" className="object-cover" />
               </div>
@@ -343,11 +378,12 @@ function ProductionShowcase() {
 function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) {
   return (
     <section id="reviews" className="bg-white py-9">
-      <div className={`${shell} grid gap-8 2xl:grid-cols-[0.94fr_1.06fr]`}>
-        <div>
+      <div className={`${shell} grid gap-8 2xl:grid-cols-12`}>
+        <div className="2xl:col-span-5">
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal">Обратная связь</p>
           <h2 className="text-3xl font-semibold text-navy">Отзывы наших клиентов</h2>
           <p className="mt-2 text-sm leading-6 text-muted">Публикуем отзывы без неподтверждённых рейтингов и громких цифр.</p>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
             {reviews.map((review) => (
               <article key={review.id} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
                 <div className="flex items-center gap-3">
@@ -367,7 +403,9 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
             ))}
           </div>
         </div>
+        <div className="2xl:col-span-7">
         <PreviewDarkFAQ items={faq} />
+        </div>
       </div>
     </section>
   );
@@ -377,8 +415,8 @@ function FinalCta() {
   return (
     <section id="callback" className="relative overflow-hidden bg-[#062e30] py-12 text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_45%,rgba(20,184,166,0.18),transparent_34%)]" />
-      <div className={`${shell} relative grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-center`}>
-        <div className="relative min-h-[330px] overflow-hidden rounded-[28px] border border-white/10 bg-white/6 p-8">
+      <div className={`${shell} relative grid gap-8 lg:grid-cols-12 lg:items-center`}>
+        <div className="relative min-h-[330px] overflow-hidden rounded-[28px] border border-white/10 bg-white/6 p-8 lg:col-span-5">
           <Image src={imageMap.cta.illustration} alt={imageMap.cta.alt} fill sizes="720px" loading="lazy" className="object-contain p-8 opacity-20" />
           <div className="relative flex min-h-[270px] flex-col justify-center">
             <h2 className="max-w-xl text-3xl font-semibold leading-tight md:text-4xl">Рассчитаем стоимость вашей кухни бесплатно</h2>
@@ -392,7 +430,9 @@ function FinalCta() {
             </div>
           </div>
         </div>
+        <div className="lg:col-span-7">
         <PreviewDarkFinalForm />
+        </div>
       </div>
     </section>
   );
@@ -400,7 +440,7 @@ function FinalCta() {
 
 function PreviewDarkFooter() {
   return (
-    <footer id="contacts" className="bg-[#061112] py-8 text-white">
+    <footer id="contacts" className="bg-[#061112] pb-24 pt-8 text-white lg:pb-8">
       <div className={`${shell} grid gap-8 border-b border-white/10 pb-7 md:grid-cols-[1.1fr_0.8fr_0.8fr_1fr_0.9fr]`}>
         <div>
           <div className="flex items-center gap-3">

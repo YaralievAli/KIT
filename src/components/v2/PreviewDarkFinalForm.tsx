@@ -50,7 +50,7 @@ export function PreviewDarkFinalForm() {
   }
 
   return (
-    <form className="rounded-[28px] bg-white p-5 text-navy shadow-[0_24px_70px_rgba(0,0,0,0.20)] md:p-6" onSubmit={handleSubmit(onSubmit)}>
+    <form className="rounded-[30px] bg-white p-5 text-navy shadow-[0_24px_70px_rgba(0,0,0,0.22)] md:p-6" onSubmit={handleSubmit(onSubmit)}>
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
       <div className="grid gap-4 md:grid-cols-2">
         <LightField label="Ваше имя" error={errors.name?.message}>
@@ -75,7 +75,7 @@ export function PreviewDarkFinalForm() {
         <span>Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</span>
       </label>
       {errors.consent?.message ? <p className="mt-2 text-sm text-red-600">{errors.consent.message}</p> : null}
-      <button className="btn-primary mt-5 w-full rounded-2xl" disabled={status === "loading"} type="submit">
+      <button className="btn-primary mt-5 w-full rounded-2xl py-4" disabled={status === "loading"} type="submit">
         <Send size={18} aria-hidden="true" />
         {status === "loading" ? "Отправляем..." : "Получить расчёт"}
       </button>
