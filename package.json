@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "directus:schema:apply": "docker compose exec directus npx directus schema apply /directus/schema/schema-snapshot.yaml --yes",
+    "directus:schema:snapshot": "docker compose exec directus npx directus schema snapshot /directus/schema/schema-snapshot.yaml --yes"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

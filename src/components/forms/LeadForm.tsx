@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { ContactFields } from "@/components/ui/FormFields";
 import { contactFormSchema, type ContactFormValues } from "@/lib/form-schemas";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 type LeadFormProps = {
   sourcePage: string;
@@ -20,7 +21,6 @@ export function LeadForm({ sourcePage, buttonLabel = "Получить расч�
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -45,7 +45,7 @@ export function LeadForm({ sourcePage, buttonLabel = "Получить расч�
         ...collectLeadClientMeta(),
       });
       setStatus("success");
-      reset();
+      redirectToThankYou({ sourceForm: sourcePage });
     } catch (error) {
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);

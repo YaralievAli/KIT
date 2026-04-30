@@ -9,6 +9,7 @@ import { quizSteps } from "@/content/quiz";
 import { quizLeadSchema, type QuizLeadValues } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const defaultValues: QuizLeadValues = {
   task: "",
@@ -32,7 +33,6 @@ export function QuizSection() {
     handleSubmit,
     setValue,
     trigger,
-    reset,
     formState: { errors },
   } = useForm<QuizLeadValues>({
     resolver: zodResolver(quizLeadSchema),
@@ -79,9 +79,13 @@ export function QuizSection() {
         ...collectLeadClientMeta(),
       });
       setStatus("success");
-      reset(defaultValues);
-      setAnswers({});
-      setStep(0);
+      redirectToThankYou({
+        selectedProjectId: values.selectedProjectId,
+        style: values.style,
+        layout: values.layout,
+        budget: values.budget,
+        sourceForm: "quiz",
+      });
     } catch (error) {
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);

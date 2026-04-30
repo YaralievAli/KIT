@@ -10,6 +10,7 @@ import { imageMap } from "@/content/images-map";
 import { contactFormSchema } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const layoutOptions = [
   {
@@ -74,7 +75,6 @@ export function PreviewDarkCalculator() {
     setValue,
     control,
     trigger,
-    reset,
     formState: { errors },
   } = useForm<PreviewDarkCalculatorValues>({
     resolver: zodResolver(previewDarkCalculatorSchema),
@@ -119,8 +119,11 @@ export function PreviewDarkCalculator() {
         ...collectLeadClientMeta(),
       });
       setStatus("success");
-      setShowContacts(false);
-      reset(defaultValues);
+      redirectToThankYou({
+        layout: values.layout,
+        budget: values.budget,
+        sourceForm: "preview-dark-calculator",
+      });
     } catch (error) {
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);
