@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, Phone, X } from "lucide-react";
+import { Calculator, MessageCircle, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
@@ -99,6 +99,20 @@ export function PreviewDarkHeader() {
           Позвонить
         </a>
       </aside>
+      <div className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-2 rounded-[22px] border border-white/16 bg-[#071314]/92 p-2 shadow-[0_18px_55px_rgba(0,0,0,0.28)] lg:hidden">
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-white/10 px-2 text-xs font-semibold text-white" href={siteSettings.phoneHref}>
+          <Phone size={16} aria-hidden="true" />
+          Позвонить
+        </a>
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-white/10 px-2 text-xs font-semibold text-white" href={siteSettings.whatsappHref}>
+          <MessageCircle size={16} aria-hidden="true" />
+          WhatsApp
+        </a>
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-teal px-2 text-xs font-semibold text-white" href="#quiz">
+          <Calculator size={16} aria-hidden="true" />
+          Расчёт
+        </a>
+      </div>
     </>
   );
 }

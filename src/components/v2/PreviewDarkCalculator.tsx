@@ -1,12 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
-import { imageMap } from "@/content/images-map";
 import { contactFormSchema } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
@@ -134,15 +133,16 @@ export function PreviewDarkCalculator() {
 
   return (
     <form
-      className="overflow-hidden rounded-[28px] bg-[#062e30] p-6 text-white shadow-[0_22px_60px_rgba(6,46,48,0.22)] md:p-7"
+      className="overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(135deg,#062e30_0%,#061b1e_100%)] p-5 text-white shadow-[0_24px_70px_rgba(6,46,48,0.26)] md:p-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input type="hidden" {...register("layout")} />
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
-      <div className="grid gap-7 lg:grid-cols-[1fr_310px] xl:grid-cols-[1fr_330px]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_286px] 2xl:grid-cols-[1fr_310px]">
         <div>
-          <h2 className="text-3xl font-semibold leading-tight md:text-4xl">Рассчитайте стоимость кухни</h2>
-          <div className="mt-7 grid gap-5">
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Калькулятор</p>
+          <h2 className="mt-1 text-3xl font-semibold leading-tight md:text-[34px]">Рассчитайте стоимость кухни</h2>
+          <div className="mt-6 grid gap-4">
             <CalculatorRow number="1" label="Тип планировки" error={errors.layout?.message}>
               {layoutOptions.map((item) => {
                 const isActive = item.value === selectedLayout.value;
@@ -155,7 +155,7 @@ export function PreviewDarkCalculator() {
                       "inline-flex min-h-11 items-center justify-center rounded-xl border px-5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
                       isActive
                         ? "border-champagne bg-teal text-white shadow-glow"
-                        : "border-white/12 bg-white/12 text-white/76 hover:border-teal hover:text-white"
+                        : "border-white/12 bg-white/[0.11] text-white/76 hover:border-teal hover:bg-white/16 hover:text-white"
                     )}
                     aria-pressed={isActive}
                     onClick={() => {
@@ -243,7 +243,7 @@ export function PreviewDarkCalculator() {
                 Получить расчёт
               </button>
             )}
-            <p className="text-xs leading-5 text-white/60">Это предварительный расчёт. Точная стоимость зависит от замера, материалов и проекта.</p>
+            <p className="max-w-md text-xs leading-5 text-white/60">Это предварительный расчёт. Точная стоимость зависит от замера, материалов и проекта.</p>
           </div>
 
           {status === "success" ? (
@@ -254,8 +254,8 @@ export function PreviewDarkCalculator() {
           {status === "error" ? <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-700">{errorMessage}</p> : null}
         </div>
 
-        <aside className="relative overflow-hidden rounded-[24px] border border-champagne/24 bg-black/16 p-4">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-white/6">
+        <aside className="relative overflow-hidden rounded-[26px] border border-champagne/24 bg-black/18 p-4">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-white/6">
             <Image
               key={selectedLayout.image}
               src={selectedLayout.image}
@@ -270,7 +270,7 @@ export function PreviewDarkCalculator() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/80 via-transparent to-transparent" />
           </div>
-          <div className="mt-5 rounded-2xl border border-champagne/24 bg-[#061112]/44 p-4">
+          <div className="mt-4 rounded-[20px] border border-champagne/24 bg-[#061112]/50 p-4">
             <p className="text-sm font-semibold text-white">Предварительный ориентир</p>
             <p className="mt-2 text-2xl font-semibold text-champagne">{selectedLayout.value.toLowerCase()}</p>
             <p className="mt-3 text-sm leading-6 text-white/68">После выбора параметров подготовим ориентировочный диапазон и рекомендации.</p>
@@ -293,7 +293,7 @@ function CalculatorRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-3 lg:grid-cols-[34px_155px_1fr] lg:items-start">
+    <div className="grid gap-3 lg:grid-cols-[34px_138px_1fr] lg:items-start 2xl:grid-cols-[34px_155px_1fr]">
       <span className="flex h-8 w-8 items-center justify-center rounded-full border border-champagne text-sm font-semibold text-champagne">{number}</span>
       <span className="pt-2 text-sm font-semibold text-white/84">{label}</span>
       <div>
