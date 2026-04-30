@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Изображение временно недоступно</title>
+  <desc id="desc">Аккуратная заглушка для отсутствующего изображения</desc>
+  <rect width="1200" height="800" fill="#f8fafc"/>
+  <rect x="40" y="40" width="1120" height="720" rx="28" fill="#ffffff" stroke="#e2e8f0" stroke-width="4"/>
+  <path d="M420 470 535 355l82 82 58-58 105 105" fill="none" stroke="#0d9488" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="745" cy="300" r="34" fill="#c8a96e"/>
+  <text x="600" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#1c1c2e">Изображение временно недоступно</text>
+</svg>
