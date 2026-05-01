@@ -139,17 +139,20 @@ function Hero() {
         </div>
 
         <div className="relative hidden min-h-[340px] lg:col-span-7 lg:block">
-          <div className="hidden lg:absolute lg:bottom-8 lg:right-[10%] lg:block lg:w-[360px] xl:right-[14%] xl:w-[390px]">
-            <div className="rounded-[24px] border border-white/14 bg-[#071314]/86 p-4 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
+          <div className="hidden lg:absolute lg:bottom-9 lg:right-[16%] lg:block lg:w-[330px] xl:right-[20%] xl:w-[360px]">
+            <div className="rounded-[22px] border border-white/10 bg-[#071314]/74 p-4 shadow-[0_18px_58px_rgba(0,0,0,0.24)]">
               <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Предварительный расчёт</p>
               <h2 className="mt-2 text-xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
               <p className="mt-2 text-sm leading-6 text-white/68">
-                Сначала выбираете планировку, стиль и бюджет. Контакт нужен только для отправки подборки.
+                Сначала выберите планировку, стиль и бюджет. Контакт понадобится только для отправки подборки.
               </p>
-              <a href="#quiz" className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-teal-glow">
-                Начать расчёт
-                <ArrowRight size={16} aria-hidden="true" />
-              </a>
+              <div className="mt-4 flex flex-wrap gap-2" aria-label="Темы вопросов квиза">
+                {["Планировка", "Стиль", "Бюджет"].map((item) => (
+                  <span key={item} className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5 text-xs font-semibold text-white/72">
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
