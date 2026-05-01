@@ -5,9 +5,9 @@ import path from "node:path";
 import tls from "node:tls";
 import { z } from "zod";
 import { createDirectusItem } from "@/lib/content/directus-client";
+import { isValidRussianPhone, normalizeRussianPhone } from "@/lib/phone";
 import type { LeadPayload } from "@/types/content";
 
-const phoneRegex = /^[+0-9()[\]\-\s]{7,24}$/;
 const rateLimitWindowMs = 15 * 60 * 1000;
 const ipLimit = 8;
 const phoneLimit = 4;
@@ -19,14 +19,31 @@ const quizAnswerSchema = z.object({
   label: z.string().trim().min(1).max(240),
 });
 
+const phoneSchema = z.string().trim().superRefine((value, context) => {
+  if (!value) {
+    context.addIssue({
+      code: "custom",
+      message: "Введите телефон",
+    });
+    return;
+  }
+
+  if (!isValidRussianPhone(value)) {
+    context.addIssue({
+      code: "custom",
+      message: "Введите корректный номер телефона",
+    });
+  }
+});
+
 export const leadSubmissionSchema = z.object({
   name: z.string().trim().min(2, "Укажите имя").max(80, "Имя слишком длинное"),
-  phone: z.string().trim().regex(phoneRegex, "Укажите корректный телефон"),
+  phone: phoneSchema,
   communicationMethod: z.enum(["whatsapp", "call", "telegram"], {
     error: "Выберите способ связи",
   }),
   comment: z.string().trim().max(1000, "Комментарий слишком длинный").optional().or(z.literal("")),
-  consent: z.boolean().refine((value) => value === true, "Нужно согласие на обработку персональных данных"),
+  consent: z.boolean().refine((value) => value === true, "Необходимо согласие на обработку персональных данных"),
   honeypot: z.string().max(0, "Заявка не прошла антиспам-проверку").optional().or(z.literal("")),
   quizAnswers: z.array(quizAnswerSchema).max(20).optional(),
   selectedProjectId: z.string().trim().max(120).optional().or(z.literal("")),
@@ -96,7 +113,18 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
     };
   }
 
-  const phone = normalizePhone(data.phone);
+  const phone = normalizeRussianPhone(data.phone);
+  if (!phone) {
+    return {
+      success: false,
+      code: "validation_error",
+      message: "Введите корректный номер телефона",
+      fieldErrors: {
+        phone: ["Введите корректный номер телефона"],
+      },
+    };
+  }
+
   const ip = normalizeIp(context.ip);
 
   if (!consumeRateLimit(`ip:${ip}`, ipLimit) || !consumeRateLimit(`phone:${phone}`, phoneLimit)) {
@@ -221,10 +249,6 @@ function cleanupRateLimit(now: number) {
       rateLimitStore.delete(key);
     }
   }
-}
-
-function normalizePhone(phone: string) {
-  return phone.replace(/[^\d+]/g, "");
 }
 
 function normalizeIp(ip?: string) {

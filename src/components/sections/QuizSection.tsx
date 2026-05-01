@@ -9,6 +9,7 @@ import { quizSteps } from "@/content/quiz";
 import { quizLeadSchema, type QuizLeadValues } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const defaultValues: QuizLeadValues = {
@@ -29,6 +30,7 @@ export function QuizSection() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -68,7 +70,7 @@ export function QuizSection() {
     try {
       await sendLead({
         name: values.name,
-        phone: values.phone,
+        phone: normalizeRussianPhone(values.phone) ?? values.phone,
         communicationMethod: values.communicationMethod,
         comment: values.comment,
         consent: values.consent,
@@ -150,7 +152,7 @@ export function QuizSection() {
             ) : (
               <div className="grid gap-5">
                 <h3 className="text-2xl font-semibold text-navy">Куда отправить подборку и расчёт?</h3>
-                <ContactFields register={register} errors={errors} />
+                <ContactFields control={control} register={register} errors={errors} idPrefix="quiz" />
               </div>
             )}
 

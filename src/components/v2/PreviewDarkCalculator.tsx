@@ -4,11 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
+import { PhoneInput } from "@/components/forms/PhoneInput";
+import { ConsentCheckbox } from "@/components/ui/FormFields";
 import { contactFormSchema } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const layoutOptions = [
@@ -98,7 +101,7 @@ export function PreviewDarkCalculator() {
     try {
       await sendLead({
         name: values.name,
-        phone: values.phone,
+        phone: normalizeRussianPhone(values.phone) ?? values.phone,
         communicationMethod: values.communicationMethod,
         comment: values.comment,
         consent: values.consent,
@@ -211,7 +214,21 @@ export function PreviewDarkCalculator() {
                   <input className="v2-calc-input" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
                 </DarkField>
                 <DarkField label="Телефон" error={errors.phone?.message}>
-                  <input className="v2-calc-input" placeholder="+7 (___) ___-__-__" autoComplete="tel" {...register("phone")} />
+                  <Controller
+                    control={control}
+                    name="phone"
+                    render={({ field }) => (
+                      <PhoneInput
+                        ref={field.ref}
+                        name={field.name}
+                        className="v2-calc-input"
+                        placeholder="+7 (___) ___-__-__"
+                        value={field.value ?? ""}
+                        onBlur={field.onBlur}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
                 </DarkField>
                 <DarkField label="Способ связи" error={errors.communicationMethod?.message}>
                   <select className="v2-calc-input" {...register("communicationMethod")}>
@@ -224,11 +241,9 @@ export function PreviewDarkCalculator() {
                   <input className="v2-calc-input" placeholder="Что важно учесть" {...register("comment")} />
                 </DarkField>
               </div>
-              <label className="mt-4 flex items-start gap-3 text-xs leading-5 text-white/65">
-                <input className="mt-1 h-4 w-4 rounded border-white/25 bg-white/10 text-teal focus:ring-teal" type="checkbox" {...register("consent")} />
-                <span>Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</span>
-              </label>
-              {errors.consent?.message ? <p className="mt-2 text-xs text-red-200">{errors.consent.message}</p> : null}
+              <div className="mt-4">
+                <ConsentCheckbox id="preview-calculator-consent" register={register} error={errors.consent?.message} dark />
+              </div>
             </div>
           ) : null}
 
