@@ -1,15 +1,31 @@
 import { z } from "zod";
+import { isValidRussianPhone } from "@/lib/phone";
 
 export const communicationMethods = ["whatsapp", "call", "telegram"] as const;
 
-const phoneRegex = /^[+0-9()[\]\-\s]{7,24}$/;
+const phoneSchema = z.string().trim().superRefine((value, context) => {
+  if (!value) {
+    context.addIssue({
+      code: "custom",
+      message: "Введите телефон",
+    });
+    return;
+  }
+
+  if (!isValidRussianPhone(value)) {
+    context.addIssue({
+      code: "custom",
+      message: "Введите корректный номер телефона",
+    });
+  }
+});
 
 export const contactFormSchema = z.object({
   name: z.string().trim().min(2, "Укажите имя"),
-  phone: z.string().trim().regex(phoneRegex, "Укажите корректный телефон"),
+  phone: phoneSchema,
   communicationMethod: z.enum(communicationMethods, { error: "Выберите способ связи" }),
   comment: z.string().trim().max(500, "Комментарий слишком длинный").optional(),
-  consent: z.boolean().refine((value) => value === true, "Нужно согласие на обработку персональных данных"),
+  consent: z.boolean().refine((value) => value === true, "Необходимо согласие на обработку персональных данных"),
   honeypot: z.string().max(0, "Заявка не прошла антиспам-проверку").optional().or(z.literal("")),
 });
 

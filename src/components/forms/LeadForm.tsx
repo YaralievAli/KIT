@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { ContactFields } from "@/components/ui/FormFields";
 import { contactFormSchema, type ContactFormValues } from "@/lib/form-schemas";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 type LeadFormProps = {
@@ -19,6 +20,7 @@ export function LeadForm({ sourcePage, buttonLabel = "Получить расч�
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -41,6 +43,7 @@ export function LeadForm({ sourcePage, buttonLabel = "Получить расч�
     try {
       await sendLead({
         ...values,
+        phone: normalizeRussianPhone(values.phone) ?? values.phone,
         sourcePage,
         ...collectLeadClientMeta(),
       });
@@ -56,7 +59,7 @@ export function LeadForm({ sourcePage, buttonLabel = "Получить расч�
 
   return (
     <form className={compact ? "grid gap-4" : "rounded-3xl border border-border bg-white p-5 shadow-soft md:p-7"} onSubmit={handleSubmit(onSubmit)}>
-      <ContactFields register={register} errors={errors} />
+      <ContactFields control={control} register={register} errors={errors} idPrefix={`lead-${sourcePage}`} />
       <button className="btn-primary mt-5 w-full" disabled={status === "loading"} type="submit">
         <Send size={18} aria-hidden="true" />
         {status === "loading" ? "Отправляем..." : buttonLabel}
