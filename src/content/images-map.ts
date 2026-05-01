@@ -268,6 +268,35 @@ export const imageMap = {
     },
   ],
 
+  previewDark: {
+    calculatorLayouts: {
+      corner: {
+        image: "/images/preview-dark/calculator/preview-corner-sketch.png",
+        alt: "Схематичный эскиз угловой кухни",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 80vw, 330px",
+      },
+      straight: {
+        image: "/images/preview-dark/calculator/preview-straight-sketch.png",
+        alt: "Схематичный эскиз прямой кухни",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 80vw, 330px",
+      },
+      uShaped: {
+        image: "/images/preview-dark/calculator/preview-u-shaped-sketch.png",
+        alt: "Схематичный эскиз П-образной кухни",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 80vw, 330px",
+      },
+      island: {
+        image: "/images/preview-dark/calculator/preview-island-sketch.png",
+        alt: "Схематичный эскиз кухни с островом",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 80vw, 330px",
+      },
+    },
+  },
+
   cta: {
     illustration: "/images/cta/kitchen-line-illustration.svg",
     alt: "Линейная иллюстрация кухни",

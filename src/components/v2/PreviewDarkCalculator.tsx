@@ -8,32 +8,35 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
+import { imageMap } from "@/content/images-map";
 import { contactFormSchema } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
 import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
+const calculatorLayoutImages = imageMap.previewDark.calculatorLayouts;
+
 const layoutOptions = [
   {
     value: "Угловая",
-    image: "/images/layouts/layout-corner-kitchen.png",
-    alt: "Угловая кухня для предварительного расчёта",
+    image: calculatorLayoutImages.corner.image,
+    alt: calculatorLayoutImages.corner.alt,
   },
   {
     value: "Прямая",
-    image: "/images/layouts/layout-straight-kitchen.png",
-    alt: "Прямая кухня для предварительного расчёта",
+    image: calculatorLayoutImages.straight.image,
+    alt: calculatorLayoutImages.straight.alt,
   },
   {
     value: "П-образная",
-    image: "/images/layouts/fallback.svg",
-    alt: "Схема П-образной кухни для предварительного расчёта",
+    image: calculatorLayoutImages.uShaped.image,
+    alt: calculatorLayoutImages.uShaped.alt,
   },
   {
     value: "С островом",
-    image: "/images/layouts/layout-island-kitchen.png",
-    alt: "Кухня с островом для предварительного расчёта",
+    image: calculatorLayoutImages.island.image,
+    alt: calculatorLayoutImages.island.alt,
   },
 ] as const;
 
@@ -269,21 +272,18 @@ export function PreviewDarkCalculator() {
           {status === "error" ? <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-700">{errorMessage}</p> : null}
         </div>
 
-        <aside className="relative overflow-hidden rounded-[26px] border border-champagne/24 bg-black/18 p-4">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-white/6">
+        <aside className="relative overflow-hidden rounded-[26px] border border-champagne/24 bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_50%_45%,rgba(20,184,166,0.16),rgba(255,255,255,0.04)_56%,rgba(0,0,0,0.16)_100%)]">
             <Image
               key={selectedLayout.image}
               src={selectedLayout.image}
               alt={selectedLayout.alt}
               fill
-              sizes="(max-width: 1024px) 80vw, 330px"
+              sizes={calculatorLayoutImages.corner.sizes}
               loading="lazy"
-              className={cn(
-                "transition duration-300",
-                selectedLayout.value === "П-образная" ? "object-contain p-8 opacity-55" : "object-cover opacity-72"
-              )}
+              className="object-contain p-5 opacity-82 transition duration-300"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/70 via-transparent to-transparent" />
           </div>
           <div className="mt-4 rounded-[20px] border border-champagne/24 bg-[#061112]/50 p-4">
             <p className="text-sm font-semibold text-white">Предварительный ориентир</p>
