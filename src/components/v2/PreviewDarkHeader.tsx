@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Calculator, MessageCircle, Menu, Phone, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
 import { cn } from "@/lib/helpers";
@@ -17,21 +17,68 @@ const nav = [
   ["Контакты", "#contacts"],
 ] as const;
 
+const HERO_SECTION_ID = "preview-dark-hero";
+const HEADER_SWITCH_OFFSET = 8;
+const FALLBACK_HEADER_HEIGHT = 76;
+
 export function PreviewDarkHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const frameRef = useRef<number | null>(null);
+  const themeRef = useRef(false);
   const isLight = scrolled;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 28);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const setTheme = (nextIsLight: boolean) => {
+      if (themeRef.current === nextIsLight) {
+        return;
+      }
+
+      themeRef.current = nextIsLight;
+      setScrolled(nextIsLight);
+    };
+
+    const updateTheme = () => {
+      frameRef.current = null;
+      const hero = document.getElementById(HERO_SECTION_ID);
+
+      if (!hero) {
+        setTheme(window.scrollY > window.innerHeight * 0.75);
+        return;
+      }
+
+      const headerHeight = headerRef.current?.offsetHeight ?? FALLBACK_HEADER_HEIGHT;
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      setTheme(heroBottom <= headerHeight + HEADER_SWITCH_OFFSET);
+    };
+
+    const requestUpdate = () => {
+      if (frameRef.current !== null) {
+        return;
+      }
+
+      frameRef.current = window.requestAnimationFrame(updateTheme);
+    };
+
+    updateTheme();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
   }, []);
 
   return (
     <>
       <header
+        ref={headerRef}
         className={cn(
           "fixed inset-x-0 top-0 z-50 border-b transition",
           isLight
