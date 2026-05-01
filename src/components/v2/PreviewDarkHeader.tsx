@@ -62,8 +62,10 @@ export function PreviewDarkHeader() {
     };
 
     updateTheme();
+    requestUpdate();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
+    window.addEventListener("hashchange", requestUpdate);
 
     return () => {
       if (frameRef.current !== null) {
@@ -72,6 +74,7 @@ export function PreviewDarkHeader() {
 
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
+      window.removeEventListener("hashchange", requestUpdate);
     };
   }, []);
 
