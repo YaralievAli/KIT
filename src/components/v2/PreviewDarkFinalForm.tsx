@@ -55,11 +55,11 @@ export function PreviewDarkFinalForm() {
   }
 
   return (
-    <form className="rounded-[30px] bg-white p-5 text-navy shadow-[0_24px_70px_rgba(0,0,0,0.22)] md:p-6" onSubmit={handleSubmit(onSubmit)}>
+    <form className="mx-auto max-w-[680px] rounded-[26px] bg-white p-4 text-navy shadow-[0_20px_58px_rgba(0,0,0,0.18)] md:p-5 lg:ml-auto lg:mr-0" onSubmit={handleSubmit(onSubmit)}>
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 md:grid-cols-2">
         <LightField label="Ваше имя" error={errors.name?.message}>
-          <input className="form-input rounded-2xl" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
+          <input className="form-input rounded-xl" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
         </LightField>
         <LightField label="Телефон" error={errors.phone?.message}>
           <Controller
@@ -69,7 +69,7 @@ export function PreviewDarkFinalForm() {
               <PhoneInput
                 ref={field.ref}
                 name={field.name}
-                className="form-input rounded-2xl"
+                className="form-input rounded-xl"
                 placeholder="+7 (___) ___-__-__"
                 value={field.value ?? ""}
                 onBlur={field.onBlur}
@@ -79,20 +79,20 @@ export function PreviewDarkFinalForm() {
           />
         </LightField>
         <LightField label="Способ связи" error={errors.communicationMethod?.message}>
-          <select className="form-input rounded-2xl" {...register("communicationMethod")}>
+          <select className="form-input rounded-xl" {...register("communicationMethod")}>
             <option value="whatsapp">WhatsApp</option>
             <option value="call">Звонок</option>
             <option value="telegram">Telegram</option>
           </select>
         </LightField>
         <LightField label="Комментарий" error={errors.comment?.message}>
-          <input className="form-input rounded-2xl" placeholder="Что важно учесть" {...register("comment")} />
+          <input className="form-input rounded-xl" placeholder="Что важно учесть" {...register("comment")} />
         </LightField>
       </div>
-      <div className="mt-4">
+      <div className="mt-3">
         <ConsentCheckbox id="preview-final-consent" register={register} error={errors.consent?.message} />
       </div>
-      <button className="btn-primary mt-5 w-full rounded-2xl py-4" disabled={status === "loading"} type="submit">
+      <button className="btn-primary mt-4 w-full rounded-xl py-3.5" disabled={status === "loading"} type="submit">
         <Send size={18} aria-hidden="true" />
         {status === "loading" ? "Отправляем..." : "Получить расчёт"}
       </button>

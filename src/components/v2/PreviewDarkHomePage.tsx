@@ -15,6 +15,7 @@ import { PreviewDarkCalculator } from "@/components/v2/PreviewDarkCalculator";
 import { PreviewDarkFAQ } from "@/components/v2/PreviewDarkFAQ";
 import { PreviewDarkFinalForm } from "@/components/v2/PreviewDarkFinalForm";
 import { PreviewDarkHeader } from "@/components/v2/PreviewDarkHeader";
+import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { faqItems } from "@/content/faq";
 import { imageMap } from "@/content/images-map";
 import { processSteps, productionStats, styleDescriptions, trustItems } from "@/content/home";
@@ -44,6 +45,12 @@ const materialDescriptions = [
   "Петли, направляющие и механизмы под задачу.",
   "Корпусные материалы с понятными свойствами.",
 ];
+const finalCtaBenefits = [
+  "Проектные рекомендации",
+  "Подбор материалов и фурнитуры",
+  "Предварительный расчёт без скрытых обещаний",
+  "Ответ в рабочее время",
+];
 
 export function PreviewDarkHomePage() {
   const visibleFaq = faqItems.filter((item) => item.visible).sort((a, b) => a.order - b.order);
@@ -71,23 +78,27 @@ export function PreviewDarkHomePage() {
 }
 
 function Hero() {
+  const heroBackground = imageMap.previewDark.heroBackground;
+
   return (
     <section id="preview-dark-hero" className="relative isolate overflow-hidden bg-[#061112] pt-[76px] text-white">
-      <div className="absolute inset-y-[76px] right-0 -z-10 hidden w-[61%] lg:block">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         <Image
-          src={imageMap.hero.image}
-          alt={imageMap.hero.alt}
+          src={heroBackground.image}
+          alt=""
           fill
-          preload={imageMap.hero.preload}
-          sizes="(max-width: 1280px) 61vw, 1080px"
-          className="object-cover"
+          preload={heroBackground.preload}
+          sizes={heroBackground.sizes}
+          aria-hidden="true"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#061112] via-[#061112]/20 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#061112]/72 to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,17,18,0.18)_0%,rgba(6,17,18,0.1)_46%,rgba(6,17,18,0.2)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#061112]/82 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#061112]/38 to-transparent" />
       </div>
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.24),transparent_34%)]" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.18),transparent_32%)]" aria-hidden="true" />
 
-      <div className={`${shell} grid min-h-[610px] items-center gap-8 py-7 lg:grid-cols-12 xl:min-h-[650px]`}>
+      <div className={`${shell} relative z-10 grid min-h-[610px] items-center gap-8 py-7 lg:grid-cols-12 xl:min-h-[650px]`}>
         <div className="max-w-[670px] lg:col-span-5">
           <p className="inline-flex items-center gap-2 rounded-full border border-teal/35 bg-teal/10 px-4 py-2 text-sm font-semibold text-teal-glow">
             <MapPin size={16} aria-hidden="true" />
@@ -101,11 +112,11 @@ function Hero() {
             Подберём планировку, материалы и ориентировочный бюджет. Точная стоимость формируется после замера и проекта.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a className="v2-primary" href="#quiz">
+            <a className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-xl bg-teal px-7 text-sm font-semibold text-white shadow-[0_16px_44px_rgba(13,148,136,0.34)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow" href="#quiz">
               Рассчитать стоимость
               <ArrowRight size={18} aria-hidden="true" />
             </a>
-            <a className="v2-secondary-dark" href="#layouts">
+            <a className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-xl border border-champagne/80 bg-[#101a2b]/36 px-7 text-sm font-semibold text-white transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne" href="#layouts">
               Смотреть каталог
               <ArrowRight size={18} aria-hidden="true" />
             </a>
@@ -127,19 +138,15 @@ function Hero() {
           </p>
         </div>
 
-        <div className="relative min-h-[340px] lg:col-span-7">
-          <div className="relative min-h-[340px] overflow-hidden rounded-[28px] border border-white/10 lg:hidden">
-            <Image src={imageMap.hero.image} alt={imageMap.hero.alt} fill sizes="100vw" preload={false} className="object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061112] via-transparent to-transparent" />
-          </div>
-          <div className="hidden lg:absolute lg:bottom-6 lg:right-0 lg:block lg:w-[380px] xl:w-[430px]">
-            <div className="rounded-[28px] border border-white/14 bg-[#071314]/86 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
+        <div className="relative hidden min-h-[340px] lg:col-span-7 lg:block">
+          <div className="hidden lg:absolute lg:bottom-8 lg:right-[10%] lg:block lg:w-[360px] xl:right-[14%] xl:w-[390px]">
+            <div className="rounded-[24px] border border-white/14 bg-[#071314]/86 p-4 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
               <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Предварительный расчёт</p>
-              <h2 className="mt-2 text-2xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
-              <p className="mt-3 text-sm leading-6 text-white/68">
+              <h2 className="mt-2 text-xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
+              <p className="mt-2 text-sm leading-6 text-white/68">
                 Сначала выбираете планировку, стиль и бюджет. Контакт нужен только для отправки подборки.
               </p>
-              <a href="#quiz" className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-teal-glow">
+              <a href="#quiz" className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-teal-glow">
                 Начать расчёт
                 <ArrowRight size={16} aria-hidden="true" />
               </a>
@@ -413,25 +420,42 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
 
 function FinalCta() {
   return (
-    <section id="callback" className="relative overflow-hidden bg-[#062e30] py-12 text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_45%,rgba(20,184,166,0.18),transparent_34%)]" />
-      <div className={`${shell} relative grid gap-8 lg:grid-cols-12 lg:items-center`}>
-        <div className="relative min-h-[330px] overflow-hidden rounded-[28px] border border-white/10 bg-white/6 p-8 lg:col-span-5">
-          <Image src={imageMap.cta.illustration} alt={imageMap.cta.alt} fill sizes="720px" loading="lazy" className="object-contain p-8 opacity-20" />
-          <div className="relative flex min-h-[270px] flex-col justify-center">
-            <h2 className="max-w-xl text-3xl font-semibold leading-tight md:text-4xl">Рассчитаем стоимость вашей кухни бесплатно</h2>
-            <div className="mt-6 grid gap-3 text-sm text-white/82">
-              {["Проектные рекомендации", "Подбор материалов и фурнитуры", "Предварительный расчёт без скрытых обещаний"].map((item) => (
-                <p key={item} className="flex items-center gap-3">
-                  <CheckCircle2 size={18} className="text-teal-glow" aria-hidden="true" />
-                  {item}
-                </p>
-              ))}
-            </div>
+    <section id="callback" className="relative isolate min-h-[540px] overflow-hidden bg-[#062e30] py-12 text-white lg:py-14">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        <Image
+          src={imageMap.cta.background}
+          alt=""
+          fill
+          sizes="100vw"
+          loading="lazy"
+          aria-hidden="true"
+          className="object-cover object-left opacity-70"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,46,48,0.26)_0%,rgba(6,46,48,0.68)_48%,rgba(6,46,48,0.94)_78%,rgba(6,46,48,0.98)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,46,48,0.18)_0%,rgba(6,46,48,0.78)_100%)] md:bg-[linear-gradient(180deg,rgba(6,46,48,0.08)_0%,rgba(6,46,48,0.55)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_38%_44%,rgba(20,184,166,0.18),transparent_34%)]" />
+      </div>
+      <div className={`${shell} relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center`}>
+        <div className="lg:col-span-6 lg:pl-52 xl:pl-60">
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow drop-shadow">Финальный шаг</p>
+          <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[1.05] drop-shadow-[0_3px_16px_rgba(0,0,0,0.24)] md:text-[42px]">
+            <span className="block">Рассчитаем стоимость</span>
+            <span className="block text-white/78">вашей кухни бесплатно</span>
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/78">
+            Подберём понятный ориентир по бюджету и материалам без громких обещаний до замера и проекта.
+          </p>
+          <div className="mt-6 grid gap-3 text-sm text-white/88 sm:grid-cols-2">
+            {finalCtaBenefits.map((item) => (
+              <p key={item} className="flex min-h-14 items-center gap-3 rounded-2xl border border-white/12 bg-[#031b1c]/34 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px]">
+                <CheckCircle2 size={18} className="shrink-0 text-teal-glow" aria-hidden="true" />
+                {item}
+              </p>
+            ))}
           </div>
         </div>
-        <div className="lg:col-span-7">
-        <PreviewDarkFinalForm />
+        <div className="lg:col-span-6">
+          <PreviewDarkFinalForm />
         </div>
       </div>
     </section>
@@ -444,10 +468,14 @@ function PreviewDarkFooter() {
       <div className={`${shell} grid gap-8 border-b border-white/10 pb-7 md:grid-cols-[1.1fr_0.8fr_0.8fr_1fr_0.9fr]`}>
         <div>
           <div className="flex items-center gap-3">
-            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={52} height={52} style={{ width: 52, height: 52 }} />
-            <span className="text-2xl font-semibold">КИТ</span>
+            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={60} height={60} style={{ width: 60, height: 60 }} />
+            <span className="text-3xl font-semibold tracking-wide">КИТ</span>
           </div>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-white/60">{siteSettings.description}</p>
+          <div className="mt-4 max-w-sm">
+            <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
+            <p className="mt-2 text-sm leading-6 text-white/60">с практичным проектированием, производством и сборкой.</p>
+          </div>
+          <SocialIconButtons settings={siteSettings} className="mt-5" />
         </div>
         <FooterLinks title="Навигация" links={[["Кухни", "#layouts"], ["Каталог", "#projects"], ["Расчёт", "#quiz"], ["Отзывы", "#reviews"]]} />
         <FooterLinks title="Услуги" links={[["Дизайн-проект", "#quiz"], ["Производство", "#production"], ["Оплата частями", "#callback"]]} />
