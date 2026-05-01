@@ -139,7 +139,7 @@ export function PreviewDarkCalculator() {
 
   return (
     <form
-      className="overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(135deg,#062e30_0%,#061b1e_100%)] p-4 text-white shadow-[0_24px_70px_rgba(6,46,48,0.26)] md:p-5"
+      className="overflow-hidden rounded-[28px] border border-[#14B8A6]/[0.14] bg-[linear-gradient(135deg,#062e30_0%,#061b1e_100%)] p-4 text-white shadow-[0_24px_70px_rgba(6,46,48,0.26)] md:p-5"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input type="hidden" {...register("layout")} />
@@ -158,10 +158,10 @@ export function PreviewDarkCalculator() {
                     key={item.value}
                     type="button"
                     className={cn(
-                      "inline-flex min-h-[46px] items-center justify-center rounded-xl border px-2 text-center text-sm font-semibold leading-tight transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
+                      "inline-flex min-h-[46px] items-center justify-center rounded-xl border px-2 text-center text-sm font-semibold leading-tight transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14B8A6]",
                       isActive
-                        ? "border-champagne bg-teal text-white shadow-glow"
-                        : "border-white/12 bg-white/[0.11] text-white/76 hover:border-teal hover:bg-white/16 hover:text-white"
+                        ? "border-[#C8A96E]/[0.42] bg-teal text-white shadow-[0_0_22px_rgba(20,184,166,0.14)]"
+                        : "border-[#14B8A6]/[0.16] bg-white/[0.08] text-white/78 hover:border-[#C8A96E]/[0.32] hover:bg-white/[0.12] hover:text-white"
                     )}
                     aria-pressed={isActive}
                     onClick={() => {
@@ -210,7 +210,7 @@ export function PreviewDarkCalculator() {
           </div>
 
           {showContacts ? (
-            <div className="mt-6 rounded-2xl border border-white/12 bg-black/16 p-4">
+            <div className="mt-6 rounded-2xl border border-[#14B8A6]/[0.14] bg-black/16 p-4">
               <p className="text-sm font-semibold text-teal-glow">Куда отправить подборку?</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <DarkField label="Ваше имя" error={errors.name?.message}>
@@ -272,8 +272,8 @@ export function PreviewDarkCalculator() {
           {status === "error" ? <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-700">{errorMessage}</p> : null}
         </div>
 
-        <aside className="relative overflow-hidden rounded-[24px] border border-champagne/24 bg-black/18 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_50%_45%,rgba(20,184,166,0.16),rgba(255,255,255,0.04)_58%,rgba(0,0,0,0.22)_100%)]">
+        <aside className="relative overflow-hidden rounded-[24px] border border-[#14B8A6]/[0.16] bg-black/18 p-4 shadow-[inset_0_1px_0_rgba(20,184,166,0.08)]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-[#14B8A6]/[0.1] bg-[radial-gradient(circle_at_50%_45%,rgba(20,184,166,0.12),rgba(255,255,255,0.03)_58%,rgba(0,0,0,0.22)_100%)]">
             <Image
               key={selectedLayout.image}
               src={selectedLayout.image}
@@ -285,7 +285,7 @@ export function PreviewDarkCalculator() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/80 via-transparent to-transparent" />
           </div>
-          <div className="mt-4 rounded-[20px] border border-champagne/24 bg-[#061112]/58 p-4">
+          <div className="mt-4 rounded-[20px] border border-[#C8A96E]/[0.18] bg-[#061112]/58 p-4">
             <p className="text-sm font-semibold text-white">Предварительный расчёт</p>
             <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-white/48">{selectedLayout.value.toLowerCase()}</p>
             <p className="mt-3 text-2xl font-semibold text-champagne">от 180 000 ₽</p>
