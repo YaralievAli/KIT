@@ -286,17 +286,23 @@ export function HomePage({ content }: { content: HomePageContent }) {
 
         <FAQAccordion items={visibleFaq} />
 
-        <section id="callback" className="section bg-teal text-white">
+        <section id="callback" className="section relative isolate overflow-hidden bg-teal text-white">
+          <div className="absolute inset-y-0 left-0 -z-10 w-full opacity-24 lg:w-[58%]" aria-hidden="true">
+            <Image src={content.cta.image} alt="" fill sizes="(max-width: 1024px) 100vw, 920px" loading="lazy" className="object-cover object-center" />
+            <div className="absolute inset-0 bg-gradient-to-r from-teal/20 via-teal/72 to-teal" />
+          </div>
           <div className="container-page grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
               <p className="text-sm font-semibold uppercase tracking-wide text-white/75">Финальный шаг</p>
-              <h2 className="mt-3 text-3xl font-semibold md:text-5xl">Рассчитаем стоимость вашей кухни бесплатно</h2>
+              <h2 className="mt-3 text-3xl font-semibold md:text-5xl">
+                <span className="block">Рассчитаем стоимость</span>
+                <span className="block text-white/76">вашей кухни бесплатно</span>
+              </h2>
               <div className="mt-6 grid gap-3 text-sm text-white/84 sm:grid-cols-2">
                 {["Проектные рекомендации", "Подбор материалов и фурнитуры", "Предварительный расчёт без скрытых обещаний", "Ответ в рабочее время"].map((item) => (
                   <div key={item} className="rounded-2xl bg-white/12 p-4">{item}</div>
                 ))}
               </div>
-              <Image src={content.cta.image} alt={content.cta.alt} width={620} height={280} sizes={content.cta.sizes} loading="lazy" className="mt-8 opacity-70" />
             </div>
             <LeadForm sourcePage="final-cta" />
           </div>

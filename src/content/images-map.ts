@@ -269,7 +269,7 @@ export const imageMap = {
   ],
 
   cta: {
-    illustration: "/images/cta/kitchen-line-illustration.svg",
+    illustration: "/images/cta/kit-kitchen-line-art-teal.png",
     alt: "Линейная иллюстрация кухни",
     loading: "lazy",
     sizes: "(max-width: 768px) 100vw, 520px",
