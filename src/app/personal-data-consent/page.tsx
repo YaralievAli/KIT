@@ -13,7 +13,7 @@ export const metadata: Metadata = pageMetadata({
 export default function ConsentPage() {
   return (
     <>
-      <Header />
+      <Header initialTheme="light-solid" />
       <main className="bg-surface pt-28">
         <section className="section">
           <div className="container-page max-w-4xl">

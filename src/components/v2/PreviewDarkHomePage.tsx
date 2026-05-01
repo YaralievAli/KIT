@@ -72,7 +72,7 @@ export function PreviewDarkHomePage() {
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#061112] pt-[76px] text-white">
+    <section id="preview-dark-hero" className="relative isolate overflow-hidden bg-[#061112] pt-[76px] text-white">
       <div className="absolute inset-y-[76px] right-0 -z-10 hidden w-[61%] lg:block">
         <Image
           src={imageMap.hero.image}
