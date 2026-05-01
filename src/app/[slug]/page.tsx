@@ -40,7 +40,7 @@ export default async function DynamicLocalPage({ params }: { params: Promise<{ s
 
   return (
     <>
-      <Header />
+      <Header initialTheme="light-solid" />
       {shouldIndex ? (
         <JsonLd
           data={breadcrumbJsonLd([

@@ -9,6 +9,8 @@ import { siteSettings as fallbackSettings } from "@/content/settings";
 import { cn } from "@/lib/helpers";
 import type { SiteSettings } from "@/types/content";
 
+type HeaderTheme = "dark-overlay" | "light-solid";
+
 const nav = [
   ["Кухни", "#styles"],
   ["Каталог", "#projects"],
@@ -18,9 +20,10 @@ const nav = [
   ["Контакты", "#contacts"],
 ] as const;
 
-export function Header({ settings = fallbackSettings }: { settings?: SiteSettings }) {
+export function Header({ initialTheme = "dark-overlay", settings = fallbackSettings }: { initialTheme?: HeaderTheme; settings?: SiteSettings }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const isLight = initialTheme === "light-solid" || scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -31,29 +34,47 @@ export function Header({ settings = fallbackSettings }: { settings?: SiteSetting
 
   return (
     <>
-      <header className={cn("fixed inset-x-0 top-0 z-50 border-b transition", scrolled ? "border-border bg-white shadow-sm" : "border-white/10 bg-navy/36 backdrop-blur-sm")}>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 border-b transition",
+          isLight ? "border-border bg-white shadow-sm" : "border-white/15 bg-[#071314]/78 shadow-[0_14px_40px_rgba(0,0,0,0.22)] backdrop-blur-sm"
+        )}
+      >
         <div className="container-page flex h-[72px] items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-3" aria-label="КИТ, на главную">
             <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={42} height={42} style={{ width: 42, height: 42 }} />
-            <span className={cn("text-xl font-semibold", scrolled ? "text-navy" : "text-white")}>КИТ</span>
+            <span className={cn("text-xl font-semibold", isLight ? "text-navy" : "text-white")}>КИТ</span>
           </Link>
           <nav className="hidden items-center gap-6 lg:flex" aria-label="Основное меню">
             {nav.map(([label, href]) => (
-              <Link key={href + label} href={href} className={cn("text-sm font-medium transition hover:text-teal", scrolled ? "text-navy" : "text-white/88")}>
+              <Link
+                key={href + label}
+                href={href}
+                className={cn(
+                  "text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
+                  isLight ? "text-navy hover:text-teal" : "text-white hover:text-teal-glow"
+                )}
+              >
                 {label}
               </Link>
             ))}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
-            <a href={settings.phoneHref} className={cn("text-sm font-semibold", scrolled ? "text-navy" : "text-white")}>
+            <a
+              href={settings.phoneHref}
+              className={cn(
+                "text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
+                isLight ? "text-navy hover:text-teal" : "text-white hover:text-teal-glow"
+              )}
+            >
               {settings.phone}
             </a>
             <a href="#callback" className="btn-header">Заказать звонок</a>
-            <a href={settings.whatsappHref} className={scrolled ? "icon-button-light" : "icon-button"} aria-label="Написать в WhatsApp">
+            <a href={settings.whatsappHref} className={isLight ? "icon-button-light" : "icon-button"} aria-label="Написать в WhatsApp">
               WA
             </a>
           </div>
-          <button className={cn(scrolled ? "icon-button-light" : "icon-button", "lg:hidden")} type="button" onClick={() => setOpen(true)} aria-label="Открыть меню">
+          <button className={cn(isLight ? "icon-button-light" : "icon-button", "lg:hidden")} type="button" onClick={() => setOpen(true)} aria-label="Открыть меню">
             <Menu size={22} aria-hidden="true" />
           </button>
         </div>

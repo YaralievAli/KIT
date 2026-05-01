@@ -21,7 +21,7 @@ export default async function ThankYouPage() {
 
   return (
     <>
-      <Header />
+      <Header initialTheme="light-solid" />
       <ThankYouClient projects={projects} settings={settings} />
       <Footer />
     </>
