@@ -8,32 +8,35 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
+import { imageMap } from "@/content/images-map";
 import { contactFormSchema } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
 import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
+const calculatorLayoutImages = imageMap.previewDark.calculatorLayouts;
+
 const layoutOptions = [
   {
     value: "Угловая",
-    image: "/images/layouts/layout-corner-kitchen.png",
-    alt: "Угловая кухня для предварительного расчёта",
+    image: calculatorLayoutImages.corner.image,
+    alt: calculatorLayoutImages.corner.alt,
   },
   {
     value: "Прямая",
-    image: "/images/layouts/layout-straight-kitchen.png",
-    alt: "Прямая кухня для предварительного расчёта",
+    image: calculatorLayoutImages.straight.image,
+    alt: calculatorLayoutImages.straight.alt,
   },
   {
     value: "П-образная",
-    image: "/images/layouts/fallback.svg",
-    alt: "Схема П-образной кухни для предварительного расчёта",
+    image: calculatorLayoutImages.uShaped.image,
+    alt: calculatorLayoutImages.uShaped.alt,
   },
   {
     value: "С островом",
-    image: "/images/layouts/layout-island-kitchen.png",
-    alt: "Кухня с островом для предварительного расчёта",
+    image: calculatorLayoutImages.island.image,
+    alt: calculatorLayoutImages.island.alt,
   },
 ] as const;
 
@@ -136,17 +139,17 @@ export function PreviewDarkCalculator() {
 
   return (
     <form
-      className="overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(135deg,#062e30_0%,#061b1e_100%)] p-5 text-white shadow-[0_24px_70px_rgba(6,46,48,0.26)] md:p-6"
+      className="overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(135deg,#062e30_0%,#061b1e_100%)] p-4 text-white shadow-[0_24px_70px_rgba(6,46,48,0.26)] md:p-5"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input type="hidden" {...register("layout")} />
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
-      <div className="grid gap-6 lg:grid-cols-[1fr_286px] 2xl:grid-cols-[1fr_310px]">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_250px] 2xl:grid-cols-[minmax(0,1fr)_270px]">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Калькулятор</p>
-          <h2 className="mt-1 text-3xl font-semibold leading-tight md:text-[34px]">Рассчитайте стоимость кухни</h2>
-          <div className="mt-6 grid gap-4">
-            <CalculatorRow number="1" label="Тип планировки" error={errors.layout?.message}>
+          <h2 className="mt-1 text-3xl font-semibold leading-tight md:text-[32px]">Рассчитайте стоимость кухни</h2>
+          <div className="mt-5 grid gap-3.5">
+            <CalculatorRow number="1" label="Тип планировки" error={errors.layout?.message} contentClassName="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {layoutOptions.map((item) => {
                 const isActive = item.value === selectedLayout.value;
 
@@ -155,7 +158,7 @@ export function PreviewDarkCalculator() {
                     key={item.value}
                     type="button"
                     className={cn(
-                      "inline-flex min-h-11 items-center justify-center rounded-xl border px-5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
+                      "inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl border px-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
                       isActive
                         ? "border-champagne bg-teal text-white shadow-glow"
                         : "border-white/12 bg-white/[0.11] text-white/76 hover:border-teal hover:bg-white/16 hover:text-white"
@@ -172,12 +175,12 @@ export function PreviewDarkCalculator() {
               })}
             </CalculatorRow>
 
-            <CalculatorRow number="2" label="Размеры кухни">
-              <label className="grid min-w-[180px] flex-1 gap-2 text-sm font-semibold text-white/82">
+            <CalculatorRow number="2" label="Размеры кухни" contentClassName="grid gap-3 sm:grid-cols-2">
+              <label className="grid gap-2 text-sm font-semibold text-white/82">
                 Стена 1 (см)
                 <input className="v2-calc-input" placeholder="Например, 300" inputMode="numeric" {...register("wallA")} />
               </label>
-              <label className="grid min-w-[180px] flex-1 gap-2 text-sm font-semibold text-white/82">
+              <label className="grid gap-2 text-sm font-semibold text-white/82">
                 Стена 2 (см)
                 <input className="v2-calc-input" placeholder="Например, 240" inputMode="numeric" {...register("wallB")} />
               </label>
@@ -247,7 +250,7 @@ export function PreviewDarkCalculator() {
             </div>
           ) : null}
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
             {showContacts ? (
               <button className="v2-primary min-w-56" disabled={status === "loading"} type="submit">
                 <Send size={18} aria-hidden="true" />
@@ -269,19 +272,16 @@ export function PreviewDarkCalculator() {
           {status === "error" ? <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-700">{errorMessage}</p> : null}
         </div>
 
-        <aside className="relative overflow-hidden rounded-[26px] border border-champagne/24 bg-black/18 p-4">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-white/6">
+        <aside className="relative overflow-hidden rounded-[24px] border border-champagne/24 bg-black/18 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_50%_45%,rgba(20,184,166,0.16),rgba(255,255,255,0.04)_58%,rgba(0,0,0,0.22)_100%)]">
             <Image
               key={selectedLayout.image}
               src={selectedLayout.image}
               alt={selectedLayout.alt}
               fill
-              sizes="(max-width: 1024px) 80vw, 330px"
+              sizes={calculatorLayoutImages.corner.sizes}
               loading="lazy"
-              className={cn(
-                "transition duration-300",
-                selectedLayout.value === "П-образная" ? "object-contain p-8 opacity-55" : "object-cover opacity-72"
-              )}
+              className="object-contain p-4 opacity-85 transition duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/80 via-transparent to-transparent" />
           </div>
@@ -300,19 +300,21 @@ function CalculatorRow({
   number,
   label,
   error,
+  contentClassName,
   children,
 }: {
   number: string;
   label: string;
   error?: string;
+  contentClassName?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-3 lg:grid-cols-[34px_138px_1fr] lg:items-start 2xl:grid-cols-[34px_155px_1fr]">
+    <div className="grid gap-3 lg:grid-cols-[32px_128px_minmax(0,1fr)] lg:items-start 2xl:grid-cols-[32px_138px_minmax(0,1fr)]">
       <span className="flex h-8 w-8 items-center justify-center rounded-full border border-champagne text-sm font-semibold text-champagne">{number}</span>
       <span className="pt-2 text-sm font-semibold text-white/84">{label}</span>
       <div>
-        <div className="flex flex-wrap gap-3">{children}</div>
+        <div className={contentClassName ?? "flex flex-wrap gap-3"}>{children}</div>
         {error ? <p className="mt-2 text-xs text-red-200">{error}</p> : null}
       </div>
     </div>

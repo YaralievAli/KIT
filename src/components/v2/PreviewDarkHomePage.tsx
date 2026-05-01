@@ -15,6 +15,7 @@ import { PreviewDarkCalculator } from "@/components/v2/PreviewDarkCalculator";
 import { PreviewDarkFAQ } from "@/components/v2/PreviewDarkFAQ";
 import { PreviewDarkFinalForm } from "@/components/v2/PreviewDarkFinalForm";
 import { PreviewDarkHeader } from "@/components/v2/PreviewDarkHeader";
+import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { faqItems } from "@/content/faq";
 import { imageMap } from "@/content/images-map";
 import { processSteps, productionStats, styleDescriptions, trustItems } from "@/content/home";
@@ -43,6 +44,12 @@ const materialDescriptions = [
   "Практичная рабочая поверхность на каждый день.",
   "Петли, направляющие и механизмы под задачу.",
   "Корпусные материалы с понятными свойствами.",
+];
+const finalCtaBenefits = [
+  "Проектные рекомендации",
+  "Подбор материалов и фурнитуры",
+  "Предварительный расчёт без скрытых обещаний",
+  "Ответ в рабочее время",
 ];
 
 export function PreviewDarkHomePage() {
@@ -413,21 +420,37 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
 
 function FinalCta() {
   return (
-    <section id="callback" className="relative overflow-hidden bg-[#062e30] py-12 text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_45%,rgba(20,184,166,0.18),transparent_34%)]" />
+    <section id="callback" className="relative isolate overflow-hidden bg-[#062e30] py-12 text-white lg:py-14">
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_28%_45%,rgba(20,184,166,0.18),transparent_34%)]" />
+      <div className="absolute inset-y-0 left-0 -z-10 w-full opacity-28 lg:w-[56%]" aria-hidden="true">
+        <Image
+          src={imageMap.cta.illustration}
+          alt=""
+          fill
+          sizes="(max-width: 1024px) 100vw, 980px"
+          loading="lazy"
+          aria-hidden="true"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#062e30]/30 via-[#062e30]/70 to-[#062e30]" />
+      </div>
       <div className={`${shell} relative grid gap-8 lg:grid-cols-12 lg:items-center`}>
-        <div className="relative min-h-[330px] overflow-hidden rounded-[28px] border border-white/10 bg-white/6 p-8 lg:col-span-5">
-          <Image src={imageMap.cta.illustration} alt={imageMap.cta.alt} fill sizes="720px" loading="lazy" className="object-contain p-8 opacity-20" />
-          <div className="relative flex min-h-[270px] flex-col justify-center">
-            <h2 className="max-w-xl text-3xl font-semibold leading-tight md:text-4xl">Рассчитаем стоимость вашей кухни бесплатно</h2>
-            <div className="mt-6 grid gap-3 text-sm text-white/82">
-              {["Проектные рекомендации", "Подбор материалов и фурнитуры", "Предварительный расчёт без скрытых обещаний"].map((item) => (
-                <p key={item} className="flex items-center gap-3">
-                  <CheckCircle2 size={18} className="text-teal-glow" aria-hidden="true" />
-                  {item}
-                </p>
-              ))}
-            </div>
+        <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#061112]/20 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-8 lg:col-span-5">
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Финальный шаг</p>
+          <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[1.05] md:text-5xl">
+            <span className="block">Рассчитаем стоимость</span>
+            <span className="block text-white/72">вашей кухни бесплатно</span>
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/72">
+            Подберём понятный ориентир по бюджету и материалам без громких обещаний до замера и проекта.
+          </p>
+          <div className="mt-7 grid gap-3 text-sm text-white/84 sm:grid-cols-2">
+            {finalCtaBenefits.map((item) => (
+              <p key={item} className="flex min-h-16 items-center gap-3 rounded-2xl border border-white/10 bg-white/9 px-4 py-3">
+                <CheckCircle2 size={18} className="shrink-0 text-teal-glow" aria-hidden="true" />
+                {item}
+              </p>
+            ))}
           </div>
         </div>
         <div className="lg:col-span-7">
@@ -444,10 +467,14 @@ function PreviewDarkFooter() {
       <div className={`${shell} grid gap-8 border-b border-white/10 pb-7 md:grid-cols-[1.1fr_0.8fr_0.8fr_1fr_0.9fr]`}>
         <div>
           <div className="flex items-center gap-3">
-            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={52} height={52} style={{ width: 52, height: 52 }} />
-            <span className="text-2xl font-semibold">КИТ</span>
+            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={60} height={60} style={{ width: 60, height: 60 }} />
+            <span className="text-3xl font-semibold tracking-wide">КИТ</span>
           </div>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-white/60">{siteSettings.description}</p>
+          <div className="mt-4 max-w-sm">
+            <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
+            <p className="mt-2 text-sm leading-6 text-white/60">с практичным проектированием, производством и сборкой.</p>
+          </div>
+          <SocialIconButtons settings={siteSettings} className="mt-5" />
         </div>
         <FooterLinks title="Навигация" links={[["Кухни", "#layouts"], ["Каталог", "#projects"], ["Расчёт", "#quiz"], ["Отзывы", "#reviews"]]} />
         <FooterLinks title="Услуги" links={[["Дизайн-проект", "#quiz"], ["Производство", "#production"], ["Оплата частями", "#callback"]]} />

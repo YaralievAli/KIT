@@ -269,11 +269,40 @@ export const imageMap = {
   ],
 
   cta: {
-    illustration: "/images/cta/kitchen-line-illustration.svg",
+    illustration: "/images/cta/kit-kitchen-line-art-teal.png",
     alt: "Линейная иллюстрация кухни",
     loading: "lazy",
     sizes: "(max-width: 768px) 100vw, 520px",
     fallback: imageFallbacks.cta,
+  },
+
+  previewDark: {
+    calculatorLayouts: {
+      corner: {
+        image: "/images/preview-dark/calculator/preview-corner-sketch.png",
+        alt: "Схематичный эскиз угловой кухни",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 78vw, 280px",
+      },
+      straight: {
+        image: "/images/preview-dark/calculator/preview-straight-sketch.png",
+        alt: "Схематичный эскиз прямой кухни",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 78vw, 280px",
+      },
+      uShaped: {
+        image: "/images/preview-dark/calculator/preview-u-shaped-sketch.png",
+        alt: "Схематичный эскиз П-образной кухни",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 78vw, 280px",
+      },
+      island: {
+        image: "/images/preview-dark/calculator/preview-island-sketch.png",
+        alt: "Схематичный эскиз кухни с островом",
+        loading: "lazy",
+        sizes: "(max-width: 1024px) 78vw, 280px",
+      },
+    },
   },
 } as const;
 

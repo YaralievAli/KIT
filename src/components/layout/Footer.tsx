@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { imageMap } from "@/content/images-map";
 import { siteSettings as fallbackSettings } from "@/content/settings";
+import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import type { SiteSettings } from "@/types/content";
 
 export function Footer({ settings = fallbackSettings }: { settings?: SiteSettings }) {
@@ -10,10 +11,13 @@ export function Footer({ settings = fallbackSettings }: { settings?: SiteSetting
       <div className="container-page grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
         <div>
           <div className="flex items-center gap-3">
-            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={46} height={46} style={{ width: 46, height: 46 }} />
-            <span className="text-2xl font-semibold">КИТ</span>
+            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={56} height={56} style={{ width: 56, height: 56 }} />
+            <span className="text-3xl font-semibold tracking-wide">КИТ</span>
           </div>
-          <p className="mt-5 max-w-sm text-sm leading-6 text-white/70">{settings.description}</p>
+          <div className="mt-5 max-w-sm">
+            <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
+            <p className="mt-2 text-sm leading-6 text-white/62">с практичным проектированием, производством и сборкой.</p>
+          </div>
         </div>
         <FooterColumn title="Навигация" links={[["Главная", "/"], ["Примеры", "/#projects"], ["Расчёт", "/#quiz"], ["FAQ", "/#faq"]]} />
         <FooterColumn title="Услуги" links={[["Угловые кухни", "/uglovye-kuhni-spb"], ["Кухни до потолка", "/kuhni-do-potolka"], ["Кухни с островом", "/kuhni-s-ostrovom"]]} />
@@ -25,11 +29,7 @@ export function Footer({ settings = fallbackSettings }: { settings?: SiteSetting
             <span>{settings.address}</span>
             <span>{settings.workingHours}</span>
           </div>
-          <div className="mt-5 flex gap-2">
-            <a className="social-link" href={settings.vkHref}>VK</a>
-            <a className="social-link" href={settings.telegramHref}>TG</a>
-            <a className="social-link" href={settings.whatsappHref}>WA</a>
-          </div>
+          <SocialIconButtons settings={settings} className="mt-5" />
         </div>
       </div>
       <div className="container-page mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/55 md:flex-row md:items-center md:justify-between">
