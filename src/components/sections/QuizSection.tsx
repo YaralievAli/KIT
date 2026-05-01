@@ -31,7 +31,6 @@ export function QuizSection() {
   const {
     register,
     handleSubmit,
-    setValue,
     trigger,
     formState: { errors },
   } = useForm<QuizLeadValues>({
@@ -39,7 +38,6 @@ export function QuizSection() {
     defaultValues,
     mode: "onBlur",
   });
-  const [answers, setAnswers] = useState<Record<string, string>>({});
   const totalSteps = quizSteps.length + 1;
   const current = quizSteps[step];
   const progress = useMemo(() => Math.round(((step + 1) / totalSteps) * 100), [step, totalSteps]);
@@ -122,24 +120,32 @@ export function QuizSection() {
             {current ? (
               <div className="grid gap-5">
                 <h3 className="text-2xl font-semibold text-navy">{current.question}</h3>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {current.options.map((option) => {
-                    const selected = answers[current.field] === option;
+                <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label={current.question}>
+                  {current.options.map((option, index) => {
+                    const field = current.field as keyof QuizLeadValues;
+                    const inputId = `quiz-${current.field}-${index}`;
+                    const optionField = register(field);
+
                     return (
-                      <button
+                      <label
                         key={option}
-                        type="button"
+                        htmlFor={inputId}
                         className={cn(
-                          "min-h-16 rounded-2xl border p-4 text-left text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
-                          selected ? "border-teal bg-teal text-white shadow-glow" : "border-border bg-white text-navy hover:border-teal"
+                          "relative flex min-h-16 cursor-pointer items-center gap-3 rounded-2xl border border-border bg-white p-4 text-left text-sm font-semibold text-navy transition hover:border-teal focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-teal has-[:checked]:border-teal has-[:checked]:bg-teal has-[:checked]:text-white has-[:checked]:shadow-glow"
                         )}
-                        onClick={() => {
-                          setAnswers((value) => ({ ...value, [current.field]: option }));
-                          setValue(current.field as keyof QuizLeadValues, option, { shouldValidate: true });
-                        }}
                       >
+                        <input
+                          id={inputId}
+                          name={optionField.name}
+                          type="radio"
+                          value={option}
+                          className="h-4 w-4 shrink-0 accent-teal"
+                          onBlur={optionField.onBlur}
+                          onChange={optionField.onChange}
+                          ref={optionField.ref}
+                        />
                         {option}
-                      </button>
+                      </label>
                     );
                   })}
                 </div>
