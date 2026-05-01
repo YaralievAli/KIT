@@ -78,23 +78,27 @@ export function PreviewDarkHomePage() {
 }
 
 function Hero() {
+  const heroBackground = imageMap.previewDark.heroBackground;
+
   return (
     <section id="preview-dark-hero" className="relative isolate overflow-hidden bg-[#061112] pt-[76px] text-white">
-      <div className="absolute inset-y-[76px] right-0 -z-10 hidden w-[61%] lg:block">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         <Image
-          src={imageMap.hero.image}
-          alt={imageMap.hero.alt}
+          src={heroBackground.image}
+          alt=""
           fill
-          preload={imageMap.hero.preload}
-          sizes="(max-width: 1280px) 61vw, 1080px"
-          className="object-cover"
+          preload={heroBackground.preload}
+          sizes={heroBackground.sizes}
+          aria-hidden="true"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#061112] via-[#061112]/20 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#061112]/72 to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,17,18,0.18)_0%,rgba(6,17,18,0.1)_46%,rgba(6,17,18,0.2)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#061112]/82 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#061112]/38 to-transparent" />
       </div>
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.24),transparent_34%)]" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.18),transparent_32%)]" aria-hidden="true" />
 
-      <div className={`${shell} grid min-h-[610px] items-center gap-8 py-7 lg:grid-cols-12 xl:min-h-[650px]`}>
+      <div className={`${shell} relative z-10 grid min-h-[610px] items-center gap-8 py-7 lg:grid-cols-12 xl:min-h-[650px]`}>
         <div className="max-w-[670px] lg:col-span-5">
           <p className="inline-flex items-center gap-2 rounded-full border border-teal/35 bg-teal/10 px-4 py-2 text-sm font-semibold text-teal-glow">
             <MapPin size={16} aria-hidden="true" />
@@ -108,11 +112,11 @@ function Hero() {
             Подберём планировку, материалы и ориентировочный бюджет. Точная стоимость формируется после замера и проекта.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a className="v2-primary" href="#quiz">
+            <a className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-xl bg-teal px-7 text-sm font-semibold text-white shadow-[0_16px_44px_rgba(13,148,136,0.34)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow" href="#quiz">
               Рассчитать стоимость
               <ArrowRight size={18} aria-hidden="true" />
             </a>
-            <a className="v2-secondary-dark" href="#layouts">
+            <a className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-xl border border-champagne/80 bg-[#101a2b]/36 px-7 text-sm font-semibold text-white transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne" href="#layouts">
               Смотреть каталог
               <ArrowRight size={18} aria-hidden="true" />
             </a>
@@ -134,11 +138,7 @@ function Hero() {
           </p>
         </div>
 
-        <div className="relative min-h-[340px] lg:col-span-7">
-          <div className="relative min-h-[340px] overflow-hidden rounded-[28px] border border-white/10 lg:hidden">
-            <Image src={imageMap.hero.image} alt={imageMap.hero.alt} fill sizes="100vw" preload={false} className="object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061112] via-transparent to-transparent" />
-          </div>
+        <div className="relative hidden min-h-[340px] lg:col-span-7 lg:block">
           <div className="hidden lg:absolute lg:bottom-8 lg:right-[10%] lg:block lg:w-[360px] xl:right-[14%] xl:w-[390px]">
             <div className="rounded-[24px] border border-white/14 bg-[#071314]/86 p-4 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
               <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Предварительный расчёт</p>

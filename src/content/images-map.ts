@@ -278,6 +278,12 @@ export const imageMap = {
   },
 
   previewDark: {
+    heroBackground: {
+      image: "/images/hero/preview-dark-hero-wide-bg.png",
+      alt: "",
+      preload: true,
+      sizes: "100vw",
+    },
     calculatorLayouts: {
       corner: {
         image: "/images/preview-dark/calculator/preview-corner-sketch.png",
