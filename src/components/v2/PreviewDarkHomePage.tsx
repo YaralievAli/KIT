@@ -121,7 +121,16 @@ function Hero() {
               <ArrowRight size={18} aria-hidden="true" />
             </a>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-[620px]">
+          <div className="mt-4 max-w-xl rounded-2xl border border-white/10 bg-[#071314]/42 px-4 py-3 text-sm leading-5 text-white/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+            <div className="flex items-center gap-2 font-semibold text-white/82">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-glow" aria-hidden="true" />
+              <span>Предварительный расчёт · 5 вопросов без телефона на первом шаге</span>
+            </div>
+            <div className="mt-1 pl-3.5 text-xs font-semibold uppercase tracking-wide text-white/48">
+              Планировка · Стиль · Бюджет · контакт только в конце
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-[620px]">
             {heroCards.map(({ icon: Icon, title }) => (
               <div key={title} className="min-h-[96px] rounded-2xl border border-white/14 bg-white/[0.075] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                 <Icon className="text-champagne" size={28} aria-hidden="true" />
@@ -138,24 +147,7 @@ function Hero() {
           </p>
         </div>
 
-        <div className="relative hidden min-h-[340px] lg:col-span-7 lg:block">
-          <div className="hidden lg:absolute lg:bottom-9 lg:right-[16%] lg:block lg:w-[330px] xl:right-[20%] xl:w-[360px]">
-            <div className="rounded-[22px] border border-white/10 bg-[#071314]/74 p-4 shadow-[0_18px_58px_rgba(0,0,0,0.24)]">
-              <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Предварительный расчёт</p>
-              <h2 className="mt-2 text-xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
-              <p className="mt-2 text-sm leading-6 text-white/68">
-                Сначала выберите планировку, стиль и бюджет. Контакт понадобится только для отправки подборки.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2" aria-label="Темы вопросов квиза">
-                {["Планировка", "Стиль", "Бюджет"].map((item) => (
-                  <span key={item} className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5 text-xs font-semibold text-white/72">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <div className="relative hidden min-h-[340px] lg:col-span-7 lg:block" aria-hidden="true" />
       </div>
     </section>
   );
