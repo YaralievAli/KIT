@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContactFields } from "@/components/ui/FormFields";
 import { quizSteps } from "@/content/quiz";
@@ -28,9 +28,12 @@ export function QuizSection() {
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
+  const formRef = useRef<HTMLFormElement>(null);
   const {
+    clearErrors,
     register,
     handleSubmit,
+    setValue,
     trigger,
     formState: { errors },
   } = useForm<QuizLeadValues>({
@@ -44,7 +47,21 @@ export function QuizSection() {
 
   async function next() {
     if (!current) return;
-    const valid = await trigger(current.field as keyof QuizLeadValues);
+    const field = current.field as keyof QuizLeadValues;
+    const selectedValue = formRef.current ? String(new FormData(formRef.current).get(current.field) ?? "") : "";
+
+    if (selectedValue) {
+      setValue(field, selectedValue, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      clearErrors(field);
+      setStep((value) => Math.min(value + 1, totalSteps - 1));
+      return;
+    }
+
+    const valid = await trigger(field);
     if (valid) setStep((value) => Math.min(value + 1, totalSteps - 1));
   }
 
@@ -106,7 +123,7 @@ export function QuizSection() {
               Это предварительный расчёт. Точная стоимость зависит от замера, материалов, фурнитуры и проекта.
             </p>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="rounded-3xl border border-border bg-white p-5 shadow-soft md:p-8">
+          <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="rounded-3xl border border-border bg-white p-5 shadow-soft md:p-8">
             <div className="sticky top-0 z-10 -mx-5 -mt-5 mb-6 rounded-t-3xl bg-white/95 px-5 pt-5 backdrop-blur md:static md:m-0 md:mb-6 md:p-0">
               <div className="mb-3 flex items-center justify-between text-sm font-semibold text-navy">
                 <span>Шаг {step + 1} из {totalSteps}</span>
@@ -141,7 +158,15 @@ export function QuizSection() {
                           value={option}
                           className="h-4 w-4 shrink-0 accent-teal"
                           onBlur={optionField.onBlur}
-                          onChange={optionField.onChange}
+                          onChange={(event) => {
+                            optionField.onChange(event);
+                            setValue(field, option, {
+                              shouldDirty: true,
+                              shouldTouch: true,
+                              shouldValidate: true,
+                            });
+                            clearErrors(field);
+                          }}
                           ref={optionField.ref}
                         />
                         {option}
