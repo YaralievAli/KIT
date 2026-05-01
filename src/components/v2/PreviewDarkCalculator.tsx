@@ -149,7 +149,7 @@ export function PreviewDarkCalculator() {
           <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Калькулятор</p>
           <h2 className="mt-1 text-3xl font-semibold leading-tight md:text-[32px]">Рассчитайте стоимость кухни</h2>
           <div className="mt-5 grid gap-3.5">
-            <CalculatorRow number="1" label="Тип планировки" error={errors.layout?.message} contentClassName="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <CalculatorRow number="1" label="Тип планировки" error={errors.layout?.message} contentClassName="grid grid-cols-2 gap-2 xl:grid-cols-4">
               {layoutOptions.map((item) => {
                 const isActive = item.value === selectedLayout.value;
 
@@ -158,7 +158,7 @@ export function PreviewDarkCalculator() {
                     key={item.value}
                     type="button"
                     className={cn(
-                      "inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl border px-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
+                      "inline-flex min-h-[46px] items-center justify-center rounded-xl border px-2 text-center text-sm font-semibold leading-tight transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
                       isActive
                         ? "border-champagne bg-teal text-white shadow-glow"
                         : "border-white/12 bg-white/[0.11] text-white/76 hover:border-teal hover:bg-white/16 hover:text-white"
@@ -285,10 +285,11 @@ export function PreviewDarkCalculator() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/80 via-transparent to-transparent" />
           </div>
-          <div className="mt-4 rounded-[20px] border border-champagne/24 bg-[#061112]/50 p-4">
-            <p className="text-sm font-semibold text-white">Предварительный ориентир</p>
-            <p className="mt-2 text-2xl font-semibold text-champagne">{selectedLayout.value.toLowerCase()}</p>
-            <p className="mt-3 text-sm leading-6 text-white/68">После выбора параметров подготовим ориентировочный диапазон и рекомендации.</p>
+          <div className="mt-4 rounded-[20px] border border-champagne/24 bg-[#061112]/58 p-4">
+            <p className="text-sm font-semibold text-white">Предварительный расчёт</p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-white/48">{selectedLayout.value.toLowerCase()}</p>
+            <p className="mt-3 text-2xl font-semibold text-champagne">от 180 000 ₽</p>
+            <p className="mt-3 text-sm leading-6 text-white/68">Точная стоимость после замера и разработки дизайн-проекта.</p>
           </div>
         </aside>
       </div>

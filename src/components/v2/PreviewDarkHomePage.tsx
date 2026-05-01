@@ -139,14 +139,14 @@ function Hero() {
             <Image src={imageMap.hero.image} alt={imageMap.hero.alt} fill sizes="100vw" preload={false} className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#061112] via-transparent to-transparent" />
           </div>
-          <div className="hidden lg:absolute lg:bottom-6 lg:right-0 lg:block lg:w-[380px] xl:w-[430px]">
-            <div className="rounded-[28px] border border-white/14 bg-[#071314]/86 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
+          <div className="hidden lg:absolute lg:bottom-8 lg:right-[10%] lg:block lg:w-[360px] xl:right-[14%] xl:w-[390px]">
+            <div className="rounded-[24px] border border-white/14 bg-[#071314]/86 p-4 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
               <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Предварительный расчёт</p>
-              <h2 className="mt-2 text-2xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
-              <p className="mt-3 text-sm leading-6 text-white/68">
+              <h2 className="mt-2 text-xl font-semibold leading-tight">5 вопросов без телефона на первом шаге</h2>
+              <p className="mt-2 text-sm leading-6 text-white/68">
                 Сначала выбираете планировку, стиль и бюджет. Контакт нужен только для отправки подборки.
               </p>
-              <a href="#quiz" className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-teal-glow">
+              <a href="#quiz" className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-teal-glow">
                 Начать расчёт
                 <ArrowRight size={16} aria-hidden="true" />
               </a>
@@ -420,41 +420,42 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
 
 function FinalCta() {
   return (
-    <section id="callback" className="relative isolate overflow-hidden bg-[#062e30] py-12 text-white lg:py-14">
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_28%_45%,rgba(20,184,166,0.18),transparent_34%)]" />
-      <div className="absolute inset-y-0 left-0 -z-10 w-full opacity-28 lg:w-[56%]" aria-hidden="true">
+    <section id="callback" className="relative isolate min-h-[540px] overflow-hidden bg-[#062e30] py-12 text-white lg:py-14">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         <Image
-          src={imageMap.cta.illustration}
+          src={imageMap.cta.background}
           alt=""
           fill
-          sizes="(max-width: 1024px) 100vw, 980px"
+          sizes="100vw"
           loading="lazy"
           aria-hidden="true"
-          className="object-cover object-center"
+          className="object-cover object-left opacity-70"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#062e30]/30 via-[#062e30]/70 to-[#062e30]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,46,48,0.26)_0%,rgba(6,46,48,0.68)_48%,rgba(6,46,48,0.94)_78%,rgba(6,46,48,0.98)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,46,48,0.18)_0%,rgba(6,46,48,0.78)_100%)] md:bg-[linear-gradient(180deg,rgba(6,46,48,0.08)_0%,rgba(6,46,48,0.55)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_38%_44%,rgba(20,184,166,0.18),transparent_34%)]" />
       </div>
-      <div className={`${shell} relative grid gap-8 lg:grid-cols-12 lg:items-center`}>
-        <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#061112]/20 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-8 lg:col-span-5">
-          <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow">Финальный шаг</p>
-          <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[1.05] md:text-5xl">
+      <div className={`${shell} relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center`}>
+        <div className="lg:col-span-6 lg:pl-52 xl:pl-60">
+          <p className="text-sm font-semibold uppercase tracking-wide text-teal-glow drop-shadow">Финальный шаг</p>
+          <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-[1.05] drop-shadow-[0_3px_16px_rgba(0,0,0,0.24)] md:text-[42px]">
             <span className="block">Рассчитаем стоимость</span>
-            <span className="block text-white/72">вашей кухни бесплатно</span>
+            <span className="block text-white/78">вашей кухни бесплатно</span>
           </h2>
-          <p className="mt-5 max-w-xl text-base leading-7 text-white/72">
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/78">
             Подберём понятный ориентир по бюджету и материалам без громких обещаний до замера и проекта.
           </p>
-          <div className="mt-7 grid gap-3 text-sm text-white/84 sm:grid-cols-2">
+          <div className="mt-6 grid gap-3 text-sm text-white/88 sm:grid-cols-2">
             {finalCtaBenefits.map((item) => (
-              <p key={item} className="flex min-h-16 items-center gap-3 rounded-2xl border border-white/10 bg-white/9 px-4 py-3">
+              <p key={item} className="flex min-h-14 items-center gap-3 rounded-2xl border border-white/12 bg-[#031b1c]/34 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px]">
                 <CheckCircle2 size={18} className="shrink-0 text-teal-glow" aria-hidden="true" />
                 {item}
               </p>
             ))}
           </div>
         </div>
-        <div className="lg:col-span-7">
-        <PreviewDarkFinalForm />
+        <div className="lg:col-span-6">
+          <PreviewDarkFinalForm />
         </div>
       </div>
     </section>
