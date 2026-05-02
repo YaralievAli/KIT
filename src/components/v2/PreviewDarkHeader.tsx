@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Calculator, MessageCircle, Menu, Phone, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import type { SVGProps } from "react";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
 import { cn } from "@/lib/helpers";
@@ -17,82 +18,18 @@ const nav = [
   ["Контакты", "#contacts"],
 ] as const;
 
-const HERO_SECTION_ID = "preview-dark-hero";
-const HEADER_SWITCH_OFFSET = 8;
-const FALLBACK_HEADER_HEIGHT = 76;
-
 export function PreviewDarkHeader() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const headerRef = useRef<HTMLElement | null>(null);
-  const frameRef = useRef<number | null>(null);
-  const themeRef = useRef(false);
-  const isLight = scrolled;
-
-  useEffect(() => {
-    const setTheme = (nextIsLight: boolean) => {
-      if (themeRef.current === nextIsLight) {
-        return;
-      }
-
-      themeRef.current = nextIsLight;
-      setScrolled(nextIsLight);
-    };
-
-    const updateTheme = () => {
-      frameRef.current = null;
-      const hero = document.getElementById(HERO_SECTION_ID);
-
-      if (!hero) {
-        setTheme(window.scrollY > window.innerHeight * 0.75);
-        return;
-      }
-
-      const headerHeight = headerRef.current?.offsetHeight ?? FALLBACK_HEADER_HEIGHT;
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      setTheme(heroBottom <= headerHeight + HEADER_SWITCH_OFFSET);
-    };
-
-    const requestUpdate = () => {
-      if (frameRef.current !== null) {
-        return;
-      }
-
-      frameRef.current = window.requestAnimationFrame(updateTheme);
-    };
-
-    updateTheme();
-    requestUpdate();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.addEventListener("hashchange", requestUpdate);
-
-    return () => {
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
-      }
-
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      window.removeEventListener("hashchange", requestUpdate);
-    };
-  }, []);
 
   return (
     <>
       <header
-        ref={headerRef}
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b transition",
-          isLight
-            ? "border-border bg-white/96 shadow-[0_14px_42px_rgba(16,26,43,0.12)] backdrop-blur-sm"
-            : "border-white/15 bg-[#071314]/82 shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-sm"
-        )}
+        className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[rgba(3,20,22,0.9)] shadow-[0_12px_36px_rgba(0,0,0,0.22)] backdrop-blur-xl"
       >
         <div className="mx-auto flex h-[76px] w-full max-w-[1760px] items-center justify-between gap-5 px-4 sm:px-6 lg:px-10">
           <Link href="/preview-dark" className="flex items-center gap-3" aria-label="КИТ, главная версия preview-dark">
             <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={44} height={44} style={{ width: 44, height: 44 }} />
-            <span className={cn("text-2xl font-semibold", isLight ? "text-navy" : "text-white")}>КИТ</span>
+            <span className="text-2xl font-semibold text-white">КИТ</span>
           </Link>
 
           <nav className="hidden items-center gap-8 xl:flex" aria-label="Навигация preview">
@@ -100,10 +37,7 @@ export function PreviewDarkHeader() {
               <Link
                 key={label + href}
                 href={href}
-                className={cn(
-                  "text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
-                  isLight ? "text-navy hover:text-teal" : "text-white hover:text-teal-glow"
-                )}
+                className="text-sm font-semibold text-white transition hover:text-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
               >
                 {label}
               </Link>
@@ -113,29 +47,29 @@ export function PreviewDarkHeader() {
           <div className="hidden items-center gap-4 lg:flex">
             <a
               href={siteSettings.phoneHref}
-              className={cn(
-                "text-base font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
-                isLight ? "text-navy hover:text-teal" : "text-white hover:text-teal-glow"
-              )}
+              className="text-base font-semibold text-white transition hover:text-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
             >
               {siteSettings.phone}
             </a>
             <a
               href="#callback"
-              className={cn(
-                "inline-flex min-h-11 items-center justify-center rounded-full border px-5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal",
-                isLight ? "border-teal bg-white text-teal hover:bg-teal hover:text-white" : "border-champagne text-champagne hover:bg-champagne hover:text-navy"
-              )}
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-champagne px-5 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
             >
               Заказать звонок
             </a>
+            {siteSettings.vkHref ? (
+              <a
+                href={siteSettings.vkHref}
+                className="hidden h-11 w-11 items-center justify-center rounded-full border border-white/28 bg-white/[0.08] text-[#9CD7FF] transition hover:border-[#9CD7FF]/70 hover:bg-white/[0.12] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9CD7FF] lg:inline-flex"
+                aria-label="ВКонтакте"
+              >
+                <HeaderVkIcon className="h-5 w-5" aria-hidden="true" />
+              </a>
+            ) : null}
           </div>
 
           <button
-            className={cn(
-              "inline-flex h-12 w-12 items-center justify-center rounded-full border transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal lg:hidden",
-              isLight ? "border-border bg-surface text-navy hover:bg-teal hover:text-white" : "border-white/20 bg-white/10 text-white hover:bg-white/18"
-            )}
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal lg:hidden"
             type="button"
             aria-label="Открыть меню"
             onClick={() => setOpen(true)}
@@ -186,5 +120,13 @@ export function PreviewDarkHeader() {
         </a>
       </div>
     </>
+  );
+}
+
+function HeaderVkIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12.75 17.2h-1.08c-3.67 0-5.76-2.52-7.33-6.72L3.9 9.3h2.52c.45 0 .65.2.78.58.86 2.46 2.02 4.3 2.55 4.3.2 0 .29-.1.29-.62v-2.42c-.07-1.1-.64-1.2-.64-1.6 0-.2.17-.4.44-.4h3.96c.37 0 .5.2.5.64v3.27c0 .35.15.47.26.47.2 0 .38-.12.76-.5.94-1.05 1.62-2.66 1.62-2.66.09-.23.28-.43.72-.43h2.52c.76 0 .93.39.76.93-.32 1.01-3.4 4.78-3.4 4.78-.27.34-.38.5 0 .98.27.35 1.17 1.14 1.77 1.85.44.51.77.94.86 1.24.1.36-.18.55-.65.55h-2.81c-.42 0-.62-.13-.86-.42-.34-.4-1.12-1.4-1.86-1.4-.38 0-.48.26-.48.66v.75c0 .4-.13.62-.76.62Z" />
+    </svg>
   );
 }

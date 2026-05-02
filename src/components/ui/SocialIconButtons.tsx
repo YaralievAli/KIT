@@ -3,20 +3,29 @@ import { cn } from "@/lib/helpers";
 import type { SiteSettings } from "@/types/content";
 
 type SocialIconButtonsProps = {
-  settings: Pick<SiteSettings, "vkHref" | "telegramHref" | "whatsappHref">;
+  settings: Pick<SiteSettings, "vkHref" | "telegramHref" | "whatsappHref" | "maxHref">;
   className?: string;
   linkClassName?: string;
 };
 
 const baseLinkClass =
   "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/78 transition hover:border-teal hover:bg-teal hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal";
+const disabledLinkClass = "cursor-not-allowed opacity-45 hover:border-white/12 hover:bg-white/8 hover:text-white/78";
+
+type SocialItem = {
+  href?: string;
+  label: string;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+  disabled?: boolean;
+};
 
 export function SocialIconButtons({ settings, className, linkClassName }: SocialIconButtonsProps) {
   const socials = [
     settings.vkHref ? { href: settings.vkHref, label: "ВКонтакте", Icon: VkIcon } : null,
     settings.telegramHref ? { href: settings.telegramHref, label: "Telegram", Icon: TelegramIcon } : null,
     settings.whatsappHref ? { href: settings.whatsappHref, label: "WhatsApp", Icon: WhatsAppIcon } : null,
-  ].filter(Boolean) as Array<{ href: string; label: string; Icon: ComponentType<SVGProps<SVGSVGElement>> }>;
+    { href: settings.maxHref || undefined, label: "MAX", Icon: MaxIcon, disabled: !settings.maxHref },
+  ].filter(Boolean) as SocialItem[];
 
   if (socials.length === 0) {
     return null;
@@ -24,11 +33,23 @@ export function SocialIconButtons({ settings, className, linkClassName }: Social
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      {socials.map(({ href, label, Icon }) => (
-        <a key={label} href={href} className={cn(baseLinkClass, linkClassName)} aria-label={label}>
-          <Icon className="h-5 w-5" aria-hidden="true" />
-        </a>
-      ))}
+      {socials.map(({ href, label, Icon, disabled }) =>
+        href ? (
+          <a key={label} href={href} className={cn(baseLinkClass, linkClassName)} aria-label={label}>
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </a>
+        ) : (
+          <span
+            key={label}
+            className={cn(baseLinkClass, disabledLinkClass, linkClassName)}
+            aria-label={label}
+            aria-disabled={disabled ? "true" : undefined}
+            title={`${label}: ссылка не настроена`}
+          >
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </span>
+        )
+      )}
     </div>
   );
 }
@@ -53,6 +74,15 @@ function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
       <path d="M12.04 3.5a8.45 8.45 0 0 0-7.2 12.86L3.8 20.5l4.24-1a8.45 8.45 0 1 0 4-16Zm0 1.52a6.93 6.93 0 0 1 5.9 10.58 6.91 6.91 0 0 1-8.86 2.65l-.31-.15-2.5.59.62-2.43-.17-.33a6.93 6.93 0 0 1 5.32-10.91Zm-2.7 3.66c-.15 0-.4.06-.61.3-.21.23-.8.78-.8 1.9 0 1.12.82 2.2.93 2.35.12.15 1.58 2.53 3.93 3.44 1.95.77 2.35.61 2.78.58.42-.04 1.36-.56 1.55-1.1.19-.53.19-.99.13-1.08-.06-.1-.21-.15-.44-.27-.23-.11-1.36-.67-1.57-.75-.21-.08-.36-.11-.51.12-.15.23-.59.75-.72.9-.13.16-.27.17-.5.06-.23-.12-.97-.36-1.84-1.14-.68-.6-1.14-1.35-1.28-1.58-.13-.23-.01-.35.1-.46.1-.1.23-.27.34-.4.12-.13.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.12-.51-1.24-.7-1.7-.18-.45-.37-.39-.51-.4h-.48Z" />
+    </svg>
+  );
+}
+
+function MaxIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M7.2 14.8V9.2h1.35l1.55 2.3 1.55-2.3H13v5.6h-1.45v-3.18l-1.05 1.53h-.8l-1.05-1.53v3.18H7.2Zm6.2 0 2.05-5.6h1.48l2.05 5.6h-1.53l-.33-1.02h-1.88l-.33 1.02H13.4Zm2.2-2.18h1.16l-.58-1.78-.58 1.78Z" fill="currentColor" />
     </svg>
   );
 }
