@@ -44,7 +44,8 @@ NEXT_PUBLIC_YANDEX_METRIKA_ID=
 - Canonical URLs через `alternates.canonical`.
 - `robots` metadata:
   - `/thank-you` — `noindex,nofollow`;
-  - `/preview-dark` — `noindex,nofollow`;
+  - `/preview-dark` — permanent redirect на `/`;
+  - `/legacy-light-home` — internal legacy route, `noindex,nofollow`;
   - draft district/direction pages — `noindex,nofollow`.
 - `src/app/robots.ts`.
 - `src/app/sitemap.ts`.
@@ -61,7 +62,7 @@ NEXT_PUBLIC_YANDEX_METRIKA_ID=
 - `/personal-data-consent`;
 - district/direction pages только если `approved=true`, `hasUniqueContent=true`, `isDraft=false`.
 
-Черновые, placeholder или неутверждённые SEO-страницы не попадают в sitemap.
+Черновые, placeholder, неутверждённые SEO-страницы, `/preview-dark` и `/legacy-light-home` не попадают в sitemap.
 
 ## Directus
 
