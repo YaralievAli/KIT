@@ -60,7 +60,7 @@ export function PreviewDarkHeader() {
             {siteSettings.vkHref ? (
               <a
                 href={siteSettings.vkHref}
-                className="hidden h-11 w-11 items-center justify-center rounded-full border border-white/18 bg-white/[0.06] text-white/82 transition hover:border-champagne/55 hover:text-champagne focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal lg:inline-flex"
+                className="hidden h-11 w-11 items-center justify-center rounded-full border border-white/28 bg-white/[0.08] text-[#9CD7FF] transition hover:border-[#9CD7FF]/70 hover:bg-white/[0.12] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9CD7FF] lg:inline-flex"
                 aria-label="ВКонтакте"
               >
                 <HeaderVkIcon className="h-5 w-5" aria-hidden="true" />
