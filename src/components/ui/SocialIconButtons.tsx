@@ -10,14 +10,22 @@ type SocialIconButtonsProps = {
 
 const baseLinkClass =
   "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/78 transition hover:border-teal hover:bg-teal hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal";
+const disabledLinkClass = "cursor-not-allowed opacity-45 hover:border-white/12 hover:bg-white/8 hover:text-white/78";
+
+type SocialItem = {
+  href?: string;
+  label: string;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+  disabled?: boolean;
+};
 
 export function SocialIconButtons({ settings, className, linkClassName }: SocialIconButtonsProps) {
   const socials = [
     settings.vkHref ? { href: settings.vkHref, label: "ВКонтакте", Icon: VkIcon } : null,
     settings.telegramHref ? { href: settings.telegramHref, label: "Telegram", Icon: TelegramIcon } : null,
     settings.whatsappHref ? { href: settings.whatsappHref, label: "WhatsApp", Icon: WhatsAppIcon } : null,
-    settings.maxHref ? { href: settings.maxHref, label: "MAX", Icon: MaxIcon } : null,
-  ].filter(Boolean) as Array<{ href: string; label: string; Icon: ComponentType<SVGProps<SVGSVGElement>> }>;
+    { href: settings.maxHref || undefined, label: "MAX", Icon: MaxIcon, disabled: !settings.maxHref },
+  ].filter(Boolean) as SocialItem[];
 
   if (socials.length === 0) {
     return null;
@@ -25,11 +33,23 @@ export function SocialIconButtons({ settings, className, linkClassName }: Social
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      {socials.map(({ href, label, Icon }) => (
-        <a key={label} href={href} className={cn(baseLinkClass, linkClassName)} aria-label={label}>
-          <Icon className="h-5 w-5" aria-hidden="true" />
-        </a>
-      ))}
+      {socials.map(({ href, label, Icon, disabled }) =>
+        href ? (
+          <a key={label} href={href} className={cn(baseLinkClass, linkClassName)} aria-label={label}>
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </a>
+        ) : (
+          <span
+            key={label}
+            className={cn(baseLinkClass, disabledLinkClass, linkClassName)}
+            aria-label={label}
+            aria-disabled={disabled ? "true" : undefined}
+            title={`${label}: ссылка не настроена`}
+          >
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </span>
+        )
+      )}
     </div>
   );
 }

@@ -43,6 +43,8 @@ const layoutOptions = [
 const materialOptions = ["МДФ", "Пластик", "ЛДСП", "Эмаль", "Нужна консультация"];
 const budgetOptions = ["До 250 тыс.", "250-400 тыс.", "400-700 тыс.", "От 700 тыс.", "Пока не понимаю"];
 const previewFields: Array<keyof PreviewDarkCalculatorValues> = ["layout", "material", "budget"];
+const calculatorSubmitButtonClass =
+  "inline-flex min-h-12 min-w-56 items-center justify-center gap-2 rounded-xl bg-teal px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_44px_rgba(13,148,136,0.28)] transition hover:bg-teal-glow active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:opacity-60";
 
 const previewDarkCalculatorSchema = contactFormSchema.extend({
   layout: z.enum(["Угловая", "Прямая", "П-образная", "С островом"], {
@@ -252,12 +254,13 @@ export function PreviewDarkCalculator() {
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
             {showContacts ? (
-              <button className="v2-primary min-w-56" disabled={status === "loading"} type="submit">
+              <button className={calculatorSubmitButtonClass} disabled={status === "loading"} type="submit">
                 <Send size={18} aria-hidden="true" />
                 {status === "loading" ? "Отправляем..." : "Получить расчёт"}
               </button>
             ) : (
-              <button className="v2-primary min-w-56" type="button" onClick={openContactStep}>
+              <button className={calculatorSubmitButtonClass} type="button" onClick={openContactStep}>
+                <Send size={18} aria-hidden="true" />
                 Получить расчёт
               </button>
             )}
