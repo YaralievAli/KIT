@@ -126,6 +126,7 @@ export type SiteSettings = {
   whatsappHref: string;
   telegramHref: string;
   vkHref: string;
+  maxHref?: string;
   email: string;
   address: string;
   workingHours: string;

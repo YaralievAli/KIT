@@ -11,6 +11,7 @@ import {
   Ruler,
   Wrench,
 } from "lucide-react";
+import type { SVGProps } from "react";
 import { PreviewDarkCalculator } from "@/components/v2/PreviewDarkCalculator";
 import { PreviewDarkFAQ } from "@/components/v2/PreviewDarkFAQ";
 import { PreviewDarkFinalForm } from "@/components/v2/PreviewDarkFinalForm";
@@ -98,7 +99,7 @@ function Hero() {
       </div>
       <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_25%_35%,rgba(20,184,166,0.18),transparent_32%)]" aria-hidden="true" />
 
-      <div className={`${shell} relative z-10 grid min-h-[610px] items-center gap-8 py-7 lg:grid-cols-12 xl:min-h-[650px]`}>
+      <div className={`${shell} relative z-10 grid min-h-[610px] items-center gap-8 pb-12 pt-6 sm:pb-14 lg:grid-cols-12 lg:pb-16 lg:pt-7 xl:min-h-[650px]`}>
         <div className="max-w-[670px] lg:col-span-5">
           <p className="inline-flex items-center gap-2 rounded-full border border-teal/35 bg-teal/10 px-4 py-2 text-sm font-semibold text-teal-glow">
             <MapPin size={16} aria-hidden="true" />
@@ -111,7 +112,7 @@ function Hero() {
           <p className="mt-5 max-w-xl text-lg leading-7 text-white/76">
             Подберём планировку, материалы и ориентировочный бюджет. Точная стоимость формируется после замера и проекта.
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <a className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-xl bg-teal px-7 text-sm font-semibold text-white shadow-[0_16px_44px_rgba(13,148,136,0.34)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow" href="#quiz">
               Рассчитать стоимость
               <ArrowRight size={18} aria-hidden="true" />
@@ -130,15 +131,15 @@ function Hero() {
               Планировка · Стиль · Бюджет · контакт только в конце
             </div>
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-[620px]">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-[620px]">
             {heroCards.map(({ icon: Icon, title }) => (
-              <div key={title} className="min-h-[96px] rounded-2xl border border-white/14 bg-white/[0.075] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+              <div key={title} className="min-h-[90px] rounded-2xl border border-white/14 bg-white/[0.075] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                 <Icon className="text-champagne" size={28} aria-hidden="true" />
                 <p className="mt-2 text-sm font-semibold leading-5 text-white">{title}</p>
               </div>
             ))}
           </div>
-          <p className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm text-white/70">
+          <p className="mt-4 flex max-w-[650px] flex-wrap gap-x-4 gap-y-1 text-sm leading-6 text-white/70">
             <span>Гарантийные условия по договору</span>
             <span className="text-champagne">•</span>
             <span>Прозрачный договор</span>
@@ -386,23 +387,28 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
           <h2 className="text-3xl font-semibold text-navy">Отзывы наших клиентов</h2>
           <p className="mt-2 text-sm leading-6 text-muted">Публикуем отзывы без неподтверждённых рейтингов и громких цифр.</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
-            {reviews.map((review) => (
-              <article key={review.id} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-teal/10 text-sm font-semibold text-teal">{review.name.slice(0, 1)}</span>
-                  <div>
-                    <h3 className="font-semibold text-navy">{review.name}</h3>
-                    <p className="text-xs text-muted">{review.district}</p>
+            {reviews.map((review) => {
+              const SourceIcon = getReviewSourceIcon(review.source);
+
+              return (
+                <article key={review.id} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-teal/10 text-sm font-semibold text-teal">{review.name.slice(0, 1)}</span>
+                    <div>
+                      <h3 className="font-semibold text-navy">{review.name}</h3>
+                      <p className="text-xs text-muted">{review.district}</p>
+                    </div>
                   </div>
-                </div>
-                <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
-                <div className="mt-4">
-                  <span className="inline-flex items-center rounded-full border border-border bg-white px-3 py-1 text-xs font-semibold text-teal">
-                    {review.source}
-                  </span>
-                </div>
-              </article>
-            ))}
+                  <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
+                  <div className="mt-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
+                      <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                      {review.source}
+                    </span>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
         <div className="2xl:col-span-7">
@@ -410,6 +416,47 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
         </div>
       </div>
     </section>
+  );
+}
+
+function getReviewSourceIcon(source: Review["source"]) {
+  switch (source) {
+    case "Яндекс.Карты":
+      return YandexMapsSourceIcon;
+    case "2ГИС":
+      return TwoGisSourceIcon;
+    case "ВКонтакте":
+      return VkSourceIcon;
+  }
+
+  return VkSourceIcon;
+}
+
+function YandexMapsSourceIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" {...props}>
+      <circle cx="8" cy="8" r="7" fill="#FDE8E8" />
+      <path d="M8 3.4a3.2 3.2 0 0 0-3.2 3.2c0 2.22 3.2 5.98 3.2 5.98s3.2-3.76 3.2-5.98A3.2 3.2 0 0 0 8 3.4Zm0 4.38A1.18 1.18 0 1 1 8 5.42a1.18 1.18 0 0 1 0 2.36Z" fill="#E53935" />
+    </svg>
+  );
+}
+
+function TwoGisSourceIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" {...props}>
+      <circle cx="8" cy="8" r="7" fill="#E8F7EF" />
+      <path d="M4.7 5.1h6.6v2.1H6.9v1.15h3.56v2.1H4.7V8.64l2.97-1.45H4.7V5.1Z" fill="#1EA363" />
+      <path d="M10.45 8.35h.85v2.1h-.85V8.35Z" fill="#2487C7" />
+    </svg>
+  );
+}
+
+function VkSourceIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" {...props}>
+      <circle cx="8" cy="8" r="7" fill="#E8F1FF" />
+      <path d="M8.52 11.15H7.8c-2.45 0-3.84-1.68-4.89-4.48l-.29-.79H4.3c.3 0 .43.14.52.39.57 1.64 1.35 2.87 1.7 2.87.14 0 .2-.06.2-.41V7.12c-.05-.73-.42-.8-.42-1.07 0-.14.11-.27.29-.27h2.64c.25 0 .34.14.34.43v2.18c0 .24.1.32.17.32.14 0 .26-.08.51-.34.63-.7 1.08-1.77 1.08-1.77.06-.15.19-.29.48-.29h1.68c.51 0 .62.26.51.62-.21.67-2.27 3.19-2.27 3.19-.18.22-.25.33 0 .65.18.23.78.76 1.18 1.23.29.34.51.63.57.83.07.24-.12.37-.43.37h-1.87c-.28 0-.41-.09-.57-.28-.23-.27-.75-.94-1.24-.94-.25 0-.32.17-.32.44v.5c0 .27-.09.42-.51.42Z" fill="#2787F5" />
+    </svg>
   );
 }
 
