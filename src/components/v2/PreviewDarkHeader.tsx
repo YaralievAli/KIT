@@ -27,7 +27,7 @@ export function PreviewDarkHeader() {
         className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[rgba(3,20,22,0.9)] shadow-[0_12px_36px_rgba(0,0,0,0.22)] backdrop-blur-xl"
       >
         <div className="mx-auto flex h-[76px] w-full max-w-[1760px] items-center justify-between gap-5 px-4 sm:px-6 lg:px-10">
-          <Link href="/preview-dark" className="flex items-center gap-3" aria-label="КИТ, главная версия preview-dark">
+          <Link href="/" className="flex items-center gap-3" aria-label="КИТ, главная">
             <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={44} height={44} style={{ width: 44, height: 44 }} />
             <span className="text-2xl font-semibold text-white">КИТ</span>
           </Link>
