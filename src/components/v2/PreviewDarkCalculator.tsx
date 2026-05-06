@@ -111,7 +111,7 @@ export function PreviewDarkCalculator() {
         comment: values.comment,
         consent: values.consent,
         honeypot: values.honeypot,
-        sourcePage: "preview-dark-calculator",
+        sourcePage: "homepage-calculator",
         quizAnswers: [
           { step: 1, question: "Тип планировки", value: values.layout, label: values.layout },
           {
@@ -129,7 +129,7 @@ export function PreviewDarkCalculator() {
       redirectToThankYou({
         layout: values.layout,
         budget: values.budget,
-        sourceForm: "preview-dark-calculator",
+        sourceForm: "homepage-calculator",
       });
     } catch (error) {
       if (error instanceof Error && error.message) {

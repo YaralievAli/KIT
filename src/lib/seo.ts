@@ -50,7 +50,7 @@ export function localBusinessJsonLd(settings: SiteSettings) {
     url: absoluteUrl("/"),
     telephone: settings.phone,
     email: settings.email,
-    image: absoluteUrl("/images/hero/hero-dark-premium-kitchen.png"),
+    image: absoluteUrl("/images/hero/preview-dark-hero-wide-bg.png"),
     address: {
       "@type": "PostalAddress",
       addressLocality: "Санкт-Петербург",

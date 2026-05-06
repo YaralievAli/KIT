@@ -462,7 +462,8 @@ function VkSourceIcon(props: SVGProps<SVGSVGElement>) {
 
 function FinalCta() {
   return (
-    <section id="callback" className="relative isolate min-h-[540px] overflow-hidden bg-[#062e30] py-12 text-white lg:py-14">
+    // Extra mobile bottom padding keeps the submit button clear of the fixed bottom CTA.
+    <section id="callback" className="relative isolate min-h-[540px] overflow-hidden bg-[#062e30] pb-36 pt-12 text-white lg:py-14">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         <Image
           src={imageMap.cta.background}

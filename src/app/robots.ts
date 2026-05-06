@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/thank-you", "/preview-dark"],
+      disallow: ["/thank-you", "/preview-dark", "/legacy-light-home"],
     },
     sitemap: absoluteUrl("/sitemap.xml"),
     host: siteUrl,
