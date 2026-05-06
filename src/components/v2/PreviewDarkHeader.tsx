@@ -105,16 +105,16 @@ export function PreviewDarkHeader() {
           Позвонить
         </a>
       </aside>
-      <div className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-2 rounded-[22px] border border-white/16 bg-[#071314]/92 p-2 shadow-[0_18px_55px_rgba(0,0,0,0.28)] lg:hidden">
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-white/10 px-2 text-xs font-semibold text-white" href={siteSettings.phoneHref}>
+      <div className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-1.5 rounded-[22px] border border-white/10 bg-[#031416] p-1.5 shadow-[0_-16px_40px_rgba(0,0,0,0.28)] backdrop-blur-xl lg:hidden">
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.phoneHref}>
           <Phone size={16} aria-hidden="true" />
           Позвонить
         </a>
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-white/10 px-2 text-xs font-semibold text-white" href={siteSettings.whatsappHref}>
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.whatsappHref}>
           <MessageCircle size={16} aria-hidden="true" />
           WhatsApp
         </a>
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-teal px-2 text-xs font-semibold text-white" href="#quiz">
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-[#0F9F92] px-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(20,184,166,0.26)] transition hover:bg-[#14B8A6] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href="#quiz">
           <Calculator size={16} aria-hidden="true" />
           Расчёт
         </a>

@@ -41,11 +41,11 @@ export function PreviewDarkFinalForm() {
       await sendLead({
         ...values,
         phone: normalizeRussianPhone(values.phone) ?? values.phone,
-        sourcePage: "preview-dark-final-cta",
+        sourcePage: "homepage-final-cta",
         ...collectLeadClientMeta(),
       });
       setStatus("success");
-      redirectToThankYou({ sourceForm: "preview-dark-final-cta" });
+      redirectToThankYou({ sourceForm: "homepage-final-cta" });
     } catch (error) {
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);
@@ -55,7 +55,7 @@ export function PreviewDarkFinalForm() {
   }
 
   return (
-    <form className="mx-auto max-w-[680px] rounded-[26px] bg-white p-4 text-navy shadow-[0_20px_58px_rgba(0,0,0,0.18)] md:p-5 lg:ml-auto lg:mr-0" onSubmit={handleSubmit(onSubmit)}>
+    <form className="mx-auto max-w-[680px] rounded-[26px] bg-white px-4 pb-28 pt-4 text-navy shadow-[0_20px_58px_rgba(0,0,0,0.18)] md:p-5 lg:ml-auto lg:mr-0" onSubmit={handleSubmit(onSubmit)}>
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
       <div className="grid gap-3 md:grid-cols-2">
         <LightField label="Ваше имя" error={errors.name?.message}>
