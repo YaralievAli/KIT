@@ -76,6 +76,13 @@ SMTP_FROM=
 SMTP_TO=
 ```
 
+Lead delivery reliability:
+
+- Directus is the recommended durable production storage path for submitted leads.
+- If Directus is disabled or unavailable, `/api/leads` falls back to `output/leads.jsonl`.
+- The local `output/leads.jsonl` fallback is not durable on serverless or other ephemeral filesystems unless the deployment explicitly preserves and backs up that directory.
+- Telegram and SMTP are best-effort notification channels only. They help operators see leads, but they are not durable storage.
+
 Search console verification values are optional and should stay empty until real verification codes are issued:
 
 ```bash
@@ -127,7 +134,8 @@ The following items are intentionally out of scope for this foundation phase:
 - distributed Redis/Upstash/WAF/CAPTCHA rate limiting
 - production lead storage
 - legal finalization
-- monitoring and logging
+- queue/retry delivery, monitoring, and logging
+- CRM/database selection
 - deploy automation
 
 `/api/leads` has a temporary in-memory limiter for immediate abuse protection. It is not sufficient for multi-instance production and should be replaced or supplemented by Redis/Upstash, WAF/CDN throttling, or CAPTCHA if real spam appears.

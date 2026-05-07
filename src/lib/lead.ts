@@ -4,13 +4,15 @@ import net from "node:net";
 import path from "node:path";
 import tls from "node:tls";
 import { z } from "zod";
-import { createDirectusItem } from "@/lib/content/directus-client";
+import { getDirectusConfig } from "@/lib/content/directus-client";
 import { isValidRussianPhone, normalizeRussianPhone } from "@/lib/phone";
 import type { LeadPayload } from "@/types/content";
 
 const rateLimitWindowMs = 15 * 60 * 1000;
 const ipLimit = 8;
 const phoneLimit = 4;
+const directusSaveTimeoutMs = 10_000;
+const telegramTimeoutMs = 10_000;
 
 const quizAnswerSchema = z.object({
   step: z.number().int().min(1).max(20),
@@ -77,6 +79,17 @@ type RateLimitEntry = {
   resetAt: number;
 };
 
+type DeliveryProviderCategory = "persistence" | "notification";
+type DeliveryChannel = "directus" | "local_file" | "telegram" | "smtp";
+type DeliveryStatus = "success" | "disabled" | "failed";
+
+type DeliveryResult = {
+  channel: DeliveryChannel;
+  providerCategory: DeliveryProviderCategory;
+  status: DeliveryStatus;
+  reason?: string;
+};
+
 export type SubmitLeadResult =
   | {
       success: true;
@@ -141,13 +154,19 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
     phone,
   });
 
-  try {
-    const savedToDirectus = await saveLeadToDirectus(lead);
-    if (!savedToDirectus) {
-      await saveLeadLocally(lead);
-    }
-  } catch (error) {
-    console.error("Lead save failed", error);
+  const directusResult = await saveLeadToDirectus(lead);
+  const localResult = directusResult.status === "success" ? null : await saveLeadLocally(lead);
+  const persistenceSucceeded = directusResult.status === "success" || localResult?.status === "success";
+
+  if (directusResult.status === "failed") {
+    logDeliveryFailure(directusResult, lead.id, persistenceSucceeded);
+  }
+
+  if (localResult?.status === "failed") {
+    logDeliveryFailure(localResult, lead.id, persistenceSucceeded);
+  }
+
+  if (!persistenceSucceeded) {
     return {
       success: false,
       code: "save_failed",
@@ -155,12 +174,11 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
     };
   }
 
-  await Promise.allSettled([notifyTelegram(lead), notifyEmail(lead)]).then((results) => {
-    results.forEach((result) => {
-      if (result.status === "rejected") {
-        console.warn("Lead notification failed", result.reason);
-      }
-    });
+  const notificationResults = await Promise.all([notifyTelegram(lead), notifyEmail(lead)]);
+  notificationResults.forEach((result) => {
+    if (result.status === "failed") {
+      logDeliveryFailure(result, lead.id, persistenceSucceeded);
+    }
   });
 
   return {
@@ -195,16 +213,57 @@ function toStoredLead(data: ParsedLead, context: LeadContext & { phone: string }
   };
 }
 
-async function saveLeadLocally(lead: StoredLead) {
+function deliveryResult(
+  channel: DeliveryChannel,
+  providerCategory: DeliveryProviderCategory,
+  status: DeliveryStatus,
+  reason?: string
+): DeliveryResult {
+  return {
+    channel,
+    providerCategory,
+    status,
+    reason,
+  };
+}
+
+function classifyTimeout(error: unknown) {
+  return error instanceof Error && (error.name === "AbortError" || error.name === "TimeoutError");
+}
+
+function logDeliveryFailure(result: DeliveryResult, leadId: string, persistenceSucceeded: boolean) {
+  console.warn("Lead delivery failed", {
+    event: "lead_delivery_failed",
+    channel: result.channel,
+    status: result.status,
+    reason: result.reason ?? "delivery_failed",
+    providerCategory: result.providerCategory,
+    persistenceSucceeded,
+    leadId,
+  });
+}
+
+async function saveLeadLocally(lead: StoredLead): Promise<DeliveryResult> {
   const outputDir = path.join(process.cwd(), "output");
   const filePath = path.join(outputDir, "leads.jsonl");
 
-  await mkdir(outputDir, { recursive: true });
-  await appendFile(filePath, `${JSON.stringify(lead)}\n`, "utf8");
+  try {
+    await mkdir(outputDir, { recursive: true });
+    await appendFile(filePath, `${JSON.stringify(lead)}\n`, "utf8");
+    return deliveryResult("local_file", "persistence", "success");
+  } catch {
+    return deliveryResult("local_file", "persistence", "failed", "local_file_save_failed");
+  }
 }
 
-async function saveLeadToDirectus(lead: StoredLead) {
-  const saved = await createDirectusItem("Leads", {
+async function saveLeadToDirectus(lead: StoredLead): Promise<DeliveryResult> {
+  const config = getDirectusConfig();
+
+  if (!config) {
+    return deliveryResult("directus", "persistence", "disabled");
+  }
+
+  const payload = {
     name: lead.name,
     phone: lead.phone,
     communicationMethod: lead.communicationMethod,
@@ -220,9 +279,32 @@ async function saveLeadToDirectus(lead: StoredLead) {
     referrer: lead.referrer,
     consent: lead.consent,
     createdAt: lead.createdAt,
-  });
+  };
 
-  return Boolean(saved);
+  try {
+    const response = await fetch(`${config.url}/items/Leads`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(directusSaveTimeoutMs),
+    });
+
+    if (!response.ok) {
+      return deliveryResult("directus", "persistence", "failed", "directus_save_failed");
+    }
+
+    return deliveryResult("directus", "persistence", "success");
+  } catch (error) {
+    return deliveryResult(
+      "directus",
+      "persistence",
+      "failed",
+      classifyTimeout(error) ? "directus_save_timeout" : "directus_save_failed"
+    );
+  }
 }
 
 function consumeRateLimit(key: string, limit: number) {
@@ -289,54 +371,79 @@ function formatCommunicationMethod(method: LeadPayload["communicationMethod"]) {
   return labels[method];
 }
 
-async function notifyTelegram(lead: StoredLead) {
+async function notifyTelegram(lead: StoredLead): Promise<DeliveryResult> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!token || !chatId) {
-    return;
+    return deliveryResult("telegram", "notification", "disabled");
   }
 
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: buildNotificationText(lead),
-      disable_web_page_preview: true,
-    }),
-  });
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: buildNotificationText(lead),
+        disable_web_page_preview: true,
+      }),
+      signal: AbortSignal.timeout(telegramTimeoutMs),
+    });
 
-  if (!response.ok) {
-    throw new Error(`Telegram notification failed with ${response.status}`);
+    if (!response.ok) {
+      return deliveryResult("telegram", "notification", "failed", "notification_failed");
+    }
+
+    return deliveryResult("telegram", "notification", "success");
+  } catch (error) {
+    return deliveryResult(
+      "telegram",
+      "notification",
+      "failed",
+      classifyTimeout(error) ? "notification_timeout" : "notification_failed"
+    );
   }
 }
 
-async function notifyEmail(lead: StoredLead) {
+async function notifyEmail(lead: StoredLead): Promise<DeliveryResult> {
   const host = process.env.SMTP_HOST;
   const to = process.env.SMTP_TO;
   const from = process.env.SMTP_FROM ?? process.env.SMTP_USER;
 
   if (!host || !to || !from) {
-    return;
+    return deliveryResult("smtp", "notification", "disabled");
   }
 
   const port = Number(process.env.SMTP_PORT ?? 465);
   const secure = process.env.SMTP_SECURE !== "false";
 
-  await sendSmtpMail({
-    host,
-    port,
-    secure,
-    user: process.env.SMTP_USER,
-    password: process.env.SMTP_PASS,
-    from,
-    to,
-    subject: "Новая заявка с сайта КИТ",
-    text: buildNotificationText(lead),
-  });
+  try {
+    await sendSmtpMail({
+      host,
+      port,
+      secure,
+      user: process.env.SMTP_USER,
+      password: process.env.SMTP_PASS,
+      from,
+      to,
+      subject: "Новая заявка с сайта КИТ",
+      text: buildNotificationText(lead),
+    });
+
+    return deliveryResult("smtp", "notification", "success");
+  } catch (error) {
+    return deliveryResult(
+      "smtp",
+      "notification",
+      "failed",
+      error instanceof Error && error.message.toLowerCase().includes("timeout")
+        ? "notification_timeout"
+        : "notification_failed"
+    );
+  }
 }
 
 type SmtpMailOptions = {
