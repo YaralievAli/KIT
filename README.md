@@ -21,6 +21,10 @@ npm run build
 
 На Windows обычный sandbox-запуск `next build` может упираться в `spawn EPERM`; production build нужно повторить в обычной локальной среде.
 
+## Deploy foundation
+
+Базовые команды сборки, переменные окружения и health check описаны в [docs/deploy.md](docs/deploy.md).
+
 ## Environment
 
 Скопируйте `.env.example` в `.env` для локальной разработки.
