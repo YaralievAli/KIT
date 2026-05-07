@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PreviewDarkHomePage } from "@/components/v2/PreviewDarkHomePage";
 import { getHomePageContent } from "@/lib/content/get-home-page-content";
-import { breadcrumbJsonLd, faqPageJsonLd, localBusinessJsonLd, pageMetadata, serviceJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, faqPageJsonLd, localBusinessJsonLd, pageMetadata, serviceJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export const revalidate = 300;
 
@@ -22,6 +22,7 @@ export default async function Page() {
       <JsonLd
         data={[
           localBusinessJsonLd(content.settings),
+          websiteJsonLd(content.settings),
           serviceJsonLd(content.settings),
           faqPageJsonLd(content.faq),
           breadcrumbJsonLd([{ name: "Главная", path: "/" }]),
