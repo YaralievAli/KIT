@@ -40,6 +40,14 @@ NEXT_PUBLIC_SITE_URL=https://example.com
 
 `NEXT_PUBLIC_SITE_URL` is used by canonical URLs, OpenGraph URLs, `robots.txt`, `sitemap.xml`, and JSON-LD.
 
+Restrict browser submissions to `/api/leads` to the production site origins:
+
+```bash
+LEADS_ALLOWED_ORIGINS=https://kit-kuhni.ru,https://www.kit-kuhni.ru
+```
+
+Local development allows `http://localhost:*` and `http://127.0.0.1:*`. Production requests without a valid `Origin` or `Referer` are rejected.
+
 ## Optional environment
 
 Directus is optional. Leave these empty to use local fallback content:
@@ -116,8 +124,10 @@ Baseline security headers are configured in Next.js. CSP and HSTS are intentiona
 The following items are intentionally out of scope for this foundation phase:
 
 - CSP/HSTS
-- production rate limiting
+- distributed Redis/Upstash/WAF/CAPTCHA rate limiting
 - production lead storage
 - legal finalization
 - monitoring and logging
 - deploy automation
+
+`/api/leads` has a temporary in-memory limiter for immediate abuse protection. It is not sufficient for multi-instance production and should be replaced or supplemented by Redis/Upstash, WAF/CDN throttling, or CAPTCHA if real spam appears.
