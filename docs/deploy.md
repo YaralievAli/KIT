@@ -111,9 +111,10 @@ Docker and Nginx can be added later as a separate implementation. This phase doe
 
 ## Deferred production work
 
+Baseline security headers are configured in Next.js. CSP and HSTS are intentionally deferred until production HTTPS behavior and third-party integrations are confirmed.
+
 The following items are intentionally out of scope for this foundation phase:
 
-- security headers
 - CSP/HSTS
 - production rate limiting
 - production lead storage
