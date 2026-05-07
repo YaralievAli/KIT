@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import type { FAQItem, SiteSettings } from "@/types/content";
 
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://kit-kuhni.ru").replace(/\/$/, "");
+export const defaultSeoImagePath = "/images/seo/og-home.png";
+export const defaultSeoImageAlt = "КИТ — кухни на заказ в Санкт-Петербурге и Ленинградской области";
 
 type PageMetadataInput = {
   title: string;
@@ -33,6 +35,20 @@ export function pageMetadata({ title, description, path, index = true, follow = 
       siteName: "КИТ",
       locale: "ru_RU",
       type: "website",
+      images: [
+        {
+          url: absoluteUrl(defaultSeoImagePath),
+          width: 1200,
+          height: 630,
+          alt: defaultSeoImageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [absoluteUrl(defaultSeoImagePath)],
     },
   };
 }
@@ -48,6 +64,7 @@ export function localBusinessJsonLd(settings: SiteSettings) {
     "@id": `${siteUrl}/#localbusiness`,
     name: settings.companyName,
     url: absoluteUrl("/"),
+    logo: absoluteUrl("/icons/icon-512.png"),
     telephone: settings.phone,
     email: settings.email,
     image: absoluteUrl("/images/hero/preview-dark-hero-wide-bg.png"),
@@ -68,6 +85,21 @@ export function localBusinessJsonLd(settings: SiteSettings) {
       },
     ],
     openingHours: settings.workingHours,
+  };
+}
+
+export function websiteJsonLd(settings: SiteSettings) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
+    name: settings.companyName,
+    url: absoluteUrl("/"),
+    publisher: {
+      "@id": `${siteUrl}/#localbusiness`,
+      name: settings.companyName,
+    },
+    inLanguage: "ru-RU",
   };
 }
 
