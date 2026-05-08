@@ -23,7 +23,7 @@ npm run build
 
 ## Deploy foundation
 
-Базовые команды сборки, переменные окружения и health check описаны в [docs/deploy.md](docs/deploy.md).
+Базовые команды сборки, переменные окружения и health check описаны в [docs/deploy.md](docs/deploy.md). Перед production-запуском используйте [docs/production-checklist.md](docs/production-checklist.md).
 
 ## Environment
 
