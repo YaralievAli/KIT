@@ -1,8 +1,18 @@
 # Deploy foundation
 
-This document captures the current production deployment baseline for the KIT site. It is intentionally limited to build/start operations and environment setup.
+This document captures the production deployment baseline for the KIT site. It is documentation-only: it does not include Docker, Nginx, systemd, PM2, managed-platform config, or deploy automation.
 
 ## Runtime
+
+This project requires a Node.js server runtime. Do not use static export for production.
+
+Reasons:
+
+- `/api/health` is a server route.
+- `/api/leads` is a server route with validation, abuse protection, persistence, and notifications.
+- Lead forms depend on server-side logic.
+
+Baseline:
 
 - Node.js: `22`
 - npm with the committed `package-lock.json`
@@ -16,55 +26,74 @@ nvm use
 
 ## Build and start
 
+Run checks before deployment:
+
 ```bash
 npm ci
 npm run typecheck
 npm run lint
 npm run build
+```
+
+Start the production server:
+
+```bash
 npm run start
 ```
 
-For a custom port:
+For a custom host/port:
 
 ```bash
 npm run start -- --hostname 127.0.0.1 -p 3000
 ```
 
-## Required environment
+## Environment variables
 
-Set these for a public deployment:
+Do not commit secrets. Use server, hosting provider, or CI secret storage.
+
+### Public build/runtime env
+
+`NEXT_PUBLIC_SITE_URL` is public and required for production:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://example.com
+NEXT_PUBLIC_SITE_URL=https://kit-kuhni.ru
 ```
 
-`NEXT_PUBLIC_SITE_URL` is used by canonical URLs, OpenGraph URLs, `robots.txt`, `sitemap.xml`, and JSON-LD.
+It is used by canonical URLs, OpenGraph URLs, `robots.txt`, `sitemap.xml`, and JSON-LD. It should match the final production domain.
 
-Restrict browser submissions to `/api/leads` to the production site origins:
+### Server-only runtime env
+
+`LEADS_ALLOWED_ORIGINS` is server-only and required for production lead submissions:
 
 ```bash
 LEADS_ALLOWED_ORIGINS=https://kit-kuhni.ru,https://www.kit-kuhni.ru
 ```
 
-Local development allows `http://localhost:*` and `http://127.0.0.1:*`. Production requests without a valid `Origin` or `Referer` are rejected.
+It should include the final production origins. Local development allows `http://localhost:*` and `http://127.0.0.1:*`. Production requests without a valid `Origin` or `Referer` are rejected.
 
-## Optional environment
+`NODE_ENV=production` should be provided by the production runtime or hosting platform.
 
-Directus is optional. Leave these empty to use local fallback content:
+### Server-only integration env
+
+Directus is recommended for durable production lead storage:
 
 ```bash
 DIRECTUS_URL=
 DIRECTUS_TOKEN=
 ```
 
-Telegram notifications are optional:
+These values are server-only and must not be exposed as `NEXT_PUBLIC_`. Directus may also be needed during build if Directus-backed content or assets are fetched while building.
+
+If Directus is disabled or unavailable, `/api/leads` falls back to `output/leads.jsonl`. That fallback is not durable on serverless or other ephemeral filesystems unless the deployment explicitly preserves and backs up that directory.
+
+Telegram notifications are optional and server-only:
 
 ```bash
 TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=
 ```
 
-SMTP notifications are optional:
+SMTP notifications are optional and server-only:
 
 ```bash
 SMTP_HOST=
@@ -76,21 +105,29 @@ SMTP_FROM=
 SMTP_TO=
 ```
 
-Lead delivery reliability:
+Optional advanced SMTP settings supported by the current code:
 
-- Directus is the recommended durable production storage path for submitted leads.
-- If Directus is disabled or unavailable, `/api/leads` falls back to `output/leads.jsonl`.
-- The local `output/leads.jsonl` fallback is not durable on serverless or other ephemeral filesystems unless the deployment explicitly preserves and backs up that directory.
-- Telegram and SMTP are best-effort notification channels only. They help operators see leads, but they are not durable storage.
+```bash
+# SMTP_HELO_NAME=kit-kuhni.ru
+# SMTP_REJECT_UNAUTHORIZED=true
+```
 
-Search console verification values are optional and should stay empty until real verification codes are issued:
+Telegram and SMTP are best-effort notification channels only. They help operators see leads, but they are not durable storage.
+
+### Webmaster verification env
+
+Search console verification values are server-only and optional. Set them only when real verification codes exist:
 
 ```bash
 GOOGLE_SITE_VERIFICATION=
 YANDEX_WEBMASTER_VERIFICATION=
 ```
 
-Do not commit secrets. Use server, hosting provider, or CI secret storage.
+Do not use fake verification codes.
+
+### Deferred or unused env
+
+`NEXT_PUBLIC_YANDEX_METRIKA_ID` is currently unused by app code and should remain empty in production until a separate analytics, privacy, and cookie-consent phase.
 
 ## Health endpoint
 
@@ -109,33 +146,76 @@ Expected response:
 }
 ```
 
+Use it for:
+
+- deployment smoke checks;
+- reverse proxy or load-balancer checks;
+- future uptime monitoring.
+
 The endpoint does not call Directus, lead storage, SMTP, Telegram, or external services.
 
 ## VPS deployment notes
 
 A basic VPS deployment can use:
 
-- Node.js 22
-- `npm ci`
-- `npm run build`
-- `npm run start`
-- a process manager such as systemd or PM2
-- Nginx as a reverse proxy in front of the Next.js server
+- Node.js 22;
+- `npm ci`;
+- `npm run build`;
+- `npm run start`;
+- a process manager such as systemd or PM2;
+- Nginx as a reverse proxy in front of the Next.js server.
 
-Docker and Nginx can be added later as a separate implementation. This phase does not include Dockerfile, Nginx, systemd, PM2, or CI deploy automation.
+This phase does not include Dockerfile, Nginx config, systemd/PM2 files, managed-platform config, or CI deploy automation. Those can be added later as separate implementation phases.
+
+## Smoke checklist
+
+Use [production-checklist.md](production-checklist.md) for the full deploy checklist.
+
+Minimum smoke checks:
+
+- `/` returns `200` and renders the public homepage.
+- `/api/health` returns `200` with `{ "ok": true, "service": "kit-site" }`.
+- `/api/leads` accepts one controlled test lead from the production origin.
+- `/thank-you` renders and does not expose personal data.
+- `/robots.txt` and `/sitemap.xml` are reachable.
+- OpenGraph image, favicon, icons, and manifest load.
+- Baseline security headers are present.
+- Mobile and desktop viewports render without visible breakage.
+- Browser console has no new production errors.
+
+## Rollback notes
+
+Keep rollback manual and simple:
+
+- identify the previous working commit or tag before deployment;
+- if the deploy fails, redeploy the previous working commit/release;
+- use GitHub PR history to revert documentation or code changes if needed;
+- do not create deployment automation in this phase;
+- do not create a release tag in this phase.
+
+Reserve `v1.0.0` for the real public production launch. If a pre-launch tag is useful, consider a pre-1.0 tag only after production smoke tests pass.
 
 ## Deferred production work
 
-Baseline security headers are configured in Next.js. CSP and HSTS are intentionally deferred until production HTTPS behavior and third-party integrations are confirmed.
+Already in place:
 
-The following items are intentionally out of scope for this foundation phase:
+- baseline low-risk security headers in Next.js;
+- `/api/leads` content-type/body-size/origin guards;
+- honeypot and temporary in-memory rate limiting;
+- safer lead delivery logs;
+- `/api/health`;
+- CI typecheck/lint/build.
 
-- CSP/HSTS
-- distributed Redis/Upstash/WAF/CAPTCHA rate limiting
-- production lead storage
-- legal finalization
-- queue/retry delivery, monitoring, and logging
-- CRM/database selection
-- deploy automation
+Deferred:
 
-`/api/leads` has a temporary in-memory limiter for immediate abuse protection. It is not sufficient for multi-instance production and should be replaced or supplemented by Redis/Upstash, WAF/CDN throttling, or CAPTCHA if real spam appears.
+- HSTS after HTTPS behavior is confirmed;
+- CSP Report-Only;
+- distributed Redis/Upstash/WAF/CAPTCHA rate limiting;
+- CDN/WAF throttling;
+- production monitoring and alerting;
+- queue/retry delivery;
+- CRM/database decision beyond Directus;
+- legal/privacy finalization;
+- analytics and cookie consent;
+- Docker/Nginx/systemd/PM2 implementation;
+- CI deploy workflow.
