@@ -392,122 +392,83 @@ function ProductionShowcase() {
 }
 
 function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) {
-  const desktopFaqItems = faq.slice(0, 8);
-  const desktopFaqColumns = [
-    desktopFaqItems.filter((_, index) => index % 2 === 0),
-    desktopFaqItems.filter((_, index) => index % 2 === 1),
-  ];
+  const visibleFaq = faq.slice(0, 8);
+  const visibleReviews = reviews.slice(0, 3);
 
   return (
-    <section id="reviews" className="overflow-hidden bg-white py-6 sm:py-9">
-      <div className={`${shell} grid items-start gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-8 2xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]`}>
-        <div className="min-w-0">
-          <p className="text-sm font-semibold uppercase tracking-wide text-teal">Обратная связь</p>
-          <h2 className="text-2xl font-semibold text-navy sm:text-3xl">Отзывы наших клиентов</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">Публикуем отзывы без неподтверждённых рейтингов и громких цифр.</p>
-          <div className="mt-3 max-w-full overflow-hidden sm:mt-5">
-            <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth scroll-px-4 pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-1 2xl:grid-cols-2">
-              {reviews.map((review) => {
-                const SourceIcon = getReviewSourceIcon(review.source);
+    <section id="reviews" className="pb-6 sm:pb-7">
+      <div className={`${shell} grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.72fr)] lg:items-start`}>
+        <article className="rounded-[24px] bg-white p-4 shadow-[0_12px_34px_rgba(16,26,43,0.07)] md:p-6 lg:rounded-[28px]">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wide text-teal">Обратная связь</p>
+              <h2 className="mt-1 text-2xl font-semibold text-navy sm:text-3xl">Отзывы наших клиентов</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+                Публикуем отзывы без неподтверждённых рейтингов и громких цифр. Источник указан как ориентир, подтверждение отзывов уточняется отдельно.
+              </p>
+            </div>
+            <a href="#contacts" className="inline-flex items-center gap-2 text-sm font-semibold text-teal">
+              Связаться
+              <ArrowRight size={16} aria-hidden="true" />
+            </a>
+          </div>
 
-                return (
-                  <article key={review.id} className="w-[82vw] max-w-[320px] shrink-0 snap-start rounded-2xl border border-border bg-surface p-3.5 shadow-sm sm:w-auto sm:max-w-none sm:p-5">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10 text-sm font-semibold text-teal sm:h-11 sm:w-11">{review.name.slice(0, 1)}</span>
-                      <div>
-                        <h3 className="font-semibold text-navy">{review.name}</h3>
-                        <p className="text-xs text-muted">{review.district}</p>
-                      </div>
-                    </div>
-                    <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted sm:line-clamp-none">{review.text}</p>
-                    <div className="mt-3 sm:mt-4">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
-                        <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
-                        {review.source}
-                      </span>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        <div id="faq" className="min-w-0">
-          <details className="rounded-2xl border border-border bg-surface px-4 py-3 lg:hidden">
-            <summary className="cursor-pointer list-none text-base font-semibold text-navy marker:hidden">
-              Часто задаваемые вопросы
-            </summary>
-            <div className="mt-3 grid gap-3">
-              {faq.slice(0, 8).map((item) => (
-                <article key={item.id} className="border-t border-border pt-3 first:border-t-0 first:pt-0">
-                  <h3 className="text-sm font-semibold text-navy">{item.question}</h3>
-                  <p className="mt-1 line-clamp-3 text-sm leading-6 text-muted">{item.answer}</p>
-                </article>
-              ))}
-            </div>
-          </details>
-          <div className="hidden lg:block">
-            <h2 className="text-3xl font-semibold text-navy">Часто задаваемые вопросы</h2>
-            <div className="mt-5 grid items-start gap-3 lg:grid-cols-2">
-              {desktopFaqColumns.map((columnItems, columnIndex) => (
-                <div key={columnIndex} className="grid gap-3">
-                  {columnItems.map((item) => (
-                    <details key={item.id} className="group rounded-2xl border border-border bg-surface">
-                      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold text-navy marker:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal">
-                        {item.question}
-                        <ChevronDown className="shrink-0 transition group-open:rotate-180" size={18} aria-hidden="true" />
-                      </summary>
-                      <p className="px-4 pb-4 text-sm leading-6 text-muted">{item.answer}</p>
-                    </details>
-                  ))}
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {visibleReviews.map((review) => (
+              <article key={review.id} className="rounded-2xl border border-border bg-surface p-4">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10 text-sm font-semibold text-teal sm:h-11 sm:w-11">
+                    {review.name.slice(0, 1)}
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-semibold text-navy">{review.name}</h3>
+                    <p className="text-xs leading-5 text-muted">{review.district}</p>
+                  </div>
                 </div>
-              ))}
-            </div>
+                <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
+                    {review.source}
+                  </span>
+                  {!review.verified ? (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
+                      без рейтинга
+                    </span>
+                  ) : null}
+                </div>
+              </article>
+            ))}
           </div>
-        </div>
+        </article>
+
+        <aside id="faq" className="rounded-[24px] bg-white p-4 shadow-[0_12px_34px_rgba(16,26,43,0.07)] md:p-6 lg:rounded-[28px]">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-teal">FAQ</p>
+            <h2 className="mt-1 text-2xl font-semibold text-navy sm:text-3xl">Часто задаваемые вопросы</h2>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Собрали основные вопросы о расчёте, замере, сроках, материалах и договоре.
+            </p>
+          </div>
+
+          <div className="mt-4 grid gap-3">
+            {visibleFaq.map((item, index) => (
+              <details key={item.id} className="group rounded-2xl border border-border bg-surface">
+                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold text-navy marker:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal">
+                  <span className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal/10 text-xs font-semibold text-teal">
+                      {index + 1}
+                    </span>
+                    <span>{item.question}</span>
+                  </span>
+                  <ChevronDown className="shrink-0 transition group-open:rotate-180" size={18} aria-hidden="true" />
+                </summary>
+                <p className="px-4 pb-4 pl-14 text-sm leading-6 text-muted">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </aside>
       </div>
     </section>
-  );
-}
-
-function getReviewSourceIcon(source: Review["source"]) {
-  switch (source) {
-    case "Яндекс.Карты":
-      return YandexMapsSourceIcon;
-    case "2ГИС":
-      return TwoGisSourceIcon;
-    case "ВКонтакте":
-      return VkSourceIcon;
-  }
-
-  return VkSourceIcon;
-}
-
-function YandexMapsSourceIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" {...props}>
-      <circle cx="8" cy="8" r="7" fill="#FDE8E8" />
-      <path d="M8 3.4a3.2 3.2 0 0 0-3.2 3.2c0 2.22 3.2 5.98 3.2 5.98s3.2-3.76 3.2-5.98A3.2 3.2 0 0 0 8 3.4Zm0 4.38A1.18 1.18 0 1 1 8 5.42a1.18 1.18 0 0 1 0 2.36Z" fill="#E53935" />
-    </svg>
-  );
-}
-
-function TwoGisSourceIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" {...props}>
-      <circle cx="8" cy="8" r="7" fill="#E8F7EF" />
-      <path d="M4.7 5.1h6.6v2.1H6.9v1.15h3.56v2.1H4.7V8.64l2.97-1.45H4.7V5.1Z" fill="#1EA363" />
-      <path d="M10.45 8.35h.85v2.1h-.85V8.35Z" fill="#2487C7" />
-    </svg>
-  );
-}
-
-function VkSourceIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" {...props}>
-      <circle cx="8" cy="8" r="7" fill="#E8F1FF" />
-      <path d="M8.52 11.15H7.8c-2.45 0-3.84-1.68-4.89-4.48l-.29-.79H4.3c.3 0 .43.14.52.39.57 1.64 1.35 2.87 1.7 2.87.14 0 .2-.06.2-.41V7.12c-.05-.73-.42-.8-.42-1.07 0-.14.11-.27.29-.27h2.64c.25 0 .34.14.34.43v2.18c0 .24.1.32.17.32.14 0 .26-.08.51-.34.63-.7 1.08-1.77 1.08-1.77.06-.15.19-.29.48-.29h1.68c.51 0 .62.26.51.62-.21.67-2.27 3.19-2.27 3.19-.18.22-.25.33 0 .65.18.23.78.76 1.18 1.23.29.34.51.63.57.83.07.24-.12.37-.43.37h-1.87c-.28 0-.41-.09-.57-.28-.23-.27-.75-.94-1.24-.94-.25 0-.32.17-.32.44v.5c0 .27-.09.42-.51.42Z" fill="#2787F5" />
-    </svg>
   );
 }
 

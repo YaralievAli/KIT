@@ -17,7 +17,7 @@ export function PreviewDarkFooter() {
           </div>
           <div className="mt-4 max-w-sm">
             <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
-            <p className="mt-2 text-sm leading-6 text-white/60">с практичным проектированием, производством и сборкой.</p>
+            <p className="mt-2 text-sm leading-6 text-white/72">с практичным проектированием, производством и сборкой.</p>
           </div>
           <SocialIconButtons settings={siteSettings} className="mt-5" />
         </div>
@@ -25,7 +25,7 @@ export function PreviewDarkFooter() {
         <FooterLinks title="Услуги" links={[["Дизайн-проект", "/#quiz"], ["Производство", "/#production"], ["Оплата частями", "/#callback"]]} />
         <div>
           <h3 className="font-semibold">Контакты</h3>
-          <div className="mt-4 grid gap-2 text-sm text-white/60">
+          <div className="mt-4 grid gap-2 text-sm text-white/72">
             <a href={siteSettings.phoneHref} className="transition hover:text-white">{siteSettings.phone}</a>
             <a href={`mailto:${siteSettings.email}`} className="transition hover:text-white">{siteSettings.email}</a>
             <span>{siteSettings.address}</span>
@@ -36,10 +36,10 @@ export function PreviewDarkFooter() {
           <a href="/#callback" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-champagne px-7 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy">
             Заказать звонок
           </a>
-          <p className="mt-3 text-xs text-white/50">Перезвоним в рабочее время</p>
+          <p className="mt-3 text-xs text-white/66">Перезвоним в рабочее время</p>
         </div>
       </div>
-      <div className={`${shell} mt-4 flex flex-col gap-3 text-xs text-white/50 md:flex-row md:items-center md:justify-between`}>
+      <div className={`${shell} mt-4 flex flex-col gap-3 text-xs text-white/66 md:flex-row md:items-center md:justify-between`}>
         <span>© 2026 КИТ — кухни на заказ в СПб и ЛО</span>
         <div className="flex flex-wrap gap-4">
           <Link href="/privacy" className="transition hover:text-white">Политика конфиденциальности</Link>
@@ -54,7 +54,7 @@ function FooterLinks({ title, links }: { title: string; links: Array<[string, st
   return (
     <div>
       <h3 className="font-semibold">{title}</h3>
-      <div className="mt-4 grid gap-2 text-sm text-white/60">
+      <div className="mt-4 grid gap-2 text-sm text-white/72">
         {links.map(([label, href]) => (
           <a key={label + href} href={href} className="transition hover:text-white">
             {label}
