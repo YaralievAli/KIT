@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { FAQItem, SiteSettings } from "@/types/content";
 
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://kit-kuhni.ru").replace(/\/$/, "");
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://kuhni-kit.ru").replace(/\/$/, "");
 export const defaultSeoImagePath = "/images/seo/og-home.png";
 export const defaultSeoImageAlt = "КИТ — кухни на заказ в Санкт-Петербурге и Ленинградской области";
 

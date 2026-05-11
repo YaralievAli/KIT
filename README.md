@@ -32,7 +32,7 @@ npm run build
 Важные публичные переменные:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://kit-kuhni.ru
+NEXT_PUBLIC_SITE_URL=https://kuhni-kit.ru
 NEXT_PUBLIC_YANDEX_METRIKA_ID=
 ```
 

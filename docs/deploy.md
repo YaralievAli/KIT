@@ -56,7 +56,7 @@ Do not commit secrets. Use server, hosting provider, or CI secret storage.
 `NEXT_PUBLIC_SITE_URL` is public and required for production:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://kit-kuhni.ru
+NEXT_PUBLIC_SITE_URL=https://kuhni-kit.ru
 ```
 
 It is used by canonical URLs, OpenGraph URLs, `robots.txt`, `sitemap.xml`, and JSON-LD. It should match the final production domain.
@@ -66,7 +66,7 @@ It is used by canonical URLs, OpenGraph URLs, `robots.txt`, `sitemap.xml`, and J
 `LEADS_ALLOWED_ORIGINS` is server-only and required for production lead submissions:
 
 ```bash
-LEADS_ALLOWED_ORIGINS=https://kit-kuhni.ru,https://www.kit-kuhni.ru
+LEADS_ALLOWED_ORIGINS=https://kuhni-kit.ru,https://www.kuhni-kit.ru
 ```
 
 It should include the final production origins. Local development allows `http://localhost:*` and `http://127.0.0.1:*`. Production requests without a valid `Origin` or `Referer` are rejected.
@@ -108,7 +108,7 @@ SMTP_TO=
 Optional advanced SMTP settings supported by the current code:
 
 ```bash
-# SMTP_HELO_NAME=kit-kuhni.ru
+# SMTP_HELO_NAME=kuhni-kit.ru
 # SMTP_REJECT_UNAUTHORIZED=true
 ```
 

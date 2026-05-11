@@ -9,7 +9,7 @@ export const siteSettings: SiteSettings = {
   telegramHref: "https://t.me/kuhnikit",
   vkHref: "https://vk.com/kuhnikit",
   maxHref: "",
-  email: "info@kit-kuhni.ru",
+  email: "info@kuhni-kit.ru",
   address: "Санкт-Петербург и Ленинградская область",
   workingHours: "Ежедневно, 10:00-20:00",
 };
