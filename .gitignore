@@ -12,3 +12,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 output/
+
+# Production/local secrets and backups
+.directus-token
+backups/
+*.dump
