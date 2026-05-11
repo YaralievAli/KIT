@@ -16,7 +16,7 @@ import type { SVGProps } from "react";
 import { PreviewDarkCalculator } from "@/components/v2/PreviewDarkCalculator";
 import { PreviewDarkFinalForm } from "@/components/v2/PreviewDarkFinalForm";
 import { PreviewDarkHeader } from "@/components/v2/PreviewDarkHeader";
-import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
+import { PreviewDarkFooter } from "@/components/v2/PreviewDarkFooter";
 import { faqItems } from "@/content/faq";
 import { imageMap } from "@/content/images-map";
 import { processSteps, productionStats, styleDescriptions, trustItems } from "@/content/home";
@@ -553,64 +553,5 @@ function FinalCta() {
         </div>
       </div>
     </section>
-  );
-}
-
-function PreviewDarkFooter() {
-  return (
-    <footer id="contacts" className="bg-[#061112] pb-24 pt-8 text-white lg:pb-8">
-      <div className={`${shell} grid gap-8 border-b border-white/10 pb-7 md:grid-cols-[1.1fr_0.8fr_0.8fr_1fr_0.9fr]`}>
-        <div>
-          <div className="flex items-center gap-3">
-            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={60} height={60} style={{ width: 60, height: 60 }} />
-            <span className="text-3xl font-semibold tracking-wide">КИТ</span>
-          </div>
-          <div className="mt-4 max-w-sm">
-            <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
-            <p className="mt-2 text-sm leading-6 text-white/60">с практичным проектированием, производством и сборкой.</p>
-          </div>
-          <SocialIconButtons settings={siteSettings} className="mt-5" />
-        </div>
-        <FooterLinks title="Навигация" links={[["Кухни", "#layouts"], ["Каталог", "#projects"], ["Расчёт", "#quiz"], ["Отзывы", "#reviews"]]} />
-        <FooterLinks title="Услуги" links={[["Дизайн-проект", "#quiz"], ["Производство", "#production"], ["Оплата частями", "#callback"]]} />
-        <div>
-          <h3 className="font-semibold">Контакты</h3>
-          <div className="mt-4 grid gap-2 text-sm text-white/60">
-            <a href={siteSettings.phoneHref}>{siteSettings.phone}</a>
-            <a href={`mailto:${siteSettings.email}`}>{siteSettings.email}</a>
-            <span>{siteSettings.address}</span>
-            <span>{siteSettings.workingHours}</span>
-          </div>
-        </div>
-        <div className="md:text-right">
-          <a href="#callback" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-champagne px-7 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy">
-            Заказать звонок
-          </a>
-          <p className="mt-3 text-xs text-white/50">Перезвоним в рабочее время</p>
-        </div>
-      </div>
-      <div className={`${shell} mt-4 flex flex-col gap-3 text-xs text-white/50 md:flex-row md:items-center md:justify-between`}>
-        <span>© 2026 КИТ — кухни на заказ в СПб и ЛО</span>
-        <div className="flex gap-4">
-          <Link href="/privacy">Политика конфиденциальности</Link>
-          <Link href="/personal-data-consent">Согласие на обработку данных</Link>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-function FooterLinks({ title, links }: { title: string; links: Array<[string, string]> }) {
-  return (
-    <div>
-      <h3 className="font-semibold">{title}</h3>
-      <div className="mt-4 grid gap-2 text-sm text-white/60">
-        {links.map(([label, href]) => (
-          <a key={label + href} href={href} className="hover:text-white">
-            {label}
-          </a>
-        ))}
-      </div>
-    </div>
   );
 }
