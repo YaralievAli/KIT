@@ -9,7 +9,7 @@ type DirectusProductionStat = {
 };
 
 export async function getProduction(): Promise<HomePageContent["production"]> {
-  const items = await readDirectusItems<DirectusProductionStat>("ProductionStats", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusProductionStat>("ProductionStats", { sort: ["sort"] });
   const stats = items
     ?.filter((item) => item.visible !== false && (item.text || item.title))
     .map((item) => item.text ?? item.title ?? "");

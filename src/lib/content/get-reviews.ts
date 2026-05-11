@@ -9,7 +9,7 @@ type DirectusReview = Partial<Review> & {
 const sources = ["Яндекс.Карты", "2ГИС", "ВКонтакте"] as const;
 
 export async function getReviews(): Promise<Review[]> {
-  const items = await readDirectusItems<DirectusReview>("Reviews", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusReview>("Reviews", { sort: ["sort"] });
   const reviews = items
     ?.filter((item) => item.visible !== false && item.name && item.text)
     .map((item, index) => {

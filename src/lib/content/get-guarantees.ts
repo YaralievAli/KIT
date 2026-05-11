@@ -8,7 +8,7 @@ type DirectusGuarantee = {
 };
 
 export async function getGuarantees(): Promise<Array<[string, string]>> {
-  const items = await readDirectusItems<DirectusGuarantee>("Guarantees", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusGuarantee>("Guarantees", { sort: ["sort"] });
   const guarantees = items
     ?.filter((item) => item.visible !== false && item.title && item.text)
     .map((item) => [item.title ?? "", item.text ?? ""] as [string, string]);

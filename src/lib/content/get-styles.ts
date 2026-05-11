@@ -8,7 +8,7 @@ type DirectusImageCard = Partial<ImageCard> & {
 };
 
 export async function getStyles(): Promise<ImageCard[]> {
-  const items = await readDirectusItems<DirectusImageCard>("KitchenStyles", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusImageCard>("KitchenStyles", { sort: ["sort"] });
   const styles = items
     ?.filter((item) => item.visible !== false && item.title)
     .map((item, index) => toImageCard(item, localContent.styles[index] ?? localContent.styles[0]));

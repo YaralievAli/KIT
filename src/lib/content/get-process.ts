@@ -8,7 +8,7 @@ type DirectusProcessStep = {
 };
 
 export async function getProcess(): Promise<Array<[string, string]>> {
-  const items = await readDirectusItems<DirectusProcessStep>("ProcessSteps", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusProcessStep>("ProcessSteps", { sort: ["sort"] });
   const steps = items
     ?.filter((item) => item.visible !== false && item.title && item.text)
     .map((item) => [item.title ?? "", item.text ?? ""] as [string, string]);

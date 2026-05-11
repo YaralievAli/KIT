@@ -9,7 +9,7 @@ type DirectusBenefit = TextCard & {
 };
 
 export async function getBenefits(): Promise<TextCard[]> {
-  const items = await readDirectusItems<DirectusBenefit>("Benefits", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusBenefit>("Benefits", { sort: ["sort"] });
   const visible = items?.filter((item) => item.visible !== false && item.title && item.text);
 
   return visible?.length ? visible.map(({ title, text }) => ({ title, text })) : localContent.benefits;

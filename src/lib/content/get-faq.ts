@@ -7,7 +7,7 @@ type DirectusFAQItem = Partial<FAQItem> & {
 };
 
 export async function getFAQ(): Promise<FAQItem[]> {
-  const items = await readDirectusItems<DirectusFAQItem>("FAQ", { sort: ["order", "sort"] });
+  const items = await readDirectusItems<DirectusFAQItem>("FAQ", { sort: ["order"] });
   const faq = items
     ?.filter((item) => item.visible !== false && item.question && item.answer)
     .map((item, index) => ({

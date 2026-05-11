@@ -11,7 +11,7 @@ type DirectusComparisonItem = {
 };
 
 export async function getComparison(): Promise<string[][]> {
-  const items = await readDirectusItems<DirectusComparisonItem>("ComparisonItems", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusComparisonItem>("ComparisonItems", { sort: ["sort"] });
   const rows = items
     ?.filter((item) => item.visible !== false && item.criterion)
     .map((item) => [

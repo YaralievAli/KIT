@@ -8,7 +8,7 @@ type DirectusMaterial = Partial<ImageCard> & {
 };
 
 export async function getMaterials(): Promise<ImageCard[]> {
-  const items = await readDirectusItems<DirectusMaterial>("Materials", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusMaterial>("Materials", { sort: ["sort"] });
   const materials = items
     ?.filter((item) => item.visible !== false && item.title)
     .map((item, index) => ({

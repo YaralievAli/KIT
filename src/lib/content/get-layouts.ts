@@ -8,7 +8,7 @@ type DirectusLayout = Partial<ImageCard> & {
 };
 
 export async function getLayouts(): Promise<ImageCard[]> {
-  const items = await readDirectusItems<DirectusLayout>("LayoutTypes", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusLayout>("LayoutTypes", { sort: ["sort"] });
   const layouts = items
     ?.filter((item) => item.visible !== false && item.title)
     .map((item, index) => ({

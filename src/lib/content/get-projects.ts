@@ -13,7 +13,7 @@ type DirectusProject = Omit<Partial<Project>, "tags" | "image"> & {
 const budgetGroups = ["до 300 тыс.", "300-500 тыс.", "от 500 тыс."] as const;
 
 export async function getProjects(): Promise<Project[]> {
-  const items = await readDirectusItems<DirectusProject>("Projects", { sort: ["sort", "order"] });
+  const items = await readDirectusItems<DirectusProject>("Projects", { sort: ["sort"] });
   const projects = items
     ?.filter((item) => item.visible !== false && item.title)
     .map((item, index) => toProject(item, localContent.projects[index] ?? localContent.projects[0]));
