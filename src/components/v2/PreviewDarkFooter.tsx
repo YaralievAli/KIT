@@ -33,9 +33,9 @@ export function PreviewDarkFooter() {
           </div>
         </div>
         <div className="md:text-right">
-          <a href="/#callback" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-champagne px-7 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy">
+          <Link href="/#callback" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-champagne px-7 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy">
             Заказать звонок
-          </a>
+          </Link>
           <p className="mt-3 text-xs text-white/66">Перезвоним в рабочее время</p>
         </div>
       </div>

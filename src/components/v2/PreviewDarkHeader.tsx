@@ -51,12 +51,12 @@ export function PreviewDarkHeader() {
             >
               {siteSettings.phone}
             </a>
-            <a
+            <Link
               href="/#callback"
               className="inline-flex min-h-11 items-center justify-center rounded-full border border-champagne px-5 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
             >
               Заказать звонок
-            </a>
+            </Link>
             {siteSettings.vkHref ? (
               <a
                 href={siteSettings.vkHref}
@@ -114,10 +114,10 @@ export function PreviewDarkHeader() {
           <MessageCircle size={16} aria-hidden="true" />
           WhatsApp
         </a>
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-[#0F9F92] px-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(20,184,166,0.26)] transition hover:bg-[#14B8A6] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href="/#quiz">
+        <Link className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-[#0F9F92] px-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(20,184,166,0.26)] transition hover:bg-[#14B8A6] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href="/#quiz">
           <Calculator size={16} aria-hidden="true" />
           Расчёт
-        </a>
+        </Link>
       </div>
     </>
   );
