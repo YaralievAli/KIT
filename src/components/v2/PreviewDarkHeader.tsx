@@ -4,16 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calculator, MessageCircle, Menu, Phone, X } from "lucide-react";
 import { useState } from "react";
-import type { SVGProps } from "react";
+import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
 import { cn } from "@/lib/helpers";
 
 const nav = [
   ["Кухни", "/#layouts"],
-  ["Каталог", "/#projects"],
-  ["Рассчитать стоимость", "/#quiz"],
-  ["Наши работы", "/#projects"],
+  ["Расчёт", "/#quiz"],
+  ["Проекты", "/#projects"],
   ["Отзывы", "/#reviews"],
   ["Контакты", "/#contacts"],
 ] as const;
@@ -32,7 +31,7 @@ export function PreviewDarkHeader() {
             <span className="text-2xl font-semibold text-white">КИТ</span>
           </Link>
 
-          <nav className="hidden items-center gap-8 xl:flex" aria-label="Навигация preview">
+          <nav className="hidden items-center gap-6 xl:flex" aria-label="Навигация preview">
             {nav.map(([label, href]) => (
               <Link
                 key={label + href}
@@ -57,15 +56,12 @@ export function PreviewDarkHeader() {
             >
               Заказать звонок
             </Link>
-            {siteSettings.vkHref ? (
-              <a
-                href={siteSettings.vkHref}
-                className="hidden h-11 w-11 items-center justify-center rounded-full border border-white/28 bg-white/[0.08] text-[#9CD7FF] transition hover:border-[#9CD7FF]/70 hover:bg-white/[0.12] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9CD7FF] lg:inline-flex"
-                aria-label="ВКонтакте"
-              >
-                <HeaderVkIcon className="h-5 w-5" aria-hidden="true" />
-              </a>
-            ) : null}
+            <SocialIconButtons
+              settings={siteSettings}
+              include={["vk", "telegram", "max"]}
+              className="hidden gap-2 lg:flex"
+              linkClassName="h-10 w-10"
+            />
           </div>
 
           <button
@@ -104,6 +100,11 @@ export function PreviewDarkHeader() {
           <Phone size={18} aria-hidden="true" />
           Позвонить
         </a>
+        <SocialIconButtons
+          settings={siteSettings}
+          include={["vk", "telegram", "max"]}
+          className="mt-5 justify-center"
+        />
       </aside>
       <div className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-1.5 rounded-[22px] border border-white/10 bg-[#031416] p-1.5 shadow-[0_-16px_40px_rgba(0,0,0,0.28)] backdrop-blur-xl lg:hidden">
         <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.phoneHref}>
@@ -120,13 +121,5 @@ export function PreviewDarkHeader() {
         </Link>
       </div>
     </>
-  );
-}
-
-function HeaderVkIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M12.75 17.2h-1.08c-3.67 0-5.76-2.52-7.33-6.72L3.9 9.3h2.52c.45 0 .65.2.78.58.86 2.46 2.02 4.3 2.55 4.3.2 0 .29-.1.29-.62v-2.42c-.07-1.1-.64-1.2-.64-1.6 0-.2.17-.4.44-.4h3.96c.37 0 .5.2.5.64v3.27c0 .35.15.47.26.47.2 0 .38-.12.76-.5.94-1.05 1.62-2.66 1.62-2.66.09-.23.28-.43.72-.43h2.52c.76 0 .93.39.76.93-.32 1.01-3.4 4.78-3.4 4.78-.27.34-.38.5 0 .98.27.35 1.17 1.14 1.77 1.85.44.51.77.94.86 1.24.1.36-.18.55-.65.55h-2.81c-.42 0-.62-.13-.86-.42-.34-.4-1.12-1.4-1.86-1.4-.38 0-.48.26-.48.66v.75c0 .4-.13.62-.76.62Z" />
-    </svg>
   );
 }

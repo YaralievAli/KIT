@@ -2,30 +2,72 @@ import type { ComponentType, SVGProps } from "react";
 import { cn } from "@/lib/helpers";
 import type { SiteSettings } from "@/types/content";
 
+type SocialKey = "vk" | "telegram" | "whatsapp" | "max";
+
 type SocialIconButtonsProps = {
   settings: Pick<SiteSettings, "vkHref" | "telegramHref" | "whatsappHref" | "maxHref">;
   className?: string;
   linkClassName?: string;
+  include?: SocialKey[];
+  showPlaceholders?: boolean;
 };
 
 const baseLinkClass =
-  "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/78 transition hover:border-teal hover:bg-teal hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal";
-const disabledLinkClass = "cursor-not-allowed opacity-45 hover:border-white/12 hover:bg-white/8 hover:text-white/78";
+  "inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent text-white shadow-[0_10px_26px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(0,0,0,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+const placeholderClass =
+  "inline-flex h-11 w-11 cursor-not-allowed items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-white/35 shadow-none";
 
 type SocialItem = {
+  key: SocialKey;
   href?: string;
   label: string;
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
-  disabled?: boolean;
+  linkBrandClassName: string;
+  iconClassName: string;
 };
 
-export function SocialIconButtons({ settings, className, linkClassName }: SocialIconButtonsProps) {
-  const socials = [
-    settings.vkHref ? { href: settings.vkHref, label: "ВКонтакте", Icon: VkIcon } : null,
-    settings.telegramHref ? { href: settings.telegramHref, label: "Telegram", Icon: TelegramIcon } : null,
-    settings.whatsappHref ? { href: settings.whatsappHref, label: "WhatsApp", Icon: WhatsAppIcon } : null,
-    { href: settings.maxHref || undefined, label: "MAX", Icon: MaxIcon, disabled: !settings.maxHref },
-  ].filter(Boolean) as SocialItem[];
+export function SocialIconButtons({ settings, className, linkClassName, include, showPlaceholders }: SocialIconButtonsProps) {
+  const socialItems: SocialItem[] = [
+    {
+      key: "vk",
+      href: settings.vkHref,
+      label: "ВКонтакте",
+      Icon: VkIcon,
+      linkBrandClassName: "bg-[#0077FF] hover:bg-[#0B82FF] focus-visible:outline-[#0077FF]",
+      iconClassName: "text-white",
+    },
+    {
+      key: "telegram",
+      href: settings.telegramHref,
+      label: "Telegram",
+      Icon: TelegramIcon,
+      linkBrandClassName: "bg-[#2AABEE] hover:bg-[#24A1DE] focus-visible:outline-[#2AABEE]",
+      iconClassName: "text-white",
+    },
+    {
+      key: "whatsapp",
+      href: settings.whatsappHref,
+      label: "WhatsApp",
+      Icon: WhatsAppIcon,
+      linkBrandClassName: "bg-[#25D366] hover:bg-[#1FC45D] focus-visible:outline-[#25D366]",
+      iconClassName: "text-white",
+    },
+    {
+      key: "max",
+      href: settings.maxHref,
+      label: "MAX",
+      Icon: MaxIcon,
+      linkBrandClassName: "bg-[linear-gradient(135deg,#2F80ED_0%,#7657FF_55%,#A855F7_100%)] hover:brightness-110 focus-visible:outline-[#7657FF]",
+      iconClassName: "text-white",
+    },
+  ];
+  const socials = socialItems
+    .filter((item) => !include || include.includes(item.key))
+    .map((item) => {
+      const href = item.href?.trim();
+      return href || showPlaceholders ? { ...item, href } : null;
+    })
+    .filter(Boolean) as Array<SocialItem & { href?: string }>;
 
   if (socials.length === 0) {
     return null;
@@ -33,18 +75,19 @@ export function SocialIconButtons({ settings, className, linkClassName }: Social
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      {socials.map(({ href, label, Icon, disabled }) =>
+      {socials.map(({ href, label, Icon, linkBrandClassName, iconClassName }) =>
         href ? (
-          <a key={label} href={href} className={cn(baseLinkClass, linkClassName)} aria-label={label}>
-            <Icon className="h-5 w-5" aria-hidden="true" />
+          <a key={label} href={href} className={cn(baseLinkClass, linkClassName, linkBrandClassName)} aria-label={label}>
+            <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden="true" />
           </a>
         ) : (
           <span
             key={label}
-            className={cn(baseLinkClass, disabledLinkClass, linkClassName)}
+            className={cn(placeholderClass, linkClassName)}
             aria-label={label}
-            aria-disabled={disabled ? "true" : undefined}
+            aria-disabled="true"
             title={`${label}: ссылка не настроена`}
+            data-placeholder="true"
           >
             <Icon className="h-5 w-5" aria-hidden="true" />
           </span>
@@ -80,9 +123,11 @@ function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
 
 function MaxIcon(props: SVGProps<SVGSVGElement>) {
   return (
+    // Temporary MAX mark for visual review. Replace with the official/approved asset later.
     <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M7.2 14.8V9.2h1.35l1.55 2.3 1.55-2.3H13v5.6h-1.45v-3.18l-1.05 1.53h-.8l-1.05-1.53v3.18H7.2Zm6.2 0 2.05-5.6h1.48l2.05 5.6h-1.53l-.33-1.02h-1.88l-.33 1.02H13.4Zm2.2-2.18h1.16l-.58-1.78-.58 1.78Z" fill="currentColor" />
+      <text x="12" y="14.5" fill="currentColor" fontSize="6.2" fontWeight="800" textAnchor="middle" letterSpacing="0.2">
+        MAX
+      </text>
     </svg>
   );
 }

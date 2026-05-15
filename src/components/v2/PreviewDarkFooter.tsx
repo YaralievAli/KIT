@@ -19,7 +19,7 @@ export function PreviewDarkFooter() {
             <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
             <p className="mt-2 text-sm leading-6 text-white/72">с практичным проектированием, производством и сборкой.</p>
           </div>
-          <SocialIconButtons settings={siteSettings} className="mt-5" />
+          <SocialIconButtons settings={siteSettings} include={["whatsapp", "telegram", "max", "vk"]} className="mt-5" />
         </div>
         <FooterLinks title="Навигация" links={[["Кухни", "/#layouts"], ["Каталог", "/#projects"], ["Расчёт", "/#quiz"], ["Отзывы", "/#reviews"]]} />
         <FooterLinks title="Услуги" links={[["Дизайн-проект", "/#quiz"], ["Производство", "/#production"], ["Оплата частями", "/#callback"]]} />
