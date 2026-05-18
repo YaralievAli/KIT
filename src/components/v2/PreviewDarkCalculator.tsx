@@ -116,9 +116,9 @@ const calculatorSteps = [
 ] as const;
 const calculatorContentId = "homepage-calculator-content";
 const calculatorSubmitButtonClass =
-  "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#18C6B4_0%,#0D9488_56%,#0A6A64_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_34px_rgba(13,148,136,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(20,184,166,0.38)] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:w-auto sm:min-w-56 sm:px-7";
+  "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#19CDBB_0%,#0D9488_54%,#075F5B_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_34px_rgba(13,148,136,0.34)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(20,184,166,0.42)] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:w-auto sm:min-w-56 sm:px-7";
 const calculatorSecondaryButtonClass =
-  "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-white/[0.085] bg-white/[0.028] px-5 py-3 text-sm font-semibold text-white/64 transition hover:border-[#C8A96E]/[0.2] hover:bg-white/[0.06] hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:border-white/[0.05] disabled:bg-white/[0.018] disabled:text-white/28 disabled:shadow-none sm:w-auto sm:min-w-36";
+  "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-white/[0.14] bg-[#08282A] px-5 py-3 text-sm font-semibold text-white/78 transition hover:border-[#C8A96E]/[0.34] hover:bg-[#0B3436] hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:border-white/[0.07] disabled:bg-[#061C1E] disabled:text-white/36 disabled:shadow-none sm:w-auto sm:min-w-36";
 
 const previewDarkCalculatorSchema = contactFormSchema.extend({
   layout: z.enum(layoutValues, { error: "Выберите планировку" }),
@@ -377,7 +377,7 @@ export function PreviewDarkCalculator() {
       case 0:
         return (
           <div className="grid gap-3">
-            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-2 sm:grid-cols-2 2xl:grid-cols-4">
               {layoutOptions.map((item) => {
                 const isActive = item.value === selectedLayout.value;
 
@@ -386,10 +386,10 @@ export function PreviewDarkCalculator() {
                     key={item.value}
                     type="button"
                     className={cn(
-                      "inline-flex min-h-[50px] items-center justify-start gap-2.5 rounded-2xl border px-3 py-1.5 text-left text-sm font-semibold leading-tight transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14B8A6] xl:gap-2",
+                      "inline-flex min-h-[52px] items-center justify-start gap-2.5 rounded-2xl border px-3 py-1.5 text-left text-sm font-semibold leading-tight transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14B8A6] xl:gap-2",
                       isActive
-                        ? "border-[#14B8A6]/[0.46] bg-[#0F766E]/28 text-white shadow-[0_0_22px_rgba(20,184,166,0.1)]"
-                        : "border-white/[0.065] bg-white/[0.028] text-white/70 hover:border-[#C8A96E]/[0.2] hover:bg-white/[0.055] hover:text-white"
+                        ? "border-[#14B8A6]/70 bg-[#0B4E4D] text-white shadow-[0_0_24px_rgba(20,184,166,0.16)]"
+                        : "border-white/[0.12] bg-[#08282A] text-white/82 hover:border-[#C8A96E]/[0.34] hover:bg-[#0A3032] hover:text-white"
                     )}
                     aria-pressed={isActive}
                     onClick={() => {
@@ -398,7 +398,7 @@ export function PreviewDarkCalculator() {
                     }}
                   >
                     <LayoutSchemeIcon active={isActive} layout={item.value} />
-                    <span>{item.label}</span>
+                    <span className="whitespace-nowrap">{item.label}</span>
                   </button>
                 );
               })}
@@ -545,15 +545,15 @@ export function PreviewDarkCalculator() {
       <form
         id={calculatorContentId}
         className={cn(
-          "w-full min-w-0 overflow-hidden rounded-[24px] border border-white/[0.07] bg-[linear-gradient(135deg,rgba(7,43,45,0.9)_0%,rgba(5,21,24,0.94)_68%,rgba(6,32,34,0.9)_100%)] p-2.5 text-white shadow-[0_18px_44px_rgba(3,20,22,0.16)] md:rounded-[28px] md:p-4 lg:block",
+          "w-full min-w-0 overflow-hidden rounded-[24px] border border-[#0D5B5B]/50 bg-[linear-gradient(135deg,#062E30_0%,#04191B_60%,#062A2C_100%)] p-2.5 text-white shadow-[0_20px_50px_rgba(3,20,22,0.24)] md:rounded-[28px] md:p-4 lg:block [&_.v2-calc-input]:border-white/[0.18] [&_.v2-calc-input]:bg-[#04191B] [&_.v2-calc-input]:text-white [&_.v2-calc-input]:placeholder:text-white/48 [&_.v2-calc-input]:focus:border-teal-glow [&_.v2-calc-input]:focus:ring-teal/25",
           isExpandedMobile ? "block" : "hidden"
         )}
         aria-labelledby="homepage-calculator-heading"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
-        <div className="grid min-w-0 gap-2.5 md:gap-4 lg:grid-cols-[minmax(0,1.65fr)_380px] lg:items-start xl:grid-cols-[minmax(0,1.65fr)_400px]">
-          <div className="min-w-0 rounded-[20px] bg-white/[0.024] p-2.5 md:rounded-[24px] md:p-3.5 lg:self-start">
+        <div className="grid min-w-0 gap-2.5 md:gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.68fr)] lg:items-start xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.68fr)] 2xl:grid-cols-[minmax(0,1fr)_minmax(390px,0.68fr)]">
+          <div className="min-w-0 rounded-[20px] border border-white/[0.06] bg-[#08282A]/88 p-2.5 md:rounded-[24px] md:p-3.5 lg:self-start">
             <div
               id="homepage-calculator-focus"
               ref={focusTargetRef}
@@ -580,16 +580,16 @@ export function PreviewDarkCalculator() {
               </div>
             </div>
 
-            <div className="mt-2.5 rounded-[18px] bg-white/[0.032] p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.032)] md:p-3">
+            <div className="mt-2.5 rounded-[18px] border border-white/[0.07] bg-[#061F21] p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] md:p-3">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-glow/90">
                     Шаг {activeStep + 1} из {calculatorSteps.length}
                   </p>
                   <h3 className="mt-1 text-lg font-semibold leading-tight text-white md:text-xl">{currentStep.title}</h3>
-                  <p className="mt-1 max-w-2xl text-sm leading-[1.45] text-white/54">{currentStep.helper}</p>
+                  <p className="mt-1 max-w-2xl text-sm leading-[1.45] text-white/68">{currentStep.helper}</p>
                 </div>
-                <span className="hidden shrink-0 px-1 pt-0.5 text-xs font-semibold text-white/42 sm:inline-flex">
+                <span className="hidden shrink-0 px-1 pt-0.5 text-xs font-semibold text-white/58 sm:inline-flex">
                   {showContacts ? "Контакты" : "Калькулятор"}
                 </span>
               </div>
@@ -598,7 +598,7 @@ export function PreviewDarkCalculator() {
                 {calculatorSteps.map((step, index) => (
                   <span
                     key={step.title}
-                    className={cn("h-0.5 rounded-full transition", index <= activeStep ? "bg-[linear-gradient(90deg,#C8A96E,#14B8A6)]" : "bg-white/[0.1]")}
+                    className={cn("h-0.5 rounded-full transition", index <= activeStep ? "bg-[linear-gradient(90deg,#C8A96E,#14B8A6)]" : "bg-white/[0.16]")}
                   />
                 ))}
               </div>
@@ -613,7 +613,7 @@ export function PreviewDarkCalculator() {
             ) : null}
 
             {showContacts ? (
-              <div className="mt-3 rounded-[18px] bg-white/[0.035] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+              <div className="mt-3 rounded-[18px] border border-white/[0.07] bg-[#061F21] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-sm font-semibold text-teal-glow">Куда отправить расчёт?</p>
                 <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
                   <DarkField label="Ваше имя" error={errors.name?.message}>
@@ -664,7 +664,7 @@ export function PreviewDarkCalculator() {
               </div>
             ) : null}
 
-            <div className="mt-2.5 flex flex-col gap-2.5 rounded-[18px] bg-white/[0.02] px-2.5 py-2.5 sm:flex-row sm:items-center sm:justify-between md:px-3">
+            <div className="mt-2.5 flex flex-col gap-2.5 rounded-[18px] border border-white/[0.06] bg-[#061F21] px-2.5 py-2.5 sm:flex-row sm:items-center sm:justify-between md:px-3">
               {showContacts ? (
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                   <button className={calculatorSecondaryButtonClass} type="button" onClick={goToPreviousStep}>
@@ -695,7 +695,7 @@ export function PreviewDarkCalculator() {
                   )}
                 </div>
               )}
-              <p className="max-w-md text-xs leading-[1.45] text-white/46">
+              <p className="max-w-md text-xs leading-[1.45] text-white/58">
                 Сначала покажем предварительный диапазон, контакты понадобятся только для проверки расчёта дизайнером.
               </p>
             </div>
@@ -708,33 +708,35 @@ export function PreviewDarkCalculator() {
             {status === "error" ? <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-700">{errorMessage}</p> : null}
           </div>
 
-          <aside className="relative min-w-0 overflow-hidden rounded-[22px] bg-[radial-gradient(circle_at_78%_6%,rgba(200,169,110,0.13),transparent_34%),linear-gradient(155deg,rgba(255,255,255,0.062)_0%,rgba(255,255,255,0.026)_48%,rgba(20,184,166,0.06)_100%)] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_16px_34px_rgba(2,18,20,0.13)] md:p-4 lg:sticky lg:top-24 lg:self-start">
+          <aside className="relative min-w-0 overflow-hidden rounded-[22px] border border-[#C8A96E]/[0.16] bg-[radial-gradient(circle_at_78%_8%,rgba(200,169,110,0.14),transparent_34%),linear-gradient(155deg,#08282A_0%,#061F21_54%,#082E30_100%)] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_16px_34px_rgba(2,18,20,0.16)] md:p-4 lg:self-start">
             <div className="relative z-10">
-              <p className="text-sm font-semibold text-white/86">Предварительный диапазон</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/42">{selectedLayout.label}</p>
+              <p className="inline-flex max-w-full items-baseline gap-2 whitespace-nowrap text-sm font-semibold text-white">
+                <span>Предварительный диапазон&nbsp;</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/62">{selectedLayout.label.toLocaleUpperCase("ru-RU")}</span>
+              </p>
               {result ? (
                 <>
-                  <p className="mt-2.5 text-[28px] font-semibold leading-[1.06] text-champagne md:text-[34px]">
+                  <p className="mt-2.5 whitespace-nowrap text-[25px] font-semibold leading-[1.06] text-champagne sm:text-[28px] md:text-[30px] 2xl:text-[34px]">
                     от {formatMoney(result.minPrice)} до {formatMoney(result.maxPrice)} ₽
                   </p>
-                  <p className="mt-2 text-[13px] leading-5 text-white/58">{result.disclaimer}</p>
-                  <div className="relative mt-3 h-[104px] overflow-hidden rounded-[18px] bg-[radial-gradient(circle_at_50%_44%,rgba(20,184,166,0.13),rgba(255,255,255,0.035)_58%,rgba(0,0,0,0.18)_100%)] md:h-[124px]">
+                  <p className="mt-2 text-[13px] leading-5 text-white/72">{result.disclaimer}</p>
+                  <div className="relative mt-3 h-[150px] overflow-hidden rounded-[18px] bg-[linear-gradient(180deg,rgba(8,48,50,0.72)_0%,rgba(4,27,29,0.84)_100%)] shadow-[inset_0_0_28px_rgba(20,184,166,0.1)] sm:h-[164px] md:h-[172px] 2xl:h-[184px]">
                     <Image
                       key={selectedLayout.image}
                       src={selectedLayout.image}
                       alt={selectedLayout.alt}
                       fill
-                      sizes="(max-width: 1024px) 92vw, 340px"
+                      sizes="(max-width: 1024px) 92vw, (max-width: 1536px) 390px, 440px"
                       loading="lazy"
-                      className="object-contain p-4 opacity-78 transition duration-300"
+                      className="scale-[1.12] object-contain opacity-100 transition duration-300"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#061112]/44 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-[#061112]/18 to-transparent" />
                   </div>
                   <ResultBreakdown result={result} values={watchedValues} />
                   {result.warnings.length ? (
                     <div className="mt-3 grid gap-1">
                       {result.warnings.slice(0, 2).map((warning) => (
-                        <p key={warning} className="rounded-xl bg-white/[0.028] px-2.5 py-1.5 text-xs leading-5 text-white/48">
+                      <p key={warning} className="rounded-xl bg-white/[0.04] px-2.5 py-1.5 text-xs leading-5 text-white/58">
                           {warning}
                         </p>
                       ))}
@@ -744,7 +746,7 @@ export function PreviewDarkCalculator() {
               ) : (
                 <>
                   <p className="mt-2 text-xl font-semibold text-champagne">Заполните параметры</p>
-                  <p className="mt-2 text-[13px] leading-5 text-white/58">
+                  <p className="mt-2 text-[13px] leading-5 text-white/72">
                     Укажите размеры и комплектацию, чтобы увидеть предварительный диапазон.
                   </p>
                   <div className="mt-3 grid gap-1">
@@ -754,17 +756,17 @@ export function PreviewDarkCalculator() {
                       </p>
                     ))}
                   </div>
-                  <div className="relative mt-3 h-[104px] overflow-hidden rounded-[18px] bg-[radial-gradient(circle_at_50%_44%,rgba(20,184,166,0.13),rgba(255,255,255,0.035)_58%,rgba(0,0,0,0.18)_100%)] md:h-[124px]">
+                  <div className="relative mt-3 h-[150px] overflow-hidden rounded-[18px] bg-[linear-gradient(180deg,rgba(8,48,50,0.72)_0%,rgba(4,27,29,0.84)_100%)] shadow-[inset_0_0_28px_rgba(20,184,166,0.1)] sm:h-[164px] md:h-[172px] 2xl:h-[184px]">
                     <Image
                       key={selectedLayout.image}
                       src={selectedLayout.image}
                       alt={selectedLayout.alt}
                       fill
-                      sizes="(max-width: 1024px) 92vw, 340px"
+                      sizes="(max-width: 1024px) 92vw, (max-width: 1536px) 390px, 440px"
                       loading="lazy"
-                      className="object-contain p-4 opacity-78 transition duration-300"
+                      className="scale-[1.12] object-contain opacity-100 transition duration-300"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#061112]/44 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-[#061112]/18 to-transparent" />
                   </div>
                 </>
               )}
@@ -777,14 +779,14 @@ export function PreviewDarkCalculator() {
 }
 
 function LayoutSchemeIcon({ active, layout }: { active: boolean; layout: KitchenLayout }) {
-  const mainStroke = active ? "text-teal-glow" : "text-white/38";
+  const mainStroke = active ? "text-teal-glow" : "text-white/52";
   const accentStroke = active ? "#C8A96E" : "currentColor";
-  const accentOpacity = active ? 0.86 : 0.28;
+  const accentOpacity = active ? 0.92 : 0.34;
 
   return (
     <svg
       aria-hidden="true"
-      className={cn("h-7 w-10 shrink-0 sm:h-8 sm:w-12", mainStroke, active ? "opacity-95" : "opacity-70")}
+      className={cn("h-7 w-10 shrink-0 sm:h-8 sm:w-12", mainStroke, active ? "opacity-100" : "opacity-78")}
       fill="none"
       viewBox="0 0 64 40"
     >
@@ -837,14 +839,14 @@ function ChoiceButton({
       className={cn(
         "min-h-[52px] rounded-2xl border px-3 py-2 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14B8A6]",
         active
-          ? "border-[#14B8A6]/[0.42] bg-[#0F766E]/28 text-white shadow-[0_0_22px_rgba(20,184,166,0.09)]"
-          : "border-white/[0.065] bg-white/[0.028] text-white/72 hover:border-[#C8A96E]/[0.2] hover:bg-white/[0.055] hover:text-white"
+          ? "border-[#14B8A6]/70 bg-[#0B4E4D] text-white shadow-[0_0_22px_rgba(20,184,166,0.14)]"
+          : "border-white/[0.12] bg-[#08282A] text-white/82 hover:border-[#C8A96E]/[0.34] hover:bg-[#0A3032] hover:text-white"
       )}
       aria-pressed={active}
       onClick={onClick}
     >
       <span className="block text-sm font-semibold leading-tight">{title}</span>
-      <span className="mt-0.5 block text-xs leading-4 text-white/52">{description}</span>
+      <span className="mt-0.5 block text-xs leading-4 text-white/62">{description}</span>
     </button>
   );
 }
@@ -859,7 +861,7 @@ function CheckOption({
   onChange: () => void;
 }) {
   return (
-    <label className="group flex min-h-10 cursor-pointer items-center gap-2.5 rounded-2xl border border-white/[0.065] bg-white/[0.028] px-3 py-1.5 text-sm font-semibold text-white/70 transition hover:border-[#C8A96E]/[0.2] hover:bg-white/[0.055] hover:text-white">
+    <label className="group flex min-h-10 cursor-pointer items-center gap-2.5 rounded-2xl border border-white/[0.12] bg-[#08282A] px-3 py-1.5 text-sm font-semibold text-white/82 transition hover:border-[#C8A96E]/[0.34] hover:bg-[#0A3032] hover:text-white">
       <input
         type="checkbox"
         className="h-4 w-4 rounded border-white/20 bg-[#061112] text-teal focus:ring-2 focus:ring-teal-glow focus:ring-offset-0"
@@ -893,11 +895,11 @@ function ResultBreakdown({ result, values }: { result: KitchenCalculatorResult; 
   ];
 
   return (
-    <div className="mt-3.5 border-y border-white/[0.05] py-0.5">
+    <div className="mt-3.5 border-y border-white/[0.08] py-0.5">
       {rows.map(([label, value]) => (
         <div key={label} className="flex items-start justify-between gap-3 py-1.5 text-xs leading-5">
-          <span className="shrink-0 text-white/42">{label}</span>
-          <span className="min-w-0 text-right font-semibold text-white/68">{value}</span>
+          <span className="shrink-0 text-white/58">{label}</span>
+          <span className="min-w-0 text-right font-semibold text-white/86">{value}</span>
         </div>
       ))}
     </div>

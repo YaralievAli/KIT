@@ -286,25 +286,25 @@ export const imageMap = {
     },
     calculatorLayouts: {
       corner: {
-        image: "/images/preview-dark/calculator/preview-corner-sketch-2.webp",
+        image: "/images/preview-dark/calculator/preview-corner-sketch-3.webp",
         alt: "Схематичный эскиз угловой кухни",
         loading: "lazy",
         sizes: "(max-width: 1024px) 78vw, 280px",
       },
       straight: {
-        image: "/images/preview-dark/calculator/preview-straight-sketch-2.webp",
+        image: "/images/preview-dark/calculator/preview-straight-sketch-3.webp",
         alt: "Схематичный эскиз прямой кухни",
         loading: "lazy",
         sizes: "(max-width: 1024px) 78vw, 280px",
       },
       uShaped: {
-        image: "/images/preview-dark/calculator/preview-u-shaped-sketch-2.webp",
+        image: "/images/preview-dark/calculator/preview-u-shaped-sketch-3.webp",
         alt: "Схематичный эскиз П-образной кухни",
         loading: "lazy",
         sizes: "(max-width: 1024px) 78vw, 280px",
       },
       island: {
-        image: "/images/preview-dark/calculator/preview-island-sketch-2.webp",
+        image: "/images/preview-dark/calculator/preview-island-sketch-3.webp",
         alt: "Схематичный эскиз кухни с островом",
         loading: "lazy",
         sizes: "(max-width: 1024px) 78vw, 280px",

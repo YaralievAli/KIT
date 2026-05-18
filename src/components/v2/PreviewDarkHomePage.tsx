@@ -3,14 +3,11 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgePercent,
-  Calculator,
   ChevronDown,
   CheckCircle2,
   Clock3,
   Factory,
   MapPin,
-  Ruler,
-  Wrench,
 } from "lucide-react";
 import type { SVGProps } from "react";
 import { PreviewDarkCalculator } from "@/components/v2/PreviewDarkCalculator";
@@ -19,7 +16,7 @@ import { PreviewDarkHeader } from "@/components/v2/PreviewDarkHeader";
 import { PreviewDarkFooter } from "@/components/v2/PreviewDarkFooter";
 import { faqItems } from "@/content/faq";
 import { imageMap } from "@/content/images-map";
-import { processSteps, productionStats, styleDescriptions, trustItems } from "@/content/home";
+import { processSteps, styleDescriptions, trustItems } from "@/content/home";
 import { projects, projectSectionTitle } from "@/content/projects";
 import { reviews } from "@/content/reviews";
 import { siteSettings } from "@/content/settings";
@@ -28,12 +25,7 @@ import type { FAQItem, Review } from "@/types/content";
 
 const shell = "mx-auto w-full max-w-[1760px] px-4 sm:px-6 lg:px-10";
 const trustIcons = [Factory, Clock3, BadgePercent, MapPin];
-const heroCards = [
-  { icon: BadgePercent, title: "Оплата частями" },
-  { icon: Calculator, title: "Расчёт онлайн" },
-  { icon: Ruler, title: "Проектные решения" },
-  { icon: Wrench, title: "Сборка под ключ" },
-];
+const heroTrustItems = ["Оплата частями", "проектные решения", "сборка под ключ"];
 const layoutDescriptions = [
   "Оптимально для большинства помещений",
   "Эргономичное решение для вытянутых помещений",
@@ -51,6 +43,28 @@ const finalCtaBenefits = [
   "Подбор материалов и фурнитуры",
   "Предварительный расчёт без скрытых обещаний",
   "Ответ в рабочее время",
+];
+const productionProofItems = [
+  {
+    icon: CheckCircle2,
+    title: "Контроль качества",
+    text: "Проверяем размеры, сборку и готовность перед установкой.",
+  },
+  {
+    icon: Clock3,
+    title: "Сроки в договоре",
+    text: "Фиксируем этапы и дату запуска работ.",
+  },
+  {
+    icon: BadgePercent,
+    title: "Гарантийные условия",
+    text: "Прописываем обязательства и порядок обращения.",
+  },
+  {
+    icon: MapPin,
+    title: "СПБ и ЛО",
+    text: "Работаем по Санкт-Петербургу и области.",
+  },
 ];
 
 export function PreviewDarkHomePage() {
@@ -99,58 +113,54 @@ function Hero() {
       </div>
       <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_26%_32%,rgba(20,184,166,0.11),transparent_34%)]" aria-hidden="true" />
 
-      <div className={`${shell} relative z-10 grid min-h-[560px] items-center gap-5 pb-7 pt-5 sm:min-h-[610px] sm:gap-8 sm:pb-14 sm:pt-6 lg:grid-cols-12 lg:pb-16 lg:pt-7 xl:min-h-[650px]`}>
-        <div className="max-w-[670px] lg:col-span-5">
-          <p className="inline-flex items-center gap-2 rounded-full border border-teal/25 bg-[#061112]/46 px-3.5 py-2 text-xs font-semibold text-teal-glow backdrop-blur sm:px-4 sm:text-sm">
-            <MapPin size={16} aria-hidden="true" />
-            Санкт-Петербург и Ленинградская область
-          </p>
-          <h1 className="mt-4 text-[42px] font-semibold leading-[0.94] tracking-tight sm:mt-5 sm:text-6xl xl:text-[74px]">
-            Кухни на заказ
-            <span className="block text-teal-glow">в СПБ и ЛО</span>
-          </h1>
-          <p className="mt-3 max-w-xl text-[17px] leading-7 text-white/78 sm:mt-5 sm:text-lg sm:leading-7">
-            Подберём планировку, материалы и ориентировочный бюджет. Точная стоимость формируется после замера и проекта.
-          </p>
-          <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
-            <a className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-teal px-6 text-base font-semibold text-white shadow-[0_14px_34px_rgba(13,148,136,0.3)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow sm:w-auto sm:px-7 sm:text-sm" href="#quiz">
-              Рассчитать стоимость
-              <ArrowRight size={18} aria-hidden="true" />
-            </a>
-            <a className="inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-2xl border border-white/36 bg-[#061112]/18 px-6 text-base font-semibold text-white transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne sm:min-h-[54px] sm:w-auto sm:border-champagne/80 sm:bg-[#101a2b]/36 sm:px-7 sm:text-sm" href="#layouts">
-              Смотреть каталог
-              <ArrowRight size={18} aria-hidden="true" />
-            </a>
+      <div className={`${shell} relative z-10 grid min-h-[520px] items-stretch gap-5 pb-7 pt-8 sm:min-h-[590px] sm:gap-8 sm:pb-12 sm:pt-9 lg:grid-cols-12 lg:pb-14 lg:pt-10 xl:min-h-[630px]`}>
+        <div className="flex max-w-[720px] flex-col lg:col-span-6 lg:min-h-[440px] xl:min-h-[490px]">
+          <div className="shrink-0">
+            <h1 className="max-w-3xl">
+              <span className="block text-[52px] font-semibold leading-[0.92] tracking-tight text-white sm:text-7xl xl:text-[90px]">
+                Кухни на заказ
+              </span>
+              <span className="mt-3 block max-w-[13rem] text-[24px] font-semibold leading-[1.08] text-teal-glow sm:hidden">
+                в СПБ и ЛО
+              </span>
+              <span className="mt-4 hidden max-w-[27rem] text-[27px] font-medium leading-[1.1] text-teal-glow sm:block lg:max-w-[30rem] lg:text-[30px] xl:text-[34px]">
+                <span className="block">в Санкт-Петербурге</span>
+                <span className="block">и Ленинградской области</span>
+              </span>
+            </h1>
+            <div className="mt-4 h-px w-[72%] max-w-[280px] bg-gradient-to-r from-champagne/70 via-champagne/35 to-transparent sm:mt-5 sm:w-[78%] sm:max-w-[500px] lg:w-[540px] lg:max-w-full" aria-hidden="true" />
+            <p className="mt-5 max-w-xl text-[17px] leading-7 text-white/78 sm:text-lg sm:leading-7">
+              Спроектируем кухню под ваши размеры и рассчитаем предварительную стоимость. Стоимость уточняется после замера, проекта и выбора материалов.
+            </p>
           </div>
-          <div className="mt-2.5 max-w-xl rounded-lg border border-white/[0.08] bg-[#071314]/28 px-3 py-2 text-[11px] leading-4 text-white/66 backdrop-blur-sm sm:mt-4 sm:rounded-2xl sm:border-white/10 sm:bg-[#071314]/38 sm:px-4 sm:py-3 sm:text-sm sm:leading-5">
-            <div className="flex items-center gap-2 font-semibold text-white/76 sm:text-white/80">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-glow" aria-hidden="true" />
-              <span>Предварительный расчёт · 5 вопросов без телефона на первом шаге</span>
-            </div>
-            <div className="mt-1 hidden pl-3.5 text-xs font-semibold uppercase leading-4 tracking-wide text-white/48 sm:block">
-              Планировка · Стиль · Бюджет · контакт только в конце
-            </div>
-          </div>
-          <div className="mt-2.5 grid grid-cols-2 gap-1.5 sm:mt-4 sm:grid-cols-4 sm:gap-3 lg:max-w-[620px]">
-            {heroCards.map(({ icon: Icon, title }) => (
-              <div key={title} className="min-h-[50px] rounded-lg border border-white/[0.08] bg-white/[0.035] p-2 backdrop-blur-sm sm:min-h-[90px] sm:rounded-2xl sm:border-white/10 sm:bg-white/[0.055] sm:p-3.5">
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-teal/8 text-champagne sm:h-auto sm:w-auto sm:bg-transparent">
-                  <Icon className="h-4 w-4 sm:h-7 sm:w-7" aria-hidden="true" />
-                </span>
-                <p className="mt-1 text-[11px] font-semibold leading-4 text-white/88 sm:mt-2 sm:text-sm sm:leading-5 sm:text-white">{title}</p>
+          <div className="mt-7 sm:mt-10 lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:py-8 xl:py-9">
+            <div>
+              <div className="flex flex-col gap-2.5 sm:flex-row">
+                <a className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-teal px-6 text-base font-semibold text-white shadow-[0_14px_34px_rgba(13,148,136,0.3)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow sm:w-auto sm:px-7 sm:text-sm" href="#quiz">
+                  Рассчитать стоимость
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
+                <a className="inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-2xl border border-white/36 bg-[#061112]/18 px-6 text-base font-semibold text-white transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne sm:min-h-[54px] sm:w-auto sm:border-champagne/80 sm:bg-[#101a2b]/36 sm:px-7 sm:text-sm" href="#layouts">
+                  Смотреть каталог
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
               </div>
+              <p className="mt-4 inline-flex max-w-full items-center gap-2 rounded-full border border-white/[0.08] bg-[#071314]/24 px-3.5 py-2 text-xs font-semibold leading-5 text-white/72 backdrop-blur-sm sm:text-sm">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-glow" aria-hidden="true" />
+                <span>Расчёт в 5 шагов · телефон — только в конце</span>
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 flex flex-wrap gap-2 pb-1 sm:mt-7 lg:mt-0">
+            {heroTrustItems.map((item) => (
+              <span key={item} className="rounded-full border border-white/[0.08] bg-[#071314]/28 px-3 py-1.5 text-xs font-semibold leading-5 text-white/62 backdrop-blur-sm sm:text-sm">
+                {item}
+              </span>
             ))}
           </div>
-          <p className="mt-3 flex max-w-[650px] flex-wrap gap-x-2 gap-y-1 text-xs leading-5 text-white/70 sm:mt-4 sm:gap-x-4 sm:text-sm sm:leading-6">
-            <span>Гарантийные условия по договору</span>
-            <span className="text-champagne">•</span>
-            <span>Прозрачный договор</span>
-            <span className="text-champagne">•</span>
-            <span>Стоимость после проекта</span>
-          </p>
         </div>
 
-        <div className="relative hidden min-h-[340px] lg:col-span-7 lg:block" aria-hidden="true" />
+        <div className="relative hidden min-h-[320px] lg:col-span-6 lg:block" aria-hidden="true" />
       </div>
     </section>
   );
@@ -158,19 +168,19 @@ function Hero() {
 
 function TrustStrip() {
   return (
-    <section className="relative z-10 hidden bg-[#f5f7f7] pb-4 pt-3 sm:pb-5 sm:pt-5 lg:-mt-8 lg:block">
-      <div className={`${shell} grid gap-2.5 md:grid-cols-2 md:gap-4 xl:grid-cols-4`}>
+    <section className="relative z-10 bg-[#f5f7f7] pb-2.5 pt-2 sm:pb-3.5 sm:pt-3 lg:-mt-6 lg:pt-2.5">
+      <div className={`${shell} -mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-0.5 sm:-mx-6 sm:px-6 md:mx-auto md:grid md:grid-cols-2 md:gap-2.5 md:overflow-visible md:px-6 lg:px-10 xl:grid-cols-4`}>
         {trustItems.map((item, index) => {
           const Icon = trustIcons[index] ?? CheckCircle2;
           return (
-            <article key={item.title} className="rounded-2xl border border-white bg-white p-3 shadow-[0_10px_30px_rgba(16,26,43,0.07)] sm:rounded-[22px] sm:p-5 sm:shadow-[0_18px_45px_rgba(16,26,43,0.11)]">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal/8 text-teal sm:h-14 sm:w-14">
-                  <Icon className="h-5 w-5 sm:h-8 sm:w-8" aria-hidden="true" />
+            <article key={item.title} className="w-[68vw] max-w-[238px] shrink-0 snap-start rounded-xl border border-white/75 bg-white/86 p-2 shadow-[0_6px_16px_rgba(16,26,43,0.045)] md:w-auto md:max-w-none lg:rounded-2xl lg:p-2.5 lg:shadow-[0_8px_20px_rgba(16,26,43,0.052)]">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-teal/9 text-teal lg:h-8 lg:w-8">
+                  <Icon className="h-[15px] w-[15px] lg:h-4 lg:w-4" aria-hidden="true" />
                 </span>
-                <div>
-                  <h2 className="text-sm font-semibold text-navy sm:text-base">{item.title}</h2>
-                  <p className="mt-0.5 text-xs leading-4 text-muted sm:mt-1 sm:text-sm sm:leading-5">{item.text}</p>
+                <div className="min-w-0">
+                  <h2 className="truncate text-xs font-semibold text-navy sm:text-[13px]">{item.title}</h2>
+                  <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-muted">{item.text}</p>
                 </div>
               </div>
             </article>
@@ -184,34 +194,34 @@ function TrustStrip() {
 function TopCommercialBlock() {
   return (
     <section id="quiz" className="pb-6 pt-2 lg:pb-8 lg:pt-3">
-      <div className={`${shell} grid gap-4 lg:gap-6 xl:grid-cols-12`}>
-        <div className="min-w-0 xl:col-span-6">
-        <PreviewDarkCalculator />
+      <div className={`${shell} grid gap-4 lg:gap-5 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start 2xl:grid-cols-[minmax(0,1fr)_400px]`}>
+        <div className="min-w-0">
+          <PreviewDarkCalculator />
         </div>
 
-        <article id="layouts" className="min-w-0 overflow-hidden rounded-[22px] bg-white p-4 shadow-[0_12px_34px_rgba(16,26,43,0.07)] md:p-6 lg:rounded-[28px] lg:shadow-[0_18px_45px_rgba(16,26,43,0.08)] xl:col-span-6">
-          <div className="flex items-end justify-between gap-4">
+        <article id="layouts" className="min-w-0 overflow-hidden rounded-[20px] bg-white p-3 shadow-[0_10px_28px_rgba(16,26,43,0.055)] md:p-4 lg:rounded-[24px] lg:shadow-[0_14px_32px_rgba(16,26,43,0.06)]">
+          <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-teal">Каталог</p>
-              <h2 className="mt-1 text-2xl font-semibold text-navy sm:text-3xl">Выберите планировку кухни</h2>
+              <p className="text-xs font-semibold uppercase tracking-wide text-teal">Каталог</p>
+              <h2 className="mt-1 text-xl font-semibold text-navy sm:text-2xl xl:text-xl 2xl:text-2xl">Планировки кухни</h2>
             </div>
-            <Link href="#projects" className="hidden items-center gap-2 text-sm font-semibold text-teal sm:inline-flex">
-              Смотреть варианты
-              <ArrowRight size={16} aria-hidden="true" />
+            <Link href="#projects" className="hidden items-center gap-1.5 text-xs font-semibold text-teal sm:inline-flex">
+              Смотреть все варианты
+              <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </div>
-          <div className="-mx-4 mt-4 flex snap-x gap-3 overflow-x-auto px-4 pb-0 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 2xl:grid-cols-4">
+          <div className="-mx-3 mt-3 flex snap-x gap-2.5 overflow-x-auto px-3 pb-0 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-2.5 sm:overflow-visible sm:px-0 sm:pb-0 2xl:gap-3">
             {imageMap.layouts.map((layout, index) => (
-              <article key={layout.title} className="w-[76vw] max-w-[300px] shrink-0 snap-start overflow-hidden rounded-[18px] border border-border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_20px_55px_rgba(16,26,43,0.12)] sm:w-auto sm:max-w-none">
-                <div className="relative aspect-[16/10] sm:aspect-[4/3]">
+              <article key={layout.title} className="w-[68vw] max-w-[250px] shrink-0 snap-start overflow-hidden rounded-2xl border border-border/80 bg-white shadow-[0_6px_18px_rgba(16,26,43,0.04)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(16,26,43,0.08)] sm:w-auto sm:max-w-none">
+                <div className="relative h-[112px] sm:h-[92px] xl:h-[68px] 2xl:h-[78px]">
                   <Image src={layout.image} alt={layout.alt} fill sizes={layout.sizes} loading="lazy" className="object-cover" />
                 </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-semibold leading-tight text-navy">{layout.title}</h3>
-                  <p className="mt-1 line-clamp-2 text-sm leading-5 text-muted sm:min-h-10">{layoutDescriptions[index]}</p>
-                  <a href="#quiz" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-teal">
-                    Смотреть варианты
-                    <ArrowRight size={15} aria-hidden="true" />
+                <div className="p-2 2xl:p-2.5">
+                  <h3 className="line-clamp-1 text-[13px] font-semibold leading-tight text-navy 2xl:text-sm">{layout.title}</h3>
+                  <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-muted 2xl:text-xs">{layoutDescriptions[index]}</p>
+                  <a href="#quiz" className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-semibold text-teal 2xl:text-xs">
+                    Смотреть
+                    <ArrowRight size={13} aria-hidden="true" />
                   </a>
                 </div>
               </article>
@@ -369,19 +379,37 @@ function ProductionShowcase() {
           <p className="mt-2 max-w-xl text-sm leading-6 text-white/72 sm:mt-3 sm:leading-7">
             Контролируем качество на каждом этапе — от проекта до установки. Условия и сроки фиксируются до запуска работ.
           </p>
-          <div className="mt-3 grid grid-cols-2 gap-1.5 md:mt-6 md:grid-cols-4 md:gap-3">
-            {productionStats.map((item) => (
-              <div key={item} className="rounded-lg bg-white/[0.06] px-2 py-2 text-center sm:rounded-xl sm:border sm:border-white/15 sm:p-5">
-                <p className="text-xs font-semibold leading-4 text-teal-glow sm:text-lg sm:leading-normal">{item}</p>
-              </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 sm:gap-3 lg:mt-6">
+            {productionProofItems.map(({ icon: Icon, title, text }) => (
+              <article key={title} className="rounded-2xl border border-white/12 bg-white/[0.06] p-3.5 shadow-[0_14px_36px_rgba(0,0,0,0.12)] sm:p-4">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal/15 text-teal-glow">
+                    <Icon className="h-4.5 w-4.5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-semibold leading-5 text-white">{title}</h3>
+                    <p className="mt-1 text-xs leading-5 text-white/64">{text}</p>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
         </div>
-        <div className="-mx-4 flex snap-x gap-2.5 overflow-x-auto px-4 pb-0 md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 lg:col-span-7">
-          {imageMap.production.map((item) => (
-            <article key={item.title} className="w-[70vw] max-w-[270px] shrink-0 snap-start overflow-hidden rounded-2xl bg-white/[0.07] shadow-sm md:w-auto md:max-w-none md:rounded-[20px] md:border md:border-white/15 md:shadow-[0_18px_55px_rgba(0,0,0,0.22)]">
-              <div className="relative aspect-[16/10]">
-                <Image src={item.image} alt={item.alt} fill sizes={item.sizes} loading="lazy" className="object-cover" />
+        <div className="-mx-4 flex snap-x gap-2.5 overflow-x-auto px-4 pb-1 md:mx-0 md:grid md:grid-cols-3 md:gap-3 md:overflow-visible md:px-0 lg:col-span-7 lg:gap-4">
+          {imageMap.production.map((item, index) => (
+            <article
+              key={item.title}
+              className="w-[68vw] max-w-[250px] shrink-0 snap-start overflow-hidden rounded-2xl border border-white/12 bg-white/[0.06] shadow-sm md:w-auto md:max-w-none md:rounded-[20px] md:shadow-[0_16px_44px_rgba(0,0,0,0.2)]"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-[#0A3A3B]">
+                <Image src={item.image} alt={item.alt} fill sizes={item.sizes} loading="lazy" className="object-cover transition duration-500 hover:scale-[1.03]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#062e30]/45 via-transparent to-transparent" aria-hidden="true" />
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2.5">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal/14 text-[10px] font-semibold text-teal-glow">
+                  {index + 1}
+                </span>
+                <p className="text-xs font-semibold leading-4 text-white/78">{item.title}</p>
               </div>
             </article>
           ))}
@@ -414,30 +442,35 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
           </div>
 
           <div className="mt-5 grid gap-3 md:grid-cols-3">
-            {visibleReviews.map((review) => (
-              <article key={review.id} className="rounded-2xl border border-border bg-surface p-4">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10 text-sm font-semibold text-teal sm:h-11 sm:w-11">
-                    {review.name.slice(0, 1)}
-                  </span>
-                  <div>
-                    <h3 className="text-sm font-semibold text-navy">{review.name}</h3>
-                    <p className="text-xs leading-5 text-muted">{review.district}</p>
-                  </div>
-                </div>
-                <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
-                    {review.source}
-                  </span>
-                  {!review.verified ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
-                      без рейтинга
+            {visibleReviews.map((review) => {
+              const SourceIcon = getReviewSourceIcon(review.source);
+
+              return (
+                <article key={review.id} className="rounded-2xl border border-border bg-surface p-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10 text-sm font-semibold text-teal sm:h-11 sm:w-11">
+                      {review.name.slice(0, 1)}
                     </span>
-                  ) : null}
-                </div>
-              </article>
-            ))}
+                    <div>
+                      <h3 className="text-sm font-semibold text-navy">{review.name}</h3>
+                      <p className="text-xs leading-5 text-muted">{review.district}</p>
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted shadow-[0_6px_18px_rgba(16,26,43,0.04)]">
+                      <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                      {review.source}
+                    </span>
+                    {!review.verified ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
+                        без рейтинга
+                      </span>
+                    ) : null}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </article>
 
@@ -469,6 +502,45 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
         </aside>
       </div>
     </section>
+  );
+}
+
+function getReviewSourceIcon(source: Review["source"]) {
+  switch (source) {
+    case "Яндекс.Карты":
+      return YandexMapsSourceIcon;
+    case "2ГИС":
+      return TwoGisSourceIcon;
+    case "ВКонтакте":
+      return VkSourceIcon;
+  }
+}
+
+function YandexMapsSourceIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" {...props}>
+      <circle cx="8" cy="8" r="7" fill="#F7ECE4" />
+      <path d="M8 3.4a3.2 3.2 0 0 0-3.2 3.2c0 2.22 3.2 5.98 3.2 5.98s3.2-3.76 3.2-5.98A3.2 3.2 0 0 0 8 3.4Zm0 4.38A1.18 1.18 0 1 1 8 5.42a1.18 1.18 0 0 1 0 2.36Z" fill="#C24A3A" />
+    </svg>
+  );
+}
+
+function TwoGisSourceIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" {...props}>
+      <circle cx="8" cy="8" r="7" fill="#E8F3ED" />
+      <path d="M4.7 5.1h6.6v2.1H6.9v1.15h3.56v2.1H4.7V8.64l2.97-1.45H4.7V5.1Z" fill="#2D875B" />
+      <path d="M10.45 8.35h.85v2.1h-.85V8.35Z" fill="#397AA6" />
+    </svg>
+  );
+}
+
+function VkSourceIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" {...props}>
+      <circle cx="8" cy="8" r="7" fill="#EAF0F7" />
+      <path d="M8.52 11.15H7.8c-2.45 0-3.84-1.68-4.89-4.48l-.29-.79H4.3c.3 0 .43.14.52.39.57 1.64 1.35 2.87 1.7 2.87.14 0 .2-.06.2-.41V7.12c-.05-.73-.42-.8-.42-1.07 0-.14.11-.27.29-.27h2.64c.25 0 .34.14.34.43v2.18c0 .24.1.32.17.32.14 0 .26-.08.51-.34.63-.7 1.08-1.77 1.08-1.77.06-.15.19-.29.48-.29h1.68c.51 0 .62.26.51.62-.21.67-2.27 3.19-2.27 3.19-.18.22-.25.33 0 .65.18.23.78.76 1.18 1.23.29.34.51.63.57.83.07.24-.12.37-.43.37h-1.87c-.28 0-.41-.09-.57-.28-.23-.27-.75-.94-1.24-.94-.25 0-.32.17-.32.44v.5c0 .27-.09.42-.51.42Z" fill="#3E6F9F" />
+    </svg>
   );
 }
 
