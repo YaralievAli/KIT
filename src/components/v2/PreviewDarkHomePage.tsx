@@ -75,7 +75,7 @@ export function PreviewDarkHomePage() {
   return (
     <>
       <PreviewDarkHeader />
-      <main className="bg-[#f5f7f7] text-navy">
+      <main className="overflow-x-hidden bg-[#f5f7f7] text-navy">
         <Hero />
         <TrustStrip />
         <TopCommercialBlock />
@@ -444,6 +444,8 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {visibleReviews.map((review) => {
               const SourceIcon = getReviewSourceIcon(review.source);
+              const sourceChipClass =
+                "inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted shadow-[0_6px_18px_rgba(16,26,43,0.04)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal";
 
               return (
                 <article key={review.id} className="rounded-2xl border border-border bg-surface p-4">
@@ -458,10 +460,17 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
                   </div>
                   <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted shadow-[0_6px_18px_rgba(16,26,43,0.04)]">
-                      <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
-                      {review.source}
-                    </span>
+                    {review.sourceUrl ? (
+                      <a href={review.sourceUrl} target="_blank" rel="noopener noreferrer" className={sourceChipClass}>
+                        <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                        {review.source}
+                      </a>
+                    ) : (
+                      <span className={sourceChipClass}>
+                        <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                        {review.source}
+                      </span>
+                    )}
                     {!review.verified ? (
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-xs font-semibold text-muted">
                         без рейтинга

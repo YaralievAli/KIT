@@ -111,7 +111,7 @@ export function PreviewDarkHeader() {
           <Phone size={16} aria-hidden="true" />
           Позвонить
         </a>
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.whatsappHref}>
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.whatsappHref} target="_blank" rel="noopener noreferrer">
           <MessageCircle size={16} aria-hidden="true" />
           WhatsApp
         </a>

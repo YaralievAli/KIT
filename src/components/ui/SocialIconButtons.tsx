@@ -77,7 +77,14 @@ export function SocialIconButtons({ settings, className, linkClassName, include,
     <div className={cn("flex items-center gap-2.5", className)}>
       {socials.map(({ href, label, Icon, linkBrandClassName, iconClassName }) =>
         href ? (
-          <a key={label} href={href} className={cn(baseLinkClass, linkClassName, linkBrandClassName)} aria-label={label}>
+          <a
+            key={label}
+            href={href}
+            className={cn(baseLinkClass, linkClassName, linkBrandClassName)}
+            aria-label={label}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden="true" />
           </a>
         ) : (
