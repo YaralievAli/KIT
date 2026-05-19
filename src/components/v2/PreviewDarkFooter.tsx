@@ -11,9 +11,9 @@ export function PreviewDarkFooter() {
     <footer id="contacts" className="bg-[#061112] pb-24 pt-8 text-white lg:pb-8">
       <div className={`${shell} grid gap-8 border-b border-white/10 pb-7 md:grid-cols-[1.1fr_0.8fr_0.8fr_1fr_0.9fr]`}>
         <div>
-          <div className="flex items-center gap-3">
-            <Image src={imageMap.logo.iconFramed} alt={imageMap.logo.iconFramedAlt} width={60} height={60} style={{ width: 60, height: 60 }} />
-            <span className="text-3xl font-semibold tracking-wide">КИТ</span>
+          <div className="flex items-center gap-4">
+            <Image src={imageMap.logo.icon} alt={imageMap.logo.iconAlt} width={92} height={58} style={{ width: 92, height: "auto" }} />
+            <span className="text-[2.5rem] font-extrabold leading-none tracking-[0.055em]">КИТ</span>
           </div>
           <div className="mt-4 max-w-sm">
             <p className="text-lg font-semibold leading-7 text-white">Кухни на заказ в СПб и ЛО</p>
