@@ -1,5 +1,5 @@
 import type { LeadPayload } from "@/types/content";
-import { normalizeRussianPhone } from "@/lib/phone";
+import { normalizeLeadContactValue } from "@/lib/form-schemas";
 
 export type ClientLeadPayload = Omit<LeadPayload, "timestamp"> & {
   timestamp?: string;
@@ -16,8 +16,6 @@ type LeadApiError = {
 };
 
 export async function sendLead(payload: ClientLeadPayload): Promise<LeadApiSuccess> {
-  const normalizedPhone = normalizeRussianPhone(payload.phone);
-
   const response = await fetch("/api/leads", {
     method: "POST",
     headers: {
@@ -25,7 +23,7 @@ export async function sendLead(payload: ClientLeadPayload): Promise<LeadApiSucce
     },
     body: JSON.stringify({
       ...payload,
-      phone: normalizedPhone ?? payload.phone,
+      phone: normalizeLeadContactValue(payload.communicationMethod, payload.phone),
       timestamp: payload.timestamp ?? new Date().toISOString(),
     }),
   });

@@ -3,12 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
-import { contactFormSchema, type ContactFormValues } from "@/lib/form-schemas";
+import { communicationMethods, contactFormSchema, getContactFieldConfig, type ContactFormValues } from "@/lib/form-schemas";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
-import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const defaultValues: ContactFormValues = {
@@ -32,6 +31,8 @@ export function PreviewDarkFinalForm() {
     resolver: zodResolver(contactFormSchema),
     defaultValues,
   });
+  const selectedMethod = useWatch({ control, name: "communicationMethod" });
+  const contactField = getContactFieldConfig(selectedMethod ?? defaultValues.communicationMethod);
 
   async function onSubmit(values: ContactFormValues) {
     setStatus("loading");
@@ -40,7 +41,6 @@ export function PreviewDarkFinalForm() {
     try {
       await sendLead({
         ...values,
-        phone: normalizeRussianPhone(values.phone) ?? values.phone,
         sourcePage: "homepage-final-cta",
         ...collectLeadClientMeta(),
       });
@@ -61,28 +61,45 @@ export function PreviewDarkFinalForm() {
         <LightField label="Ваше имя" error={errors.name?.message}>
           <input className="form-input rounded-xl" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
         </LightField>
-        <LightField label="Телефон" error={errors.phone?.message}>
+        <LightField label={contactField.label} error={errors.phone?.message}>
           <Controller
             control={control}
             name="phone"
-            render={({ field }) => (
-              <PhoneInput
-                ref={field.ref}
-                name={field.name}
-                className="form-input rounded-xl"
-                placeholder="+7 (___) ___-__-__"
-                value={field.value ?? ""}
-                onBlur={field.onBlur}
-                onChange={field.onChange}
-              />
-            )}
+            render={({ field }) =>
+              contactField.inputKind === "phone" ? (
+                <PhoneInput
+                  ref={field.ref}
+                  name={field.name}
+                  className="form-input rounded-xl"
+                  placeholder={contactField.placeholder}
+                  value={field.value ?? ""}
+                  onBlur={field.onBlur}
+                  onChange={field.onChange}
+                />
+              ) : (
+                <input
+                  ref={field.ref}
+                  name={field.name}
+                  className="form-input rounded-xl"
+                  type="text"
+                  autoComplete={contactField.autoComplete}
+                  maxLength={80}
+                  placeholder={contactField.placeholder}
+                  value={field.value ?? ""}
+                  onBlur={field.onBlur}
+                  onChange={field.onChange}
+                />
+              )
+            }
           />
         </LightField>
-        <LightField label="Способ связи" error={errors.communicationMethod?.message}>
+        <LightField label="Удобный способ связи" error={errors.communicationMethod?.message}>
           <select className="form-input rounded-xl" {...register("communicationMethod")}>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="call">Звонок</option>
-            <option value="telegram">Telegram</option>
+            {communicationMethods.map((method) => (
+              <option key={method} value={method}>
+                {getContactFieldConfig(method).optionLabel}
+              </option>
+            ))}
           </select>
         </LightField>
         <LightField label="Комментарий" error={errors.comment?.message}>
@@ -94,7 +111,7 @@ export function PreviewDarkFinalForm() {
       </div>
       <button className="btn-primary mt-4 w-full rounded-xl py-3.5" disabled={status === "loading"} type="submit">
         <Send size={18} aria-hidden="true" />
-        {status === "loading" ? "Отправляем..." : "Получить расчёт"}
+        {status === "loading" ? "Отправляем..." : "Оставить заявку"}
       </button>
       {status === "success" ? (
         <p className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-800">

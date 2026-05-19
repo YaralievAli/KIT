@@ -83,7 +83,7 @@ export type QuizAnswer = {
 export type LeadPayload = {
   name: string;
   phone: string;
-  communicationMethod: "whatsapp" | "call" | "telegram";
+  communicationMethod: "phone" | "whatsapp" | "telegram" | "vk" | "max";
   comment?: string;
   consent: boolean;
   honeypot?: string;

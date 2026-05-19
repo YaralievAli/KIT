@@ -9,7 +9,7 @@ import { z } from "zod";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
 import { imageMap } from "@/content/images-map";
-import { contactFormSchema } from "@/lib/form-schemas";
+import { communicationMethods, contactFormSchema, getContactFieldConfig } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import {
   calculateKitchenEstimate,
@@ -23,7 +23,6 @@ import {
   type Range,
 } from "@/lib/kitchen-calculator";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
-import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const calculatorLayoutImages = imageMap.previewDark.calculatorLayouts;
@@ -208,6 +207,7 @@ export function PreviewDarkCalculator() {
   const watchedValues = useWatch({ control }) as PreviewDarkCalculatorValues;
   const calculatorState = useMemo(() => buildCalculatorState({ ...defaultValues, ...watchedValues }), [watchedValues]);
   const selectedLayout = layoutOptions.find((item) => item.value === watchedValues.layout) ?? layoutOptions[1];
+  const contactField = getContactFieldConfig(watchedValues.communicationMethod ?? defaultValues.communicationMethod);
   const result = calculatorState.result;
   const visibleDimensionFields = getVisibleDimensionFields(watchedValues.layout ?? defaultValues.layout);
   const currentStep = calculatorSteps[activeStep] ?? calculatorSteps[0];
@@ -349,7 +349,7 @@ export function PreviewDarkCalculator() {
     try {
       await sendLead({
         name: values.name,
-        phone: normalizeRussianPhone(values.phone) ?? values.phone,
+        phone: values.phone,
         communicationMethod: values.communicationMethod,
         comment: values.comment,
         consent: values.consent,
@@ -619,28 +619,45 @@ export function PreviewDarkCalculator() {
                   <DarkField label="Ваше имя" error={errors.name?.message}>
                     <input className="v2-calc-input" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
                   </DarkField>
-                  <DarkField label="Телефон" error={errors.phone?.message}>
+                  <DarkField label={contactField.label} error={errors.phone?.message}>
                     <Controller
                       control={control}
                       name="phone"
-                      render={({ field }) => (
-                        <PhoneInput
-                          ref={field.ref}
-                          name={field.name}
-                          className="v2-calc-input"
-                          placeholder="+7 (___) ___-__-__"
-                          value={field.value ?? ""}
-                          onBlur={field.onBlur}
-                          onChange={field.onChange}
-                        />
-                      )}
+                      render={({ field }) =>
+                        contactField.inputKind === "phone" ? (
+                          <PhoneInput
+                            ref={field.ref}
+                            name={field.name}
+                            className="v2-calc-input"
+                            placeholder={contactField.placeholder}
+                            value={field.value ?? ""}
+                            onBlur={field.onBlur}
+                            onChange={field.onChange}
+                          />
+                        ) : (
+                          <input
+                            ref={field.ref}
+                            name={field.name}
+                            className="v2-calc-input"
+                            type="text"
+                            autoComplete={contactField.autoComplete}
+                            maxLength={80}
+                            placeholder={contactField.placeholder}
+                            value={field.value ?? ""}
+                            onBlur={field.onBlur}
+                            onChange={field.onChange}
+                          />
+                        )
+                      }
                     />
                   </DarkField>
-                  <DarkField label="Способ связи" error={errors.communicationMethod?.message}>
+                  <DarkField label="Удобный способ связи" error={errors.communicationMethod?.message}>
                     <select className="v2-calc-input" {...register("communicationMethod")}>
-                      <option value="whatsapp">WhatsApp</option>
-                      <option value="call">Звонок</option>
-                      <option value="telegram">Telegram</option>
+                      {communicationMethods.map((method) => (
+                        <option key={method} value={method}>
+                          {getContactFieldConfig(method).optionLabel}
+                        </option>
+                      ))}
                     </select>
                   </DarkField>
                   <DarkField label="На какой бюджет ориентируетесь?">
@@ -673,7 +690,7 @@ export function PreviewDarkCalculator() {
                   </button>
                   <button className={calculatorSubmitButtonClass} disabled={status === "loading"} type="submit">
                     <Send size={18} aria-hidden="true" />
-                    {status === "loading" ? "Отправляем..." : "Отправить расчёт"}
+                    {status === "loading" ? "Отправляем..." : "Оставить заявку"}
                   </button>
                 </div>
               ) : (

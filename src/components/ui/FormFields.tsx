@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { PhoneInput } from "@/components/forms/PhoneInput";
+import { communicationMethods, getContactFieldConfig, type CommunicationMethod } from "@/lib/form-schemas";
 import type { Control, FieldErrors, FieldPath, UseFormRegister } from "react-hook-form";
 
 type BaseForm = {
   name: string;
   phone: string;
-  communicationMethod: "whatsapp" | "call" | "telegram";
+  communicationMethod: CommunicationMethod;
   comment?: string;
   consent: boolean;
   honeypot?: string;
@@ -25,6 +26,12 @@ export function ContactFields<T extends BaseForm>({
   errors: FieldErrors<T>;
   idPrefix?: string;
 }) {
+  const selectedMethod = (useWatch({
+    control,
+    name: "communicationMethod" as FieldPath<T>,
+  }) ?? "whatsapp") as CommunicationMethod;
+  const contactField = getContactFieldConfig(selectedMethod);
+
   return (
     <div className="grid gap-4">
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot" as never)} />
@@ -36,30 +43,47 @@ export function ContactFields<T extends BaseForm>({
           {...register("name" as never)}
         />
       </Field>
-      <Field label="Телефон" error={errors.phone?.message as string | undefined}>
+      <Field label={contactField.label} error={errors.phone?.message as string | undefined}>
         <Controller
           control={control}
           name={"phone" as FieldPath<T>}
-          render={({ field }) => (
-            <PhoneInput
-              ref={field.ref}
-              id={`${idPrefix}-phone`}
-              name={field.name}
-              className="form-input"
-              placeholder="+7 (___) ___-__-__"
-              value={(field.value as string | undefined) ?? ""}
-              onBlur={field.onBlur}
-              onChange={field.onChange}
-            />
-          )}
+          render={({ field }) =>
+            contactField.inputKind === "phone" ? (
+              <PhoneInput
+                ref={field.ref}
+                id={`${idPrefix}-phone`}
+                name={field.name}
+                className="form-input"
+                placeholder={contactField.placeholder}
+                value={(field.value as string | undefined) ?? ""}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+              />
+            ) : (
+              <input
+                ref={field.ref}
+                id={`${idPrefix}-phone`}
+                name={field.name}
+                className="form-input"
+                type="text"
+                autoComplete={contactField.autoComplete}
+                maxLength={80}
+                placeholder={contactField.placeholder}
+                value={(field.value as string | undefined) ?? ""}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+              />
+            )
+          }
         />
       </Field>
-      <Field label="Способ связи" error={errors.communicationMethod?.message as string | undefined}>
+      <Field label="Удобный способ связи" error={errors.communicationMethod?.message as string | undefined}>
         <select className="form-input" {...register("communicationMethod" as never)}>
-          <option value="">Выберите способ</option>
-          <option value="whatsapp">WhatsApp</option>
-          <option value="call">Звонок</option>
-          <option value="telegram">Telegram</option>
+          {communicationMethods.map((method) => (
+            <option key={method} value={method}>
+              {getContactFieldConfig(method).optionLabel}
+            </option>
+          ))}
         </select>
       </Field>
       <Field label="Комментарий" error={errors.comment?.message as string | undefined}>

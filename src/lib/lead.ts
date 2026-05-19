@@ -5,7 +5,15 @@ import path from "node:path";
 import tls from "node:tls";
 import { z } from "zod";
 import { getDirectusConfig } from "@/lib/content/directus-client";
-import { isValidRussianPhone, normalizeRussianPhone } from "@/lib/phone";
+import {
+  acceptedCommunicationMethods,
+  getContactFieldConfig,
+  isPhoneLikeCommunicationMethod,
+  normalizeCommunicationMethod,
+  normalizeLeadContactValue,
+  type AcceptedCommunicationMethod,
+} from "@/lib/form-schemas";
+import { isValidRussianPhone } from "@/lib/phone";
 import type { LeadPayload } from "@/types/content";
 
 const rateLimitWindowMs = 15 * 60 * 1000;
@@ -21,27 +29,45 @@ const quizAnswerSchema = z.object({
   label: z.string().trim().min(1).max(240),
 });
 
-const phoneSchema = z.string().trim().superRefine((value, context) => {
-  if (!value) {
+function validateLeadContactValue(
+  value: { phone: string; communicationMethod: AcceptedCommunicationMethod },
+  context: z.RefinementCtx
+) {
+  const method = normalizeCommunicationMethod(value.communicationMethod);
+  const contactValue = value.phone.trim();
+  const fieldConfig = getContactFieldConfig(method);
+
+  if (!contactValue) {
     context.addIssue({
       code: "custom",
-      message: "Введите телефон",
+      path: ["phone"],
+      message: method === "whatsapp" ? "Введите телефон для WhatsApp" : `Укажите ${fieldConfig.label}`,
     });
     return;
   }
 
-  if (!isValidRussianPhone(value)) {
+  if (contactValue.length > 80) {
     context.addIssue({
       code: "custom",
+      path: ["phone"],
+      message: "Контакт слишком длинный",
+    });
+    return;
+  }
+
+  if (isPhoneLikeCommunicationMethod(method) && !isValidRussianPhone(contactValue)) {
+    context.addIssue({
+      code: "custom",
+      path: ["phone"],
       message: "Введите корректный номер телефона",
     });
   }
-});
+}
 
 export const leadSubmissionSchema = z.object({
   name: z.string().trim().min(2, "Укажите имя").max(80, "Имя слишком длинное"),
-  phone: phoneSchema,
-  communicationMethod: z.enum(["whatsapp", "call", "telegram"], {
+  phone: z.string().trim().max(80, "Контакт слишком длинный"),
+  communicationMethod: z.enum(acceptedCommunicationMethods, {
     error: "Выберите способ связи",
   }),
   comment: z.string().trim().max(1000, "Комментарий слишком длинный").optional().or(z.literal("")),
@@ -57,7 +83,7 @@ export const leadSubmissionSchema = z.object({
   utm_term: z.string().trim().max(160).optional().or(z.literal("")),
   referrer: z.string().trim().max(500).optional().or(z.literal("")),
   timestamp: z.string().datetime().optional(),
-});
+}).superRefine(validateLeadContactValue);
 
 type ParsedLead = z.infer<typeof leadSubmissionSchema>;
 
@@ -126,21 +152,13 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
     };
   }
 
-  const phone = normalizeRussianPhone(data.phone);
-  if (!phone) {
-    return {
-      success: false,
-      code: "validation_error",
-      message: "Введите корректный номер телефона",
-      fieldErrors: {
-        phone: ["Введите корректный номер телефона"],
-      },
-    };
-  }
+  const communicationMethod = normalizeCommunicationMethod(data.communicationMethod);
+  const contactValue = normalizeLeadContactValue(communicationMethod, data.phone);
 
   const ip = normalizeIp(context.ip);
+  const contactRateLimitKey = `contact:${communicationMethod}:${contactValue.toLowerCase()}`;
 
-  if (!consumeRateLimit(`ip:${ip}`, ipLimit) || !consumeRateLimit(`phone:${phone}`, phoneLimit)) {
+  if (!consumeRateLimit(`ip:${ip}`, ipLimit) || !consumeRateLimit(contactRateLimitKey, phoneLimit)) {
     return {
       success: false,
       code: "rate_limited",
@@ -151,7 +169,8 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
   const lead = toStoredLead(data, {
     ip,
     userAgent: context.userAgent,
-    phone,
+    phone: contactValue,
+    communicationMethod,
   });
 
   const directusResult = await saveLeadToDirectus(lead);
@@ -187,14 +206,14 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
   };
 }
 
-function toStoredLead(data: ParsedLead, context: LeadContext & { phone: string }): StoredLead {
+function toStoredLead(data: ParsedLead, context: LeadContext & { phone: string; communicationMethod: LeadPayload["communicationMethod"] }): StoredLead {
   const timestamp = data.timestamp ?? new Date().toISOString();
 
   return {
     id: randomUUID(),
     name: data.name,
     phone: context.phone,
-    communicationMethod: data.communicationMethod,
+    communicationMethod: context.communicationMethod,
     comment: data.comment || undefined,
     consent: data.consent,
     quizAnswers: data.quizAnswers,
@@ -345,7 +364,7 @@ function buildNotificationText(lead: StoredLead) {
   return [
     "Новая заявка с сайта КИТ",
     `Имя: ${lead.name}`,
-    `Телефон: ${lead.phone}`,
+    `Контакт: ${lead.phone}`,
     `Способ связи: ${formatCommunicationMethod(lead.communicationMethod)}`,
     `Источник: ${lead.sourcePage}`,
     lead.selectedProjectId ? `Пример кухни: ${lead.selectedProjectId}` : undefined,
@@ -363,9 +382,11 @@ function buildNotificationText(lead: StoredLead) {
 
 function formatCommunicationMethod(method: LeadPayload["communicationMethod"]) {
   const labels: Record<LeadPayload["communicationMethod"], string> = {
+    phone: "Телефон",
     whatsapp: "WhatsApp",
-    call: "Звонок",
     telegram: "Telegram",
+    vk: "ВКонтакте",
+    max: "MAX",
   };
 
   return labels[method];

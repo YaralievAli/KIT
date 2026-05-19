@@ -9,7 +9,6 @@ import { quizSteps } from "@/content/quiz";
 import { quizLeadSchema, type QuizLeadValues } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
-import { normalizeRussianPhone } from "@/lib/phone";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const defaultValues: QuizLeadValues = {
@@ -70,7 +69,7 @@ export function QuizSection() {
     try {
       await sendLead({
         name: values.name,
-        phone: normalizeRussianPhone(values.phone) ?? values.phone,
+        phone: values.phone,
         communicationMethod: values.communicationMethod,
         comment: values.comment,
         consent: values.consent,
@@ -104,7 +103,7 @@ export function QuizSection() {
             <p className="eyebrow">Предварительный расчёт</p>
             <h2 className="section-title">Подберём кухню и рассчитаем предварительную стоимость</h2>
             <p className="mt-5 text-lg leading-8 text-muted">
-              Ответьте на 5 вопросов. Подготовим ориентировочный расчёт и рекомендации по материалам. Телефон нужен только на последнем шаге.
+              Ответьте на 5 вопросов. Подготовим ориентировочный расчёт и рекомендации по материалам. Контакт нужен только на последнем шаге.
             </p>
             <p className="mt-5 rounded-2xl border border-border bg-white p-4 text-sm leading-6 text-muted">
               Это предварительный расчёт. Точная стоимость зависит от замера, материалов, фурнитуры и проекта.
@@ -174,7 +173,7 @@ export function QuizSection() {
               ) : (
                 <button className="btn-primary" disabled={status === "loading"} type="submit">
                   <CheckCircle2 size={18} aria-hidden="true" />
-                  {status === "loading" ? "Отправляем..." : "Получить подборку и предварительный расчёт"}
+                  {status === "loading" ? "Отправляем..." : "Оставить заявку"}
                 </button>
               )}
             </div>
