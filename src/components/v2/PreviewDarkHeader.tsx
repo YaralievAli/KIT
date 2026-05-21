@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calculator, MessageCircle, Menu, Phone, X } from "lucide-react";
+import { Calculator, Menu, Phone, Send, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { imageMap } from "@/content/images-map";
@@ -181,9 +181,9 @@ export function PreviewDarkHeader() {
           <Phone size={16} aria-hidden="true" />
           Позвонить
         </a>
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.whatsappHref} target="_blank" rel="noopener noreferrer" onClick={() => trackAnalyticsEvent("mobile_sticky_cta_click", { socialChannel: "whatsapp" })}>
-          <MessageCircle size={16} aria-hidden="true" />
-          WhatsApp
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.telegramHref} target="_blank" rel="noopener noreferrer" onClick={() => trackAnalyticsEvent("mobile_sticky_cta_click", { socialChannel: "telegram" })}>
+          <Send size={16} aria-hidden="true" />
+          Telegram
         </a>
         <Link className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-[#0F9F92] px-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(20,184,166,0.26)] transition hover:bg-[#14B8A6] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href="/#quiz" onClick={() => trackAnalyticsEvent("mobile_sticky_cta_click", { sourcePage: "homepage-calculator" })}>
           <Calculator size={16} aria-hidden="true" />
