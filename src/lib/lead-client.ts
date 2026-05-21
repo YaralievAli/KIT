@@ -1,5 +1,6 @@
 import type { LeadPayload } from "@/types/content";
 import { normalizeLeadContactValue } from "@/lib/form-schemas";
+import type { AnalyticsErrorCode } from "@/lib/analytics";
 
 export type ClientLeadPayload = Omit<LeadPayload, "timestamp"> & {
   timestamp?: string;
@@ -12,8 +13,21 @@ type LeadApiSuccess = {
 
 type LeadApiError = {
   success: false;
+  code?: string;
   message?: string;
 };
+
+export type LeadSubmitErrorCode = AnalyticsErrorCode;
+
+export class LeadClientError extends Error {
+  code: LeadSubmitErrorCode;
+
+  constructor(message: string, code: LeadSubmitErrorCode) {
+    super(message);
+    this.name = "LeadClientError";
+    this.code = code;
+  }
+}
 
 export async function sendLead(payload: ClientLeadPayload): Promise<LeadApiSuccess> {
   const response = await fetch("/api/leads", {
@@ -32,14 +46,40 @@ export async function sendLead(payload: ClientLeadPayload): Promise<LeadApiSucce
 
   if (!response.ok) {
     const message = result.success ? undefined : result.message;
-    throw new Error(message ?? "Не удалось отправить заявку.");
+    const code = result.success ? "unknown_error" : getSafeLeadErrorCode(result.code);
+    throw new LeadClientError(message ?? "Не удалось отправить заявку.", code);
   }
 
   if (!result.success) {
-    throw new Error(result.message ?? "Не удалось отправить заявку.");
+    throw new LeadClientError(result.message ?? "Не удалось отправить заявку.", getSafeLeadErrorCode(result.code));
   }
 
   return result;
+}
+
+export function getSafeLeadErrorCode(errorOrCode: unknown): LeadSubmitErrorCode {
+  if (errorOrCode instanceof LeadClientError) {
+    return errorOrCode.code;
+  }
+
+  if (typeof errorOrCode !== "string") {
+    return "unknown_error";
+  }
+
+  switch (errorOrCode) {
+    case "validation_error":
+    case "spam":
+    case "rate_limited":
+    case "save_failed":
+    case "unexpected_error":
+    case "unsupported_media_type":
+    case "body_too_large":
+    case "forbidden":
+    case "network_error":
+      return errorOrCode;
+    default:
+      return "unknown_error";
+  }
 }
 
 export function collectLeadClientMeta() {

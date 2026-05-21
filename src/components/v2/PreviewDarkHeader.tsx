@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { cn } from "@/lib/helpers";
 
 const nav = [
@@ -111,12 +112,14 @@ export function PreviewDarkHeader() {
             <a
               href={siteSettings.phoneHref}
               className="text-base font-semibold text-white transition hover:text-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+              onClick={() => trackAnalyticsEvent("phone_click")}
             >
               {siteSettings.phone}
             </a>
             <Link
               href="/#callback"
               className="inline-flex min-h-11 items-center justify-center rounded-full border border-champagne px-5 text-sm font-semibold text-champagne transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+              onClick={() => trackAnalyticsEvent("header_callback_click", { sourceForm: "homepage-final-cta" })}
             >
               Заказать звонок
             </Link>
@@ -160,7 +163,7 @@ export function PreviewDarkHeader() {
             </Link>
           ))}
         </nav>
-        <a className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white" href={siteSettings.phoneHref}>
+        <a className="mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-teal px-5 text-sm font-semibold text-white" href={siteSettings.phoneHref} onClick={() => trackAnalyticsEvent("phone_click")}>
           <Phone size={18} aria-hidden="true" />
           Позвонить
         </a>
@@ -171,15 +174,18 @@ export function PreviewDarkHeader() {
         />
       </aside>
       <div className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-1.5 rounded-[22px] border border-white/10 bg-[#031416] p-1.5 shadow-[0_-16px_40px_rgba(0,0,0,0.28)] backdrop-blur-xl lg:hidden">
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.phoneHref}>
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.phoneHref} onClick={() => {
+          trackAnalyticsEvent("phone_click");
+          trackAnalyticsEvent("mobile_sticky_cta_click");
+        }}>
           <Phone size={16} aria-hidden="true" />
           Позвонить
         </a>
-        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.whatsappHref} target="_blank" rel="noopener noreferrer">
+        <a className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-[#0B2528] px-2 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:bg-[#103236] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href={siteSettings.whatsappHref} target="_blank" rel="noopener noreferrer" onClick={() => trackAnalyticsEvent("mobile_sticky_cta_click", { socialChannel: "whatsapp" })}>
           <MessageCircle size={16} aria-hidden="true" />
           WhatsApp
         </a>
-        <Link className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-[#0F9F92] px-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(20,184,166,0.26)] transition hover:bg-[#14B8A6] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href="/#quiz">
+        <Link className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-[#0F9F92] px-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(20,184,166,0.26)] transition hover:bg-[#14B8A6] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]" href="/#quiz" onClick={() => trackAnalyticsEvent("mobile_sticky_cta_click", { sourcePage: "homepage-calculator" })}>
           <Calculator size={16} aria-hidden="true" />
           Расчёт
         </Link>

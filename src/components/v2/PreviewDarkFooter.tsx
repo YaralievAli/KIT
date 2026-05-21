@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { TrackedAnchor } from "@/components/analytics/TrackedAnchor";
 import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
@@ -26,7 +27,7 @@ export function PreviewDarkFooter() {
         <div>
           <h3 className="font-semibold">Контакты</h3>
           <div className="mt-4 grid gap-2 text-sm text-white/72">
-            <a href={siteSettings.phoneHref} className="transition hover:text-white">{siteSettings.phone}</a>
+            <TrackedAnchor href={siteSettings.phoneHref} className="transition hover:text-white" eventName="phone_click">{siteSettings.phone}</TrackedAnchor>
             <a href={`mailto:${siteSettings.email}`} className="transition hover:text-white">{siteSettings.email}</a>
             <span>{siteSettings.address}</span>
             <span>{siteSettings.workingHours}</span>

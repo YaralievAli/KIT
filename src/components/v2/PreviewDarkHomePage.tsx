@@ -10,6 +10,7 @@ import {
   MapPin,
 } from "lucide-react";
 import type { SVGProps } from "react";
+import { TrackedAnchor } from "@/components/analytics/TrackedAnchor";
 import { PreviewDarkCalculator } from "@/components/v2/PreviewDarkCalculator";
 import { PreviewDarkFinalForm } from "@/components/v2/PreviewDarkFinalForm";
 import { PreviewDarkHeader } from "@/components/v2/PreviewDarkHeader";
@@ -20,6 +21,7 @@ import { processSteps, styleDescriptions, trustItems } from "@/content/home";
 import { projects, projectSectionTitle } from "@/content/projects";
 import { reviews } from "@/content/reviews";
 import { siteSettings } from "@/content/settings";
+import type { AnalyticsReviewSource } from "@/lib/analytics";
 import { projectBadge } from "@/lib/helpers";
 import type { FAQItem, Review } from "@/types/content";
 
@@ -136,14 +138,14 @@ function Hero() {
           <div className="mt-7 sm:mt-10 lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:py-8 xl:py-9">
             <div>
               <div className="flex flex-col gap-2.5 sm:flex-row">
-                <a className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-teal px-6 text-base font-semibold text-white shadow-[0_14px_34px_rgba(13,148,136,0.3)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow sm:w-auto sm:px-7 sm:text-sm" href="#quiz">
+                <TrackedAnchor className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-teal px-6 text-base font-semibold text-white shadow-[0_14px_34px_rgba(13,148,136,0.3)] transition hover:bg-teal-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow sm:w-auto sm:px-7 sm:text-sm" href="#quiz" eventName="hero_calculate_click" eventParams={{ sourcePage: "homepage-calculator" }}>
                   Рассчитать стоимость
                   <ArrowRight size={18} aria-hidden="true" />
-                </a>
-                <a className="inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-2xl border border-white/36 bg-[#061112]/18 px-6 text-base font-semibold text-white transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne sm:min-h-[54px] sm:w-auto sm:border-champagne/80 sm:bg-[#101a2b]/36 sm:px-7 sm:text-sm" href="#layouts">
+                </TrackedAnchor>
+                <TrackedAnchor className="inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-2xl border border-white/36 bg-[#061112]/18 px-6 text-base font-semibold text-white transition hover:bg-champagne hover:text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne sm:min-h-[54px] sm:w-auto sm:border-champagne/80 sm:bg-[#101a2b]/36 sm:px-7 sm:text-sm" href="#layouts" eventName="hero_catalog_click">
                   Смотреть каталог
                   <ArrowRight size={18} aria-hidden="true" />
-                </a>
+                </TrackedAnchor>
               </div>
               <p className="mt-4 inline-flex max-w-full items-center gap-2 rounded-full border border-white/[0.08] bg-[#071314]/24 px-3.5 py-2 text-xs font-semibold leading-5 text-white/72 backdrop-blur-sm sm:text-sm">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-glow" aria-hidden="true" />
@@ -461,10 +463,10 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
                   <p className="mt-3 text-sm leading-6 text-muted">{review.text}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {review.sourceUrl ? (
-                      <a href={review.sourceUrl} target="_blank" rel="noopener noreferrer" className={sourceChipClass}>
+                      <TrackedAnchor href={review.sourceUrl} target="_blank" rel="noopener noreferrer" className={sourceChipClass} eventName="review_source_click" eventParams={{ reviewSource: getReviewSourceAnalyticsValue(review.source) }}>
                         <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
                         {review.source}
-                      </a>
+                      </TrackedAnchor>
                     ) : (
                       <span className={sourceChipClass}>
                         <SourceIcon className="h-3.5 w-3.5" aria-hidden="true" />
@@ -522,6 +524,17 @@ function getReviewSourceIcon(source: Review["source"]) {
       return TwoGisSourceIcon;
     case "ВКонтакте":
       return VkSourceIcon;
+  }
+}
+
+function getReviewSourceAnalyticsValue(source: Review["source"]): AnalyticsReviewSource {
+  switch (source) {
+    case "Яндекс.Карты":
+      return "yandex";
+    case "2ГИС":
+      return "2gis";
+    case "ВКонтакте":
+      return "vk";
   }
 }
 

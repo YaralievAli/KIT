@@ -20,7 +20,7 @@ Use this checklist before and after deploying the KIT site to production.
 - Telegram env is set only if Telegram notifications should be active.
 - SMTP env is set only if email notifications should be active.
 - `GOOGLE_SITE_VERIFICATION` and `YANDEX_WEBMASTER_VERIFICATION` are empty unless real verification codes exist.
-- `NEXT_PUBLIC_YANDEX_METRIKA_ID` is empty until the analytics/cookie-consent phase.
+- `NEXT_PUBLIC_YANDEX_METRIKA_ID` is empty until the owner approves the legal/cookie approach for analytics activation.
 - No secrets are committed to the repository.
 
 ## Build and start

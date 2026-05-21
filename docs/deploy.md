@@ -125,9 +125,9 @@ YANDEX_WEBMASTER_VERIFICATION=
 
 Do not use fake verification codes.
 
-### Deferred or unused env
+### Deferred analytics env
 
-`NEXT_PUBLIC_YANDEX_METRIKA_ID` is currently unused by app code and should remain empty in production until a separate analytics, privacy, and cookie-consent phase.
+`NEXT_PUBLIC_YANDEX_METRIKA_ID` is wired for the analytics foundation, but it must remain empty in production until the owner approves the legal/cookie approach.
 
 ## Health endpoint
 

@@ -7,7 +7,8 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
 import { contactFormSchema, getContactFieldConfig, type CommunicationMethod, type ContactFormValues } from "@/lib/form-schemas";
-import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { trackAnalyticsEvent } from "@/lib/analytics";
+import { collectLeadClientMeta, getSafeLeadErrorCode, sendLead } from "@/lib/lead-client";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const finalContactMethods: CommunicationMethod[] = ["phone", "telegram", "vk", "max"];
@@ -37,18 +38,33 @@ export function PreviewDarkFinalForm() {
   const contactField = getContactFieldConfig(selectedMethod ?? defaultValues.communicationMethod);
 
   async function onSubmit(values: ContactFormValues) {
+    const sourcePage = "homepage-final-cta";
+
     setStatus("loading");
     setErrorMessage("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
+    trackAnalyticsEvent("lead_submit_attempt", {
+      sourcePage,
+      communicationMethod: values.communicationMethod,
+    });
 
     try {
       await sendLead({
         ...values,
-        sourcePage: "homepage-final-cta",
+        sourcePage,
         ...collectLeadClientMeta(),
       });
       setStatus("success");
+      trackAnalyticsEvent("lead_submit_success", {
+        sourcePage,
+        communicationMethod: values.communicationMethod,
+      });
       redirectToThankYou({ sourceForm: "homepage-final-cta" });
     } catch (error) {
+      trackAnalyticsEvent("lead_submit_error", {
+        sourcePage,
+        communicationMethod: values.communicationMethod,
+        errorCode: getSafeLeadErrorCode(error),
+      });
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);
       }

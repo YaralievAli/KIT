@@ -1,5 +1,8 @@
+"use client";
+
 import type { ComponentType, SVGProps } from "react";
 import Image from "next/image";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { cn } from "@/lib/helpers";
 import type { SiteSettings } from "@/types/content";
 
@@ -89,7 +92,7 @@ export function SocialIconButtons({ settings, className, linkClassName, include,
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      {socials.map(({ href, label, Icon, linkBrandClassName, iconClassName }) =>
+      {socials.map(({ key, href, label, Icon, linkBrandClassName, iconClassName }) =>
         href ? (
           <a
             key={label}
@@ -98,6 +101,7 @@ export function SocialIconButtons({ settings, className, linkClassName, include,
             aria-label={label}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackAnalyticsEvent("social_click", { socialChannel: key })}
           >
             <Icon className={cn(buttonSize.icon, iconClassName)} aria-hidden="true" />
           </a>

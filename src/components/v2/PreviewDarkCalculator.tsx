@@ -9,6 +9,7 @@ import { z } from "zod";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
 import { imageMap } from "@/content/images-map";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { communicationMethods, contactFormSchema, getContactFieldConfig } from "@/lib/form-schemas";
 import { cn } from "@/lib/helpers";
 import {
@@ -22,7 +23,7 @@ import {
   type KitchenLayout,
   type Range,
 } from "@/lib/kitchen-calculator";
-import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
+import { collectLeadClientMeta, getSafeLeadErrorCode, sendLead } from "@/lib/lead-client";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
 
 const calculatorLayoutImages = imageMap.previewDark.calculatorLayouts;
@@ -191,6 +192,7 @@ export function PreviewDarkCalculator() {
   const [errorMessage, setErrorMessage] = useState("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
   const [calculatorMessage, setCalculatorMessage] = useState("");
   const focusTargetRef = useRef<HTMLDivElement>(null);
+  const calculatorStartedRef = useRef(false);
   const {
     register,
     handleSubmit,
@@ -213,7 +215,15 @@ export function PreviewDarkCalculator() {
   const currentStep = calculatorSteps[activeStep] ?? calculatorSteps[0];
   const isLastCalculatorStep = activeStep === calculatorSteps.length - 1;
 
+  const trackCalculatorStartOnce = useCallback(() => {
+    if (calculatorStartedRef.current) return;
+
+    calculatorStartedRef.current = true;
+    trackAnalyticsEvent("calculator_start", { sourcePage: "homepage-calculator" });
+  }, []);
+
   const openMobileCalculator = useCallback((options?: { updateHash?: boolean; scroll?: boolean }) => {
+    trackCalculatorStartOnce();
     setIsExpandedMobile(true);
 
     window.requestAnimationFrame(() => {
@@ -233,7 +243,7 @@ export function PreviewDarkCalculator() {
         focusTargetRef.current?.focus({ preventScroll: true });
       });
     });
-  }, []);
+  }, [trackCalculatorStartOnce]);
 
   useEffect(() => {
     function handleQuizAnchorClick(event: MouseEvent) {
@@ -304,6 +314,11 @@ export function PreviewDarkCalculator() {
     const canProceed = await validateCalculatorForProgress("Заполните текущий шаг, чтобы продолжить.");
     if (!canProceed) return;
 
+    trackCalculatorStartOnce();
+    trackAnalyticsEvent("calculator_step_next", {
+      sourcePage: "homepage-calculator",
+      calculatorStep: activeStep + 1,
+    });
     setShowContacts(false);
     setStatus("idle");
     setActiveStep((step) => Math.min(step + 1, calculatorSteps.length - 1));
@@ -331,9 +346,15 @@ export function PreviewDarkCalculator() {
     setActiveStep(calculatorSteps.length - 1);
     setShowContacts(true);
     setStatus("idle");
+    trackCalculatorStartOnce();
+    trackAnalyticsEvent("calculator_contact_open", {
+      sourcePage: "homepage-calculator",
+      calculatorStep: calculatorSteps.length,
+    });
   }
 
   async function onSubmit(values: PreviewDarkCalculatorValues) {
+    const sourcePage = "homepage-calculator";
     const currentState = buildCalculatorState(values);
 
     if (!currentState.result) {
@@ -345,6 +366,10 @@ export function PreviewDarkCalculator() {
 
     setStatus("loading");
     setErrorMessage("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
+    trackAnalyticsEvent("lead_submit_attempt", {
+      sourcePage,
+      communicationMethod: values.communicationMethod,
+    });
 
     try {
       await sendLead({
@@ -354,17 +379,26 @@ export function PreviewDarkCalculator() {
         comment: values.comment,
         consent: values.consent,
         honeypot: values.honeypot,
-        sourcePage: "homepage-calculator",
+        sourcePage,
         quizAnswers: buildQuizAnswers(values, currentState.result),
         ...collectLeadClientMeta(),
       });
       setStatus("success");
+      trackAnalyticsEvent("lead_submit_success", {
+        sourcePage,
+        communicationMethod: values.communicationMethod,
+      });
       redirectToThankYou({
         layout: getLayoutLabel(values.layout),
         budget: values.budgetQualification?.trim() || undefined,
         sourceForm: "homepage-calculator",
       });
     } catch (error) {
+      trackAnalyticsEvent("lead_submit_error", {
+        sourcePage,
+        communicationMethod: values.communicationMethod,
+        errorCode: getSafeLeadErrorCode(error),
+      });
       if (error instanceof Error && error.message) {
         setErrorMessage(error.message);
       }
@@ -393,6 +427,7 @@ export function PreviewDarkCalculator() {
                     )}
                     aria-pressed={isActive}
                     onClick={() => {
+                      trackCalculatorStartOnce();
                       setValue("layout", item.value, { shouldDirty: true, shouldValidate: true });
                       resetCalculatorMessage();
                     }}

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { YandexMetrika } from "@/components/analytics/YandexMetrika";
 import { absoluteUrl, defaultSeoImageAlt, defaultSeoImagePath, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
 const yandexWebmasterVerification = process.env.YANDEX_WEBMASTER_VERIFICATION?.trim();
+const yandexMetrikaId = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID?.trim();
 const verification = {
   ...(googleSiteVerification ? { google: googleSiteVerification } : {}),
   ...(yandexWebmasterVerification ? { yandex: yandexWebmasterVerification } : {}),
@@ -54,7 +56,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body>
+        <YandexMetrika counterId={yandexMetrikaId} />
+        {children}
+      </body>
     </html>
   );
 }
