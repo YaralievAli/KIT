@@ -6,14 +6,16 @@ import { useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { PhoneInput } from "@/components/forms/PhoneInput";
 import { ConsentCheckbox } from "@/components/ui/FormFields";
-import { communicationMethods, contactFormSchema, getContactFieldConfig, type ContactFormValues } from "@/lib/form-schemas";
+import { contactFormSchema, getContactFieldConfig, type CommunicationMethod, type ContactFormValues } from "@/lib/form-schemas";
 import { collectLeadClientMeta, sendLead } from "@/lib/lead-client";
 import { redirectToThankYou } from "@/lib/thank-you-summary";
+
+const finalContactMethods: CommunicationMethod[] = ["phone", "telegram", "vk", "max"];
 
 const defaultValues: ContactFormValues = {
   name: "",
   phone: "",
-  communicationMethod: "whatsapp",
+  communicationMethod: "phone",
   comment: "",
   consent: false,
   honeypot: "",
@@ -59,7 +61,7 @@ export function PreviewDarkFinalForm() {
       <input type="text" tabIndex={-1} autoComplete="off" className="hidden" {...register("honeypot")} />
       <div className="grid gap-3 md:grid-cols-2">
         <LightField label="Ваше имя" error={errors.name?.message}>
-          <input className="form-input rounded-xl" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
+          <input className="form-input rounded-xl" autoComplete="name" {...register("name")} />
         </LightField>
         <LightField label={contactField.label} error={errors.phone?.message}>
           <Controller
@@ -95,7 +97,7 @@ export function PreviewDarkFinalForm() {
         </LightField>
         <LightField label="Удобный способ связи" error={errors.communicationMethod?.message}>
           <select className="form-input rounded-xl" {...register("communicationMethod")}>
-            {communicationMethods.map((method) => (
+            {finalContactMethods.map((method) => (
               <option key={method} value={method}>
                 {getContactFieldConfig(method).optionLabel}
               </option>

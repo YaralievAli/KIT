@@ -8,7 +8,7 @@ export const siteSettings: SiteSettings = {
   whatsappHref: "https://wa.me/79668655998",
   telegramHref: "https://t.me/kit_kuhni",
   vkHref: "https://vk.com/kuhnikit",
-  maxHref: "",
+  maxHref: "https://max.ru/u/f9LHodD0cOLFr83hYQYiWFgYaiEArNYZVEoa6-JtKgE6uf9EAvnAKkhrhBA",
   email: "info@kuhni-kit.ru",
   address: "Санкт-Петербург и Ленинградская область",
   workingHours: "Ежедневно, 10:00-20:00",

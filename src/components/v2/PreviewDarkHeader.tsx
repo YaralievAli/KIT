@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Calculator, MessageCircle, Menu, Phone, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SocialIconButtons } from "@/components/ui/SocialIconButtons";
 import { imageMap } from "@/content/images-map";
 import { siteSettings } from "@/content/settings";
@@ -19,6 +19,70 @@ const nav = [
 
 export function PreviewDarkHeader() {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    function handleSamePageHashClick(event: MouseEvent) {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      const target = event.target instanceof Element ? event.target : null;
+      const link = target?.closest<HTMLAnchorElement>("a[href]");
+      const rawHref = link?.getAttribute("href");
+
+      if (!link || !rawHref || link.target || link.hasAttribute("download")) {
+        return;
+      }
+
+      const lowerHref = rawHref.toLowerCase();
+      if (lowerHref.startsWith("tel:") || lowerHref.startsWith("mailto:")) {
+        return;
+      }
+
+      let url: URL;
+      try {
+        url = new URL(rawHref, window.location.href);
+      } catch {
+        return;
+      }
+
+      if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || !url.hash) {
+        return;
+      }
+
+      let targetId: string;
+      try {
+        targetId = decodeURIComponent(url.hash.slice(1));
+      } catch {
+        targetId = url.hash.slice(1);
+      }
+
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) {
+        return;
+      }
+
+      event.preventDefault();
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      if (window.location.hash !== url.hash) {
+        window.history.pushState(null, "", url.hash);
+      }
+    }
+
+    document.addEventListener("click", handleSamePageHashClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleSamePageHashClick, true);
+    };
+  }, []);
 
   return (
     <>
@@ -60,7 +124,7 @@ export function PreviewDarkHeader() {
               settings={siteSettings}
               include={["vk", "telegram", "max"]}
               className="hidden gap-2 lg:flex"
-              linkClassName="h-10 w-10"
+              size="sm"
             />
           </div>
 

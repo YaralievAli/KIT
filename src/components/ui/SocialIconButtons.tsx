@@ -1,21 +1,34 @@
 import type { ComponentType, SVGProps } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/helpers";
 import type { SiteSettings } from "@/types/content";
 
 type SocialKey = "vk" | "telegram" | "whatsapp" | "max";
+type SocialSize = "default" | "sm";
 
 type SocialIconButtonsProps = {
   settings: Pick<SiteSettings, "vkHref" | "telegramHref" | "whatsappHref" | "maxHref">;
   className?: string;
   linkClassName?: string;
   include?: SocialKey[];
+  size?: SocialSize;
   showPlaceholders?: boolean;
 };
 
 const baseLinkClass =
-  "inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent text-white shadow-[0_10px_26px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(0,0,0,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+  "inline-flex items-center justify-center rounded-full border border-transparent text-white shadow-[0_10px_26px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(0,0,0,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 const placeholderClass =
-  "inline-flex h-11 w-11 cursor-not-allowed items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-white/35 shadow-none";
+  "inline-flex cursor-not-allowed items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-white/35 shadow-none";
+const sizeClasses: Record<SocialSize, { link: string; icon: string }> = {
+  default: {
+    link: "h-11 w-11",
+    icon: "h-5 w-5",
+  },
+  sm: {
+    link: "h-9 w-9",
+    icon: "h-[18px] w-[18px]",
+  },
+};
 
 type SocialItem = {
   key: SocialKey;
@@ -26,7 +39,8 @@ type SocialItem = {
   iconClassName: string;
 };
 
-export function SocialIconButtons({ settings, className, linkClassName, include, showPlaceholders }: SocialIconButtonsProps) {
+export function SocialIconButtons({ settings, className, linkClassName, include, size = "default", showPlaceholders }: SocialIconButtonsProps) {
+  const buttonSize = sizeClasses[size];
   const socialItems: SocialItem[] = [
     {
       key: "vk",
@@ -57,8 +71,8 @@ export function SocialIconButtons({ settings, className, linkClassName, include,
       href: settings.maxHref,
       label: "MAX",
       Icon: MaxIcon,
-      linkBrandClassName: "bg-[linear-gradient(135deg,#2F80ED_0%,#7657FF_55%,#A855F7_100%)] hover:brightness-110 focus-visible:outline-[#7657FF]",
-      iconClassName: "text-white",
+      linkBrandClassName: "overflow-hidden bg-white p-0 hover:bg-white focus-visible:outline-[#7657FF]",
+      iconClassName: "h-full w-full rounded-full object-cover",
     },
   ];
   const socials = socialItems
@@ -80,23 +94,23 @@ export function SocialIconButtons({ settings, className, linkClassName, include,
           <a
             key={label}
             href={href}
-            className={cn(baseLinkClass, linkClassName, linkBrandClassName)}
+            className={cn(baseLinkClass, buttonSize.link, linkClassName, linkBrandClassName)}
             aria-label={label}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Icon className={cn("h-5 w-5", iconClassName)} aria-hidden="true" />
+            <Icon className={cn(buttonSize.icon, iconClassName)} aria-hidden="true" />
           </a>
         ) : (
           <span
             key={label}
-            className={cn(placeholderClass, linkClassName)}
+            className={cn(placeholderClass, buttonSize.link, linkClassName)}
             aria-label={label}
             aria-disabled="true"
             title={`${label}: ссылка не настроена`}
             data-placeholder="true"
           >
-            <Icon className="h-5 w-5" aria-hidden="true" />
+            <Icon className={buttonSize.icon} aria-hidden="true" />
           </span>
         )
       )}
@@ -129,12 +143,16 @@ function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 function MaxIcon(props: SVGProps<SVGSVGElement>) {
+  const { className } = props;
+
   return (
-    // Temporary MAX mark for visual review. Replace with the official/approved asset later.
-    <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <text x="12" y="14.5" fill="currentColor" fontSize="6.2" fontWeight="800" textAnchor="middle" letterSpacing="0.2">
-        MAX
-      </text>
-    </svg>
+    <Image
+      src="/images/social/max-logo.png"
+      alt=""
+      width={28}
+      height={28}
+      className={className}
+      aria-hidden="true"
+    />
   );
 }
