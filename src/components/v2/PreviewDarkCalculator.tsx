@@ -107,7 +107,7 @@ const extraWorkFields = [
 
 const budgetQualificationOptions = ["До 250 тыс.", "250-400 тыс.", "400-700 тыс.", "От 700 тыс.", "Пока не понимаю"];
 const calculatorSteps = [
-  { title: "Планировка и размеры", helper: "Выберите форму кухни и укажите размеры." },
+  { title: "Планировка и размеры", helper: "Выберите форму кухни и укажите размеры в сантиметрах." },
   { title: "Фасады", helper: "Материал фасадов сильно влияет на диапазон стоимости." },
   { title: "Столешница", helper: "Выберите ориентировочный материал столешницы." },
   { title: "Фурнитура и наполнение", helper: "Уточните уровень фурнитуры и основные механизмы." },
@@ -154,10 +154,10 @@ type CalculatorState = {
 
 const defaultValues: PreviewDarkCalculatorValues = {
   layout: "corner",
-  wallACm: "300",
-  wallBCm: "240",
-  wallCCm: "220",
-  islandLengthCm: "180",
+  wallACm: "",
+  wallBCm: "",
+  wallCCm: "",
+  islandLengthCm: "",
   facadeMaterial: "mdfFilm",
   countertopMaterial: "waterResistant",
   fittingsLevel: "standard",
@@ -614,10 +614,13 @@ export function PreviewDarkCalculator() {
 
             {showContacts ? (
               <div className="mt-3 rounded-[18px] border border-[#C8A96E]/[0.12] bg-[#061F21] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                <p className="text-sm font-semibold text-teal-glow">Куда отправить расчёт?</p>
+                <p className="text-sm font-semibold text-teal-glow">Как с вами связаться?</p>
+                <p className="mt-1 text-xs leading-5 text-white/58">
+                  Оставьте контакт, чтобы мы уточнили расчёт после проверки параметров.
+                </p>
                 <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
                   <DarkField label="Ваше имя" error={errors.name?.message}>
-                    <input className="v2-calc-input" placeholder="Например, Анна" autoComplete="name" {...register("name")} />
+                    <input className="v2-calc-input" autoComplete="name" {...register("name")} />
                   </DarkField>
                   <DarkField label={contactField.label} error={errors.phone?.message}>
                     <Controller
@@ -1032,22 +1035,22 @@ function buildQuizAnswers(values: PreviewDarkCalculatorValues, result: KitchenCa
 }
 
 function getVisibleDimensionFields(layout: KitchenLayout) {
-  const base = [{ name: "wallACm" as const, label: layout === "straight" ? "Длина стены" : "Первая стена", placeholder: "Например, 300" }];
+  const base = [{ name: "wallACm" as const, label: layout === "straight" ? "Длина стены, см" : "Стена 1, см", placeholder: "Например, 300" }];
 
   if (layout === "corner") {
-    return [...base, { name: "wallBCm" as const, label: "Вторая стена", placeholder: "Например, 240" }];
+    return [...base, { name: "wallBCm" as const, label: "Стена 2, см", placeholder: "Например, 300" }];
   }
 
   if (layout === "uShape") {
     return [
       ...base,
-      { name: "wallBCm" as const, label: "Вторая стена", placeholder: "Например, 180" },
-      { name: "wallCCm" as const, label: "Третья стена", placeholder: "Например, 220" },
+      { name: "wallBCm" as const, label: "Стена 2, см", placeholder: "Например, 300" },
+      { name: "wallCCm" as const, label: "Стена 3, см", placeholder: "Например, 300" },
     ];
   }
 
   if (layout === "island") {
-    return [...base, { name: "islandLengthCm" as const, label: "Длина острова", placeholder: "Например, 180" }];
+    return [...base, { name: "islandLengthCm" as const, label: "Длина острова, см", placeholder: "Например, 300" }];
   }
 
   return base;
