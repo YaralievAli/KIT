@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
 import { ThankYouClient } from "@/components/pages/ThankYouClient";
+import { PreviewDarkFooter } from "@/components/v2/PreviewDarkFooter";
+import { PreviewDarkHeader } from "@/components/v2/PreviewDarkHeader";
 import { getProjects } from "@/lib/content/get-projects";
 import { getSiteSettings } from "@/lib/content/get-site-settings";
 import { pageMetadata } from "@/lib/seo";
@@ -21,9 +21,9 @@ export default async function ThankYouPage() {
 
   return (
     <>
-      <Header initialTheme="light-solid" />
+      <PreviewDarkHeader />
       <ThankYouClient projects={projects} settings={settings} />
-      <Footer />
+      <PreviewDarkFooter />
     </>
   );
 }

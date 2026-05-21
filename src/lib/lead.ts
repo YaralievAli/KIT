@@ -194,11 +194,7 @@ export async function submitLead(input: unknown, context: LeadContext = {}): Pro
   }
 
   const notificationResults = await Promise.all([notifyTelegram(lead), notifyEmail(lead)]);
-  notificationResults.forEach((result) => {
-    if (result.status === "failed") {
-      logDeliveryFailure(result, lead.id, persistenceSucceeded);
-    }
-  });
+  notificationResults.forEach((result) => logNotificationDeliveryResult(result, lead.id, persistenceSucceeded));
 
   return {
     success: true,
@@ -260,6 +256,25 @@ function logDeliveryFailure(result: DeliveryResult, leadId: string, persistenceS
     persistenceSucceeded,
     leadId,
   });
+}
+
+function logNotificationDeliveryResult(result: DeliveryResult, leadId: string, persistenceSucceeded: boolean) {
+  const payload = {
+    event: "lead_notification_delivery",
+    channel: result.channel,
+    status: result.status,
+    reason: result.reason ?? null,
+    providerCategory: result.providerCategory,
+    persistenceSucceeded,
+    leadId,
+  };
+
+  if (result.status === "success") {
+    console.info("Lead notification delivery", payload);
+    return;
+  }
+
+  console.warn("Lead notification delivery", payload);
 }
 
 async function saveLeadLocally(lead: StoredLead): Promise<DeliveryResult> {
@@ -397,7 +412,7 @@ async function notifyTelegram(lead: StoredLead): Promise<DeliveryResult> {
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!token || !chatId) {
-    return deliveryResult("telegram", "notification", "disabled");
+    return deliveryResult("telegram", "notification", "disabled", "missing_telegram_env");
   }
 
   try {
@@ -435,7 +450,7 @@ async function notifyEmail(lead: StoredLead): Promise<DeliveryResult> {
   const from = process.env.SMTP_FROM ?? process.env.SMTP_USER;
 
   if (!host || !to || !from) {
-    return deliveryResult("smtp", "notification", "disabled");
+    return deliveryResult("smtp", "notification", "disabled", "missing_smtp_env");
   }
 
   const port = Number(process.env.SMTP_PORT ?? 465);
