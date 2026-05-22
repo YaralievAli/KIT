@@ -127,7 +127,7 @@ Do not use fake verification codes.
 
 ### Deferred analytics env
 
-`NEXT_PUBLIC_YANDEX_METRIKA_ID` is wired for the analytics foundation, but it must remain empty in production until the owner approves the legal/cookie approach.
+`NEXT_PUBLIC_YANDEX_METRIKA_ID` is wired for the analytics foundation, but it must remain empty in production until the owner approves the legal/cookie approach and consent banner. If analytics is activated later, set the numeric Yandex Metrica counter ID before build/deploy. Do not enable Webvisor, form analytics, ecommerce, userParams, userID, or clientID enrichment in this phase.
 
 ## Health endpoint
 

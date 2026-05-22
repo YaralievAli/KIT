@@ -4,7 +4,7 @@
 
 Analytics is inactive unless `NEXT_PUBLIC_YANDEX_METRIKA_ID` is set to a valid numeric Yandex Metrica counter ID.
 
-Set it only after the owner makes the legal/cookie decision:
+Set it only after the owner makes the legal/cookie decision and the consent banner is implemented:
 
 ```env
 NEXT_PUBLIC_YANDEX_METRIKA_ID=12345678
@@ -62,8 +62,10 @@ Never send these values to analytics custom events:
 
 Custom events do not send full URLs or personal data. However, if the Yandex Metrica counter is enabled, Metrica itself may collect technical visit data such as page URL, referrer, device/browser data, cookies, and IP-related technical data.
 
-Production activation remains blocked until the owner approves the legal/cookie approach.
+Production activation remains blocked until the owner approves the legal/cookie approach and consent banner.
 
-## Deferred cleanup
+## CTA consistency
 
-Mobile sticky WhatsApp remains intentionally unchanged in this phase. Any consistency change belongs in a separate `Phase 7C-4 WhatsApp CTA Consistency Cleanup`.
+Phase 7C-4 is completed in main at `91fed2d`: the mobile sticky CTA now uses Telegram instead of WhatsApp.
+
+The `/thank-you` WhatsApp button remains an optional separate follow-up if the owner wants that page to use Telegram-first contact behavior too.
