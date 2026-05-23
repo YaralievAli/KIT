@@ -59,11 +59,11 @@ export function ThankYouClient({ projects, settings }: ThankYouClientProps) {
               </a>
               <a
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#C8A96E]/60 px-6 text-sm font-semibold text-[#E2C98E] transition hover:bg-[#C8A96E] hover:text-[#031416] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]"
-                href={settings.whatsappHref}
+                href={settings.telegramHref}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Написать в WhatsApp
+                Написать в Telegram
               </a>
               <Link
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 px-6 text-sm font-semibold text-white transition hover:border-white/28 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C8A96E]"

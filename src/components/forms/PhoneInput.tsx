@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 import type { InputHTMLAttributes } from "react";
-import { formatRussianPhoneInput, RUSSIAN_PHONE_MASK_LENGTH } from "@/lib/phone";
+import { extractRussianSubscriberDigits, formatRussianPhoneInput, RUSSIAN_PHONE_MASK_LENGTH } from "@/lib/phone";
 
 type PhoneInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "autoComplete" | "inputMode" | "onChange" | "type" | "value"> & {
   value?: string;
@@ -28,11 +28,41 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
 
         const isDeleteKey = event.key === "Backspace" || event.key === "Delete";
         const input = event.currentTarget;
-        const selectedEverything = input.selectionStart === 0 && input.selectionEnd === input.value.length;
+        const selectionStart = input.selectionStart;
+        const selectionEnd = input.selectionEnd;
 
-        if (isDeleteKey && selectedEverything) {
+        if (!isDeleteKey || selectionStart === null || selectionEnd === null) {
+          return;
+        }
+
+        const subscriberDigits = extractRussianSubscriberDigits(input.value);
+
+        if (!subscriberDigits) {
           event.preventDefault();
           onChange("");
+          return;
+        }
+
+        const digitStart = getSubscriberDigitIndex(input.value, selectionStart);
+        const digitEnd = getSubscriberDigitIndex(input.value, selectionEnd);
+
+        if (digitStart !== digitEnd) {
+          event.preventDefault();
+          onChange(formatRussianPhoneInput(subscriberDigits.slice(0, digitStart) + subscriberDigits.slice(digitEnd)));
+          return;
+        }
+
+        if (event.key === "Backspace") {
+          event.preventDefault();
+          const nextDigits =
+            digitStart <= 0 ? "" : subscriberDigits.slice(0, digitStart - 1) + subscriberDigits.slice(digitStart);
+          onChange(formatRussianPhoneInput(nextDigits));
+          return;
+        }
+
+        if (digitStart < subscriberDigits.length) {
+          event.preventDefault();
+          onChange(formatRussianPhoneInput(subscriberDigits.slice(0, digitStart) + subscriberDigits.slice(digitStart + 1)));
         }
       }}
       onChange={(event) => {
@@ -48,3 +78,11 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
     />
   );
 });
+
+function getSubscriberDigitIndex(value: string, caretPosition: number) {
+  const visibleSubscriberPart = value.slice(0, caretPosition).startsWith("+7")
+    ? value.slice(4, caretPosition)
+    : value.slice(0, caretPosition);
+
+  return visibleSubscriberPart.replace(/\D/g, "").length;
+}

@@ -119,6 +119,7 @@ const calculatorSubmitButtonClass =
   "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#19CDBB_0%,#0D9488_54%,#075F5B_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_34px_rgba(13,148,136,0.34)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(20,184,166,0.42)] active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 sm:w-auto sm:min-w-56 sm:px-7";
 const calculatorSecondaryButtonClass =
   "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-white/[0.14] bg-[#08282A] px-5 py-3 text-sm font-semibold text-white/78 transition hover:border-[#C8A96E]/[0.34] hover:bg-[#0B3436] hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:border-white/[0.07] disabled:bg-[#061C1E] disabled:text-white/36 disabled:shadow-none sm:w-auto sm:min-w-36";
+const contactInputClass = "v2-calc-input h-12 min-w-0 leading-5";
 
 const previewDarkCalculatorSchema = contactFormSchema.extend({
   layout: z.enum(layoutValues, { error: "Выберите планировку" }),
@@ -655,7 +656,7 @@ export function PreviewDarkCalculator() {
                 </p>
                 <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
                   <DarkField label="Ваше имя" error={errors.name?.message}>
-                    <input className="v2-calc-input" autoComplete="name" {...register("name")} />
+                    <input className={contactInputClass} autoComplete="name" {...register("name")} />
                   </DarkField>
                   <DarkField label={contactField.label} error={errors.phone?.message}>
                     <Controller
@@ -666,7 +667,7 @@ export function PreviewDarkCalculator() {
                           <PhoneInput
                             ref={field.ref}
                             name={field.name}
-                            className="v2-calc-input"
+                            className={contactInputClass}
                             placeholder={contactField.placeholder}
                             value={field.value ?? ""}
                             onBlur={field.onBlur}
@@ -676,7 +677,7 @@ export function PreviewDarkCalculator() {
                           <input
                             ref={field.ref}
                             name={field.name}
-                            className="v2-calc-input"
+                            className={contactInputClass}
                             type="text"
                             autoComplete={contactField.autoComplete}
                             maxLength={80}
@@ -690,7 +691,7 @@ export function PreviewDarkCalculator() {
                     />
                   </DarkField>
                   <DarkField label="Удобный способ связи" error={errors.communicationMethod?.message}>
-                    <select className="v2-calc-input" {...register("communicationMethod")}>
+                    <select className={contactInputClass} {...register("communicationMethod")}>
                       {communicationMethods.map((method) => (
                         <option key={method} value={method}>
                           {getContactFieldConfig(method).optionLabel}
@@ -698,8 +699,8 @@ export function PreviewDarkCalculator() {
                       ))}
                     </select>
                   </DarkField>
-                  <DarkField label="На какой бюджет ориентируетесь?">
-                    <select className="v2-calc-input" {...register("budgetQualification")}>
+                  <DarkField label="На какой бюджет ориентируетесь?" helper="Не влияет на расчёт">
+                    <select className={contactInputClass} {...register("budgetQualification")}>
                       <option value="">Не указывать</option>
                       {budgetQualificationOptions.map((item) => (
                         <option key={item} value={item}>
@@ -707,10 +708,9 @@ export function PreviewDarkCalculator() {
                         </option>
                       ))}
                     </select>
-                    <span className="text-xs font-normal text-white/50">Не влияет на расчёт</span>
                   </DarkField>
                   <DarkField label="Комментарий">
-                    <input className="v2-calc-input" placeholder="Что важно учесть" {...register("comment")} />
+                    <input className={contactInputClass} placeholder="Что важно учесть" {...register("comment")} />
                   </DarkField>
                 </div>
                 <div className="mt-3">
@@ -931,12 +931,28 @@ function CheckOption({
   );
 }
 
-function DarkField({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function DarkField({
+  label,
+  error,
+  helper,
+  children,
+}: {
+  label: string;
+  error?: string;
+  helper?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <label className="grid gap-2 text-sm font-semibold text-white/78">
+    <label className="grid min-w-0 gap-2 text-sm font-semibold text-white/78">
       <span>{label}</span>
       {children}
-      {error ? <span className="text-xs font-normal text-red-200">{error}</span> : null}
+      <span
+        className={cn("block min-h-4 text-xs font-normal leading-4", error ? "text-red-200" : "text-white/50")}
+        aria-live={error ? "polite" : undefined}
+        aria-hidden={!error && !helper}
+      >
+        {error ?? helper}
+      </span>
     </label>
   );
 }
