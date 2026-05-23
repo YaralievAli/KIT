@@ -14,6 +14,16 @@ Because this is a `NEXT_PUBLIC_*` value, set it before the production build/depl
 
 Missing, empty, or malformed values render no Metrica script and make the analytics helper no-op.
 
+Analytics also requires explicit browser consent:
+
+- Storage key: `kit:analytics-consent`.
+- Values: `accepted` or `rejected`.
+- Default/no stored value: no Metrica script and no custom events.
+- `accepted`: Metrica may render only when the counter ID is valid; same-page consent changes are applied without a reload.
+- `rejected`: no Metrica script and analytics helper remains no-op.
+
+There is no persistent change-choice UI in this phase. Add a small footer/privacy settings control in a separate follow-up if the owner wants users to change the stored choice without clearing browser storage.
+
 ## Events
 
 Custom events are sent through a strict allowlist:

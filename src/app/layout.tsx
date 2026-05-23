@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AnalyticsConsentBanner } from "@/components/analytics/AnalyticsConsentBanner";
 import { YandexMetrika } from "@/components/analytics/YandexMetrika";
 import { absoluteUrl, defaultSeoImageAlt, defaultSeoImagePath, siteUrl } from "@/lib/seo";
 import "./globals.css";
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <YandexMetrika counterId={yandexMetrikaId} />
         {children}
+        <AnalyticsConsentBanner />
       </body>
     </html>
   );

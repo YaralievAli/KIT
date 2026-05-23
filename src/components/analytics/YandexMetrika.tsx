@@ -1,16 +1,18 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Script from "next/script";
-import { getYandexMetrikaId } from "@/lib/analytics";
+import { getAnalyticsConsentSnapshot, getServerAnalyticsConsentSnapshot, getYandexMetrikaId, subscribeAnalyticsConsent } from "@/lib/analytics";
 
 type YandexMetrikaProps = {
   counterId?: string;
 };
 
 export function YandexMetrika({ counterId }: YandexMetrikaProps) {
+  const consent = useSyncExternalStore(subscribeAnalyticsConsent, getAnalyticsConsentSnapshot, getServerAnalyticsConsentSnapshot);
   const metrikaId = getYandexMetrikaId(counterId);
 
-  if (!metrikaId) {
+  if (!metrikaId || consent !== "accepted") {
     return null;
   }
 

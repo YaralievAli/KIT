@@ -31,12 +31,19 @@ const safeErrorCodes = [
   "unknown_error",
 ] as const;
 
+const analyticsConsentValues = ["accepted", "rejected"] as const;
+
+export const ANALYTICS_CONSENT_KEY = "kit:analytics-consent";
+export const ANALYTICS_CONSENT_EVENT = "kit:analytics-consent-change";
+
 export type AnalyticsEventName = (typeof analyticsEventNames)[number];
 export type AnalyticsCommunicationMethod = (typeof communicationMethods)[number];
 export type AnalyticsSocialChannel = (typeof socialChannels)[number];
 export type AnalyticsReviewSource = (typeof reviewSources)[number];
 export type AnalyticsLeadSource = (typeof leadSources)[number];
 export type AnalyticsErrorCode = (typeof safeErrorCodes)[number];
+export type AnalyticsConsentValue = (typeof analyticsConsentValues)[number];
+export type AnalyticsConsentSnapshot = AnalyticsConsentValue | "unknown" | null;
 
 export type AnalyticsEventParams = {
   sourcePage?: AnalyticsLeadSource;
@@ -73,8 +80,61 @@ export function getYandexMetrikaId(value = process.env.NEXT_PUBLIC_YANDEX_METRIK
   return trimmed && /^\d+$/.test(trimmed) ? trimmed : null;
 }
 
+export function readAnalyticsConsent(): AnalyticsConsentValue | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const value = window.localStorage.getItem(ANALYTICS_CONSENT_KEY);
+
+    return isAnalyticsConsentValue(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeAnalyticsConsent(value: AnalyticsConsentValue) {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+  } catch {
+    return;
+  }
+
+  window.dispatchEvent(new CustomEvent(ANALYTICS_CONSENT_EVENT, { detail: { value } }));
+}
+
+export function hasAnalyticsConsent() {
+  return readAnalyticsConsent() === "accepted";
+}
+
+export function getAnalyticsConsentSnapshot(): AnalyticsConsentSnapshot {
+  return readAnalyticsConsent();
+}
+
+export function getServerAnalyticsConsentSnapshot(): AnalyticsConsentSnapshot {
+  return "unknown";
+}
+
+export function subscribeAnalyticsConsent(listener: () => void) {
+  if (typeof window === "undefined") return () => {};
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === ANALYTICS_CONSENT_KEY) listener();
+  };
+
+  window.addEventListener(ANALYTICS_CONSENT_EVENT, listener);
+  window.addEventListener("storage", handleStorage);
+
+  return () => {
+    window.removeEventListener(ANALYTICS_CONSENT_EVENT, listener);
+    window.removeEventListener("storage", handleStorage);
+  };
+}
+
 export function trackAnalyticsEvent(eventName: AnalyticsEventName, params?: AnalyticsEventParams) {
   if (typeof window === "undefined") return;
+  if (!hasAnalyticsConsent()) return;
 
   const counterId = getYandexMetrikaId();
   if (!counterId || typeof window.ym !== "function") return;
@@ -116,6 +176,10 @@ function isLeadSource(value: unknown): value is AnalyticsLeadSource {
 
 function isSafeErrorCode(value: unknown): value is AnalyticsErrorCode {
   return typeof value === "string" && safeErrorCodes.includes(value as AnalyticsErrorCode);
+}
+
+function isAnalyticsConsentValue(value: unknown): value is AnalyticsConsentValue {
+  return typeof value === "string" && analyticsConsentValues.includes(value as AnalyticsConsentValue);
 }
 
 function isSafeStep(value: unknown): value is number {
