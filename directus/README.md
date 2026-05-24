@@ -56,6 +56,7 @@ docker compose exec directus npx directus schema snapshot /directus/schema/schem
 
 - This task does not seed production content.
 - This task does not automate Directus roles or permissions.
+- Content governance and safe manual fill rules live in `docs/directus-cms-governance.md`.
 - Image fields currently accept a local `/images/...` path or a Directus file id string handled by the content adapter.
 - Keep `DIRECTUS_TOKEN`, admin password, database password, SMTP credentials, and Telegram tokens out of git.
 - If Directus is unavailable, the app logs a warning and falls back to local content.
