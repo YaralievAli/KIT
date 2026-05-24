@@ -23,7 +23,7 @@ export function PreviewDarkFooter() {
           <SocialIconButtons settings={siteSettings} include={["vk", "telegram", "max"]} className="mt-5" />
         </div>
         <FooterLinks title="Навигация" links={[["Кухни", "/#layouts"], ["Каталог", "/#projects"], ["Расчёт", "/#quiz"], ["Отзывы", "/#reviews"]]} />
-        <FooterLinks title="Услуги" links={[["Дизайн-проект", "/#quiz"], ["Производство", "/#production"], ["Оплата частями", "/#callback"]]} />
+        <FooterLinks title="Услуги" links={[["Кухни на заказ в СПб", "/kuhni-na-zakaz-spb"], ["Стоимость кухни", "/stoimost-kuhni-na-zakaz"], ["Угловые кухни", "/uglovye-kuhni"], ["Прямые кухни", "/pryamye-kuhni"], ["Современные кухни", "/sovremennye-kuhni"]]} />
         <div>
           <h3 className="font-semibold">Контакты</h3>
           <div className="mt-4 grid gap-2 text-sm text-white/72">

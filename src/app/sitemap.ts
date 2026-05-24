@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { districtPages, directionPages } from "@/content/pages";
+import { seoLandingPages } from "@/content/seo-pages";
 import { absoluteUrl, isApprovedSeoPage } from "@/lib/seo";
 
 const staticRoutes = [
@@ -25,8 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       path: `/${page.slug}`,
       priority: 0.6,
     }));
+  const seoRoutes = seoLandingPages.map((page) => ({
+    path: page.path,
+    priority: page.sitemapPriority,
+  }));
 
-  return [...staticRoutes, ...approvedContentRoutes].map((route) => ({
+  return [...staticRoutes, ...seoRoutes, ...approvedContentRoutes].map((route) => ({
     url: absoluteUrl(route.path),
     lastModified: now,
     changeFrequency: "monthly",
