@@ -34,6 +34,13 @@ const layoutDescriptions = [
   "Максимум хранения и цельный внешний вид",
   "Для просторных кухонь и зоны общения",
 ];
+const layoutPageLinks: Record<string, string> = {
+  "Угловые кухни": "/uglovye-kuhni",
+  "Прямые кухни": "/pryamye-kuhni",
+};
+const stylePageLinks: Record<string, string> = {
+  "Современные": "/sovremennye-kuhni",
+};
 const materialDescriptions = [
   "Подбирается под бюджет, стиль и сценарии кухни.",
   "Практичная рабочая поверхность на каждый день.",
@@ -151,6 +158,10 @@ function Hero() {
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-glow" aria-hidden="true" />
                 <span>Расчёт в 5 шагов · телефон — только в конце</span>
               </p>
+              <Link href="/stoimost-kuhni-na-zakaz" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-teal-glow transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow">
+                Как формируется стоимость
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
             </div>
           </div>
           <div className="mt-5 flex flex-wrap gap-2 pb-1 sm:mt-7 lg:mt-0">
@@ -213,21 +224,35 @@ function TopCommercialBlock() {
             </Link>
           </div>
           <div className="-mx-3 mt-3 flex snap-x gap-2.5 overflow-x-auto px-3 pb-0 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-2.5 sm:overflow-visible sm:px-0 sm:pb-0 2xl:gap-3">
-            {imageMap.layouts.map((layout, index) => (
-              <article key={layout.title} className="w-[68vw] max-w-[250px] shrink-0 snap-start overflow-hidden rounded-2xl border border-border/80 bg-white shadow-[0_6px_18px_rgba(16,26,43,0.04)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(16,26,43,0.08)] sm:w-auto sm:max-w-none">
-                <div className="relative h-[112px] sm:h-[92px] xl:h-[68px] 2xl:h-[78px]">
-                  <Image src={layout.image} alt={layout.alt} fill sizes={layout.sizes} loading="lazy" className="object-cover" />
-                </div>
-                <div className="p-2 2xl:p-2.5">
-                  <h3 className="line-clamp-1 text-[13px] font-semibold leading-tight text-navy 2xl:text-sm">{layout.title}</h3>
-                  <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-muted 2xl:text-xs">{layoutDescriptions[index]}</p>
-                  <a href="#quiz" className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-semibold text-teal 2xl:text-xs">
-                    Смотреть
-                    <ArrowRight size={13} aria-hidden="true" />
-                  </a>
-                </div>
-              </article>
-            ))}
+            {imageMap.layouts.map((layout, index) => {
+              const pageHref = layoutPageLinks[layout.title];
+              const cardClass = "block w-[68vw] max-w-[250px] shrink-0 snap-start overflow-hidden rounded-2xl border border-border/80 bg-white shadow-[0_6px_18px_rgba(16,26,43,0.04)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(16,26,43,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal sm:w-auto sm:max-w-none";
+              const content = (
+                <>
+                  <div className="relative h-[112px] sm:h-[92px] xl:h-[68px] 2xl:h-[78px]">
+                    <Image src={layout.image} alt={layout.alt} fill sizes={layout.sizes} loading="lazy" className="object-cover" />
+                  </div>
+                  <div className="p-2 2xl:p-2.5">
+                    <h3 className="line-clamp-1 text-[13px] font-semibold leading-tight text-navy 2xl:text-sm">{layout.title}</h3>
+                    <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-muted 2xl:text-xs">{layoutDescriptions[index]}</p>
+                    <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-semibold text-teal 2xl:text-xs">
+                      Смотреть
+                      <ArrowRight size={13} aria-hidden="true" />
+                    </span>
+                  </div>
+                </>
+              );
+
+              return pageHref ? (
+                <Link key={layout.title} href={pageHref} className={cardClass}>
+                  {content}
+                </Link>
+              ) : (
+                <a key={layout.title} href="#quiz" className={cardClass}>
+                  {content}
+                </a>
+              );
+            })}
           </div>
         </article>
       </div>
@@ -256,21 +281,25 @@ function StylesShowcase() {
         </p>
         <div className="relative">
           <div className="-mx-3.5 mt-3 flex snap-x gap-3 overflow-x-auto px-3.5 pb-0 md:mx-0 md:mt-4 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4">
-            {imageMap.styles.map((style, index) => (
-              <article key={style.title} className="group relative min-h-[158px] w-[72vw] max-w-[290px] shrink-0 snap-start overflow-hidden rounded-[20px] bg-navy shadow-sm md:min-h-[154px] md:w-auto md:max-w-none md:rounded-[22px]">
-                <Image src={style.image} alt={style.alt} fill sizes={style.sizes} loading="lazy" className="object-cover opacity-82 transition group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-3 text-white md:gap-4 md:p-4">
-                  <div>
-                    <h3 className="text-base font-semibold md:text-lg">{style.title}</h3>
-                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/70">{styleDescriptions[index]}</p>
+            {imageMap.styles.map((style, index) => {
+              const pageHref = stylePageLinks[style.title] ?? "#quiz";
+
+              return (
+                <Link key={style.title} href={pageHref} className="group relative min-h-[158px] w-[72vw] max-w-[290px] shrink-0 snap-start overflow-hidden rounded-[20px] bg-navy shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow md:min-h-[154px] md:w-auto md:max-w-none md:rounded-[22px]">
+                  <Image src={style.image} alt={style.alt} fill sizes={style.sizes} loading="lazy" className="object-cover opacity-82 transition group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-3 text-white md:gap-4 md:p-4">
+                    <div>
+                      <h3 className="text-base font-semibold md:text-lg">{style.title}</h3>
+                      <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/70">{styleDescriptions[index]}</p>
+                    </div>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-teal md:h-9 md:w-9">
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </span>
                   </div>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-teal md:h-9 md:w-9">
-                    <ArrowRight size={16} aria-hidden="true" />
-                  </span>
-                </div>
-              </article>
-            ))}
+                </Link>
+              );
+            })}
           </div>
           <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#061112] to-transparent md:hidden" aria-hidden="true" />
         </div>
@@ -492,6 +521,10 @@ function ReviewsAndFaq({ reviews, faq }: { reviews: Review[]; faq: FAQItem[] }) 
             <p className="mt-2 text-sm leading-6 text-muted">
               Собрали основные вопросы о расчёте, замере, сроках, материалах и договоре.
             </p>
+            <Link href="/stoimost-kuhni-na-zakaz" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-teal">
+              Подробнее о стоимости
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
           </div>
 
           <div className="mt-4 grid gap-3">
