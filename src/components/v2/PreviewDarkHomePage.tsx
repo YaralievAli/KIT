@@ -129,10 +129,7 @@ function Hero() {
               <span className="block text-[52px] font-semibold leading-[0.92] tracking-tight text-white sm:text-7xl xl:text-[90px]">
                 Кухни на заказ
               </span>
-              <span className="mt-3 block max-w-[13rem] text-[24px] font-semibold leading-[1.08] text-teal-glow sm:hidden">
-                в СПБ и ЛО
-              </span>
-              <span className="mt-4 hidden max-w-[27rem] text-[27px] font-medium leading-[1.1] text-teal-glow sm:block lg:max-w-[30rem] lg:text-[30px] xl:text-[34px]">
+              <span className="mt-3 block max-w-[20rem] text-[24px] font-semibold leading-[1.08] text-teal-glow sm:mt-4 sm:max-w-[27rem] sm:text-[27px] sm:font-medium sm:leading-[1.1] lg:max-w-[30rem] lg:text-[30px] xl:text-[34px]">
                 <span className="block">в Санкт-Петербурге</span>
                 <span className="block">и Ленинградской области</span>
               </span>
