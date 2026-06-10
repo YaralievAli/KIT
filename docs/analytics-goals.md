@@ -2,15 +2,15 @@
 
 ## Activation
 
-Analytics is inactive unless `NEXT_PUBLIC_YANDEX_METRIKA_ID` is set to a valid numeric Yandex Metrica counter ID.
+Analytics may run only when `NEXT_PUBLIC_YANDEX_METRIKA_ID` is set to a valid numeric Yandex Metrica counter ID and the browser has stored explicit accepted analytics consent.
 
-Set it only after the owner makes the legal/cookie decision and the consent banner is implemented:
+Example value:
 
 ```env
 NEXT_PUBLIC_YANDEX_METRIKA_ID=12345678
 ```
 
-Because this is a `NEXT_PUBLIC_*` value, set it before the production build/deploy. Changing only a running process environment is not enough to activate the client counter.
+Because this is a `NEXT_PUBLIC_*` value, set it before the production build/deploy. Changing only a running process environment is not enough to make the client counter available.
 
 Missing, empty, or malformed values render no Metrica script and make the analytics helper no-op.
 
@@ -72,10 +72,10 @@ Never send these values to analytics custom events:
 
 Custom events do not send full URLs or personal data. However, if the Yandex Metrica counter is enabled, Metrica itself may collect technical visit data such as page URL, referrer, device/browser data, cookies, and IP-related technical data.
 
-Production activation remains blocked until the owner approves the legal/cookie approach and consent banner.
+Do not enable Webvisor, form analytics, ecommerce, userParams, userID, or clientID enrichment unless separately approved.
 
 ## CTA consistency
 
-Phase 7C-4 is completed in main at `91fed2d`: the mobile sticky CTA now uses Telegram instead of WhatsApp.
+Until `docs/DECISIONS.md` exists, this section records the current owner decision for contact CTA consistency.
 
-The `/thank-you` WhatsApp button remains an optional separate follow-up if the owner wants that page to use Telegram-first contact behavior too.
+Mobile/sticky CTA and `/thank-you` should stay Telegram-first. WhatsApp CTA must not be reintroduced without a separate owner decision.

@@ -1,6 +1,8 @@
 # Deploy foundation
 
-This document captures the production deployment baseline for the KIT site. It is documentation-only: it does not include Docker, Nginx, systemd, PM2, managed-platform config, or deploy automation.
+This document captures the deployment baseline for the KIT site. It is documentation-only and focuses on runtime, environment variables, health checks, and smoke checks.
+
+Current production infrastructure exists outside this file: the site runs as a Next.js server process behind PM2/Nginx, and Directus/Postgres are documented separately. The exact production deploy guardrails and PM2 reload flow live in [production-deploy-guardrails.md](ai-workflows/production-deploy-guardrails.md).
 
 ## Runtime
 
@@ -35,7 +37,7 @@ npm run lint
 npm run build
 ```
 
-Start the production server:
+For a direct local/manual server start:
 
 ```bash
 npm run start
@@ -125,9 +127,11 @@ YANDEX_WEBMASTER_VERIFICATION=
 
 Do not use fake verification codes.
 
-### Deferred analytics env
+### Analytics env
 
-`NEXT_PUBLIC_YANDEX_METRIKA_ID` is wired for the analytics foundation, but it must remain empty in production until the owner approves the legal/cookie approach and consent banner. If analytics is activated later, set the numeric Yandex Metrica counter ID before build/deploy. Do not enable Webvisor, form analytics, ecommerce, userParams, userID, or clientID enrichment in this phase.
+`NEXT_PUBLIC_YANDEX_METRIKA_ID` is a public build-time value for Yandex Metrica. Analytics may run only when this value is a valid numeric counter ID and the browser has stored explicit accepted analytics consent. Missing, empty, malformed, rejected, or absent consent means no Metrica script and no custom analytics events.
+
+Do not enable Webvisor, form analytics, ecommerce, userParams, userID, or clientID enrichment unless separately approved.
 
 ## Health endpoint
 
@@ -156,16 +160,16 @@ The endpoint does not call Directus, lead storage, SMTP, Telegram, or external s
 
 ## VPS deployment notes
 
-A basic VPS deployment can use:
+Current production is a VPS-style deployment using:
 
 - Node.js 22;
 - `npm ci`;
 - `npm run build`;
-- `npm run start`;
-- a process manager such as systemd or PM2;
-- Nginx as a reverse proxy in front of the Next.js server.
+- PM2 cluster reload via `ecosystem.config.cjs`;
+- Nginx as a reverse proxy in front of the Next.js server;
+- Directus/Postgres for durable lead storage when configured.
 
-This phase does not include Dockerfile, Nginx config, systemd/PM2 files, managed-platform config, or CI deploy automation. Those can be added later as separate implementation phases.
+Use [production-deploy-guardrails.md](ai-workflows/production-deploy-guardrails.md) for the exact production deploy rules and commands. Keep this file as a baseline reference rather than a duplicated production runbook.
 
 ## Smoke checklist
 
@@ -193,8 +197,6 @@ Keep rollback manual and simple:
 - do not create deployment automation in this phase;
 - do not create a release tag in this phase.
 
-Reserve `v1.0.0` for the real public production launch. If a pre-launch tag is useful, consider a pre-1.0 tag only after production smoke tests pass.
-
 ## Deferred production work
 
 Already in place:
@@ -204,6 +206,9 @@ Already in place:
 - honeypot and temporary in-memory rate limiting;
 - safer lead delivery logs;
 - `/api/health`;
+- PM2 cluster reload config through `ecosystem.config.cjs`;
+- Directus/Postgres production documentation and backup notes;
+- consent-gated Yandex Metrica foundation;
 - CI typecheck/lint/build.
 
 Deferred:
@@ -214,8 +219,5 @@ Deferred:
 - CDN/WAF throttling;
 - production monitoring and alerting;
 - queue/retry delivery;
-- CRM/database decision beyond Directus;
-- legal/privacy finalization;
-- analytics and cookie consent;
-- Docker/Nginx/systemd/PM2 implementation;
+- CRM/lead operations beyond Directus/Postgres storage;
 - CI deploy workflow.

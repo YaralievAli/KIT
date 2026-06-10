@@ -40,15 +40,15 @@ NEXT_PUBLIC_YANDEX_METRIKA_ID=
 
 Приватные переменные (`DIRECTUS_TOKEN`, SMTP, Telegram, пароли Directus/PostgreSQL) нельзя коммитить.
 
-## SEO Phase 4A
+## SEO and public routes
 
-Реализовано:
+Текущая SEO-основа:
 
 - Metadata API для основных маршрутов.
 - Canonical URLs через `alternates.canonical`.
 - `robots` metadata:
   - `/thank-you` — `noindex,nofollow`;
-  - `/preview-dark` — permanent redirect на `/`;
+  - `/preview-dark` — permanent redirect на `/` и explicit `noindex,nofollow`;
   - `/legacy-light-home` — internal legacy route, `noindex,nofollow`;
   - draft district/direction pages — `noindex,nofollow`.
 - `src/app/robots.ts`.
@@ -64,6 +64,11 @@ NEXT_PUBLIC_YANDEX_METRIKA_ID=
 - `/`;
 - `/privacy`;
 - `/personal-data-consent`;
+- `/kuhni-na-zakaz-spb`;
+- `/stoimost-kuhni-na-zakaz`;
+- `/uglovye-kuhni`;
+- `/pryamye-kuhni`;
+- `/sovremennye-kuhni`;
 - district/direction pages только если `approved=true`, `hasUniqueContent=true`, `isDraft=false`.
 
 Черновые, placeholder, неутверждённые SEO-страницы, `/preview-dark` и `/legacy-light-home` не попадают в sitemap.
@@ -91,14 +96,6 @@ npm run directus:schema:snapshot
 - Все content images должны выводиться через `next/image`.
 - Текущие проекты являются примерами исполнения: `isRealProject=false`.
 
-## Phase 4A ограничения
+## Project workflow
 
-В этой ветке нельзя менять:
-
-- визуальный дизайн;
-- отзывы и claims logic;
-- `isRealProject` safeguards;
-- Directus schema;
-- production Docker/Nginx;
-- image optimization;
-- Redis/rate limiting.
+Текущие правила работы с агентами, scope, production-действиями и Git workflow описаны в [AGENTS.md](AGENTS.md). README фиксирует только общий обзор проекта и не дублирует эти правила.
