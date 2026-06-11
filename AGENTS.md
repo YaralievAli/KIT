@@ -22,8 +22,12 @@ Primary user-facing language is Russian.
 - Use selective staging only, and only when commit/staging is explicitly requested.
 - Do not commit, push, deploy, or touch production unless explicitly requested and scoped.
 - Do not include secrets, tokens, full env values, real lead PII, or raw lead payloads in output.
-- Do not fabricate reviews, ratings, projects, counters, certifications, guarantees, exact prices, deadlines, or legal claims.
-- Do not add fake `Review`, `AggregateRating`, `Product`, `Offer`, or unsupported structured data.
+- Do not submit real forms or create production leads during QA without explicit owner approval.
+- No GA4/GTM or new analytics/tracking platforms unless separately approved. Existing consent-gated Yandex Metrica foundation remains governed by `docs/analytics-goals.md`.
+- No WhatsApp CTA changes or reintroduction without a separate owner decision.
+- Reviews remain on the site; do not remove or hide review sections without explicit owner approval.
+- Do not fabricate reviews, ratings, counters, completed-project claims, prices, awards, guarantees, deadlines, legal claims, or other unsupported claims.
+- Do not add `Review` or `AggregateRating` schema unless a separate verified owner decision approves it. Do not add fake `Product`, `Offer`, or unsupported structured data.
 - Do not partially fill production Directus content collections. Directus CMS fill/wiring requires a separate phase.
 - Keep unrelated workstreams separate: SEO/content, visual/UI, calculator, API/leads, Directus, analytics/consent/legal, deploy, CI, and security.
 
