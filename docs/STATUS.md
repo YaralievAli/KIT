@@ -16,14 +16,15 @@ Old roadmap/handoff files outside the repository are historical references and m
 
 ## Current repo state
 
-- Verified baseline before D1C: `main` at `2dd1f55` — Merge PR #37 (D1B: root AI instructions).
+- Verified baseline before D1C-fix: `main` at `cda054a` — Merge PR #38 (D1C: `STATUS.md` + `DECISIONS.md`).
 - Recent merged PRs:
   - PR #34 — `/preview-dark` noindex metadata (one code file).
   - PR #35 — D1A: fixed stale facts in `README.md`, `docs/deploy.md`, and `docs/analytics-goals.md`.
   - PR #37 — D1B: strengthened `AGENTS.md` and added minimal `CLAUDE.md` pointer.
+  - PR #38 — D1C: added `docs/STATUS.md` and `docs/DECISIONS.md`.
 - Production: `cac0908` / tag `v1.1.6` (owner-provided; requires server verification before relying on it for release decisions).
-- Production is behind repository `main` by changes merged after `cac0908`, including PR #34, PR #35, PR #37, and this D1C docs PR once merged.
-- PR #35, PR #37, and D1C are docs-only and do not require production deploy.
+- Production is behind repository `main` by changes merged after `cac0908`; verify current `main` and production state before release decisions.
+- The memory-system docs changes after `v1.1.6` are docs-only and do not require production deploy.
 - PR #34 is a one-file metadata change. The owner decided not to deploy it separately; it should ship with the next meaningful release.
 - Expected local state after sync: clean `main`, no uncommitted changes. If a mounted Linux/WSL view shows whole-file CRLF modifications, verify against Git blobs before treating the tree as dirty.
 
@@ -33,7 +34,8 @@ FABLE-1 — AI instruction and context architecture migration:
 
 - D1A (stale docs facts) — done, PR #35.
 - D1B (`AGENTS.md` + `CLAUDE.md`) — done, PR #37.
-- D1C (`docs/STATUS.md` + `docs/DECISIONS.md`) — current docs-only step.
+- D1C (`docs/STATUS.md` + `docs/DECISIONS.md`) — done, PR #38.
+- Memory system discoverability — root pointers from `AGENTS.md` and `CLAUDE.md` keep `docs/STATUS.md` and `docs/DECISIONS.md` easy to find.
 - D1D (workflow/prompt consolidation) — later only after separate review; do not rush.
 
 ## Recently completed context
@@ -53,11 +55,11 @@ FABLE-1 — AI instruction and context architecture migration:
 
 ## Next planned steps
 
-1. Finish D1C via docs-only PR.
-2. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/`; requires a traceability table and separate owner approval.
-3. Design — hybrid redesign implementation in small PRs, starting with tokens/images only after docs cleanup stabilizes.
-4. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
-5. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
+1. Memory-system discoverability follow-up — complete this docs-only PR.
+2. Design — continue hybrid redesign work in small PRs, starting with decision/strategy and then tokens/images.
+3. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
+4. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
+5. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/` later only after separate review, traceability table, and owner approval.
 
 ## Pending production notes
 

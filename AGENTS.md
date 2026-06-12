@@ -67,6 +67,8 @@ If a check cannot be run, report the exact limitation.
 
 ## Deeper Docs
 
+- Current status: `docs/STATUS.md`
+- Owner decisions: `docs/DECISIONS.md`
 - Implementation workflow: `docs/ai-workflows/codex-implementation-workflow.md`
 - QA checklist: `docs/ai-workflows/qa-checklist.md`
 - Production guardrails: `docs/ai-workflows/production-deploy-guardrails.md`
