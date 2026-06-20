@@ -1,6 +1,6 @@
 # Project Status — KIT
 
-Last updated: 2026-06-12
+Last updated: 2026-06-20
 
 Maintainer note: this file is the current-state handoff for the repository. Replace content on update; do not append long history. History lives in Git, PRs, and releases. Verify facts against the repository before trusting them because this file can lag behind `main`.
 
@@ -16,12 +16,12 @@ Old roadmap/handoff files outside the repository are historical references and m
 
 ## Current repo state
 
-- Verified baseline before D1C-fix: `main` at `cda054a` — Merge PR #38 (D1C: `STATUS.md` + `DECISIONS.md`).
+- Verified baseline before DESIGN-0: `main` at `7af9d81` — Merge PR #39 (D1C memory-system discoverability).
 - Recent merged PRs:
-  - PR #34 — `/preview-dark` noindex metadata (one code file).
   - PR #35 — D1A: fixed stale facts in `README.md`, `docs/deploy.md`, and `docs/analytics-goals.md`.
   - PR #37 — D1B: strengthened `AGENTS.md` and added minimal `CLAUDE.md` pointer.
   - PR #38 — D1C: added `docs/STATUS.md` and `docs/DECISIONS.md`.
+  - PR #39 — D1C follow-up: linked the memory-system docs from root instructions and refreshed status.
 - Production: `cac0908` / tag `v1.1.6` (owner-provided; requires server verification before relying on it for release decisions).
 - Production is behind repository `main` by changes merged after `cac0908`; verify current `main` and production state before release decisions.
 - The memory-system docs changes after `v1.1.6` are docs-only and do not require production deploy.
@@ -30,13 +30,13 @@ Old roadmap/handoff files outside the repository are historical references and m
 
 ## Active phase
 
-FABLE-1 — AI instruction and context architecture migration:
+DESIGN-0 — homepage direction decision, docs-only:
 
-- D1A (stale docs facts) — done, PR #35.
-- D1B (`AGENTS.md` + `CLAUDE.md`) — done, PR #37.
-- D1C (`docs/STATUS.md` + `docs/DECISIONS.md`) — done, PR #38.
-- Memory system discoverability — root pointers from `AGENTS.md` and `CLAUDE.md` keep `docs/STATUS.md` and `docs/DECISIONS.md` easy to find.
-- D1D (workflow/prompt consolidation) — later only after separate review; do not rush.
+- Homepage direction V9.1.1 is accepted as a visual reference.
+- Homepage strategy is balanced/action-first, with the calculator kept early.
+- The fixed section order and implementation guardrails are recorded in `docs/design/homepage-v9-1-1-direction.md`.
+- V9.1.1 is not production code and must not be copied as standalone HTML/CSS/JS.
+- No production deploy is part of DESIGN-0.
 
 ## Recently completed context
 
@@ -55,8 +55,8 @@ FABLE-1 — AI instruction and context architecture migration:
 
 ## Next planned steps
 
-1. Memory-system discoverability follow-up — complete this docs-only PR.
-2. Design — continue hybrid redesign work in small PRs, starting with decision/strategy and then tokens/images.
+1. Complete DESIGN-0 through a docs-only PR.
+2. DESIGN-1 — visual foundation only, in a separate small PR: tokens, typography feasibility, and image direction; no calculator engine or lead-flow changes.
 3. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
 4. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
 5. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/` later only after separate review, traceability table, and owner approval.

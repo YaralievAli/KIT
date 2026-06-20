@@ -38,6 +38,7 @@ Durable owner-decision log. Record only decisions actually made by the owner or 
 
 ## Design
 
+- **Homepage V9.1.1 is the accepted visual direction.** It defines the balanced/action-first homepage strategy and fixed section order recorded in `docs/design/homepage-v9-1-1-direction.md`. The standalone prototype is reference material only: do not copy its HTML/CSS/JS into production. Implementation must use small isolated PRs and must not rewrite the calculator engine, change lead flow, add WhatsApp, fabricate reviews/ratings/counters, or add `Review`/`AggregateRating` schema. `Product`/`Offer` schema requires separate verification and approval. This docs decision does not authorize production deploy.
 - **The standalone Code Design prototype is a visual reference only, not production code.** Bundled runtime, inline styles, and fake form behavior must not be copied directly into the Next.js app.
 - **Hybrid design direction accepted as a direction.** Working concept: “Тёмные якоря на тёплой бумаге” — dark teal anchors on warm light paper while preserving KIT identity. Implementation is postponed until FABLE-1 docs cleanup stabilizes and must happen in small isolated PRs.
 

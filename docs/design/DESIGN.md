@@ -34,6 +34,19 @@ Avoid:
 - cartoon-like branding;
 - fake review/rating UI.
 
+## Homepage V9.1.1 Direction
+
+The accepted homepage visual direction is documented in
+`docs/design/homepage-v9-1-1-direction.md`.
+
+Key direction:
+- warm light backgrounds with dark teal anchors;
+- teal primary CTA with restrained champagne accents;
+- Inter for interface and body text, with Spectral considered for selected display headings;
+- typography additions must be evaluated for loading and rendering performance before implementation;
+- section density and text length must be checked at mobile widths;
+- V9.1.1 is a visual reference, not source code to copy into the application.
+
 ## Color System
 
 Approximate palette. Prefer existing project tokens/classes when available.
