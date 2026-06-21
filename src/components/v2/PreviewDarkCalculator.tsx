@@ -120,6 +120,7 @@ const calculatorSubmitButtonClass =
 const calculatorSecondaryButtonClass =
   "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-white/[0.14] bg-[#08282A] px-5 py-3 text-sm font-semibold text-white/78 transition hover:border-[#C8A96E]/[0.34] hover:bg-[#0B3436] hover:text-white active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-glow disabled:cursor-not-allowed disabled:border-white/[0.07] disabled:bg-[#061C1E] disabled:text-white/36 disabled:shadow-none sm:w-auto sm:min-w-36";
 const contactInputClass = "v2-calc-input h-12 min-w-0 leading-5";
+const calculatorSubmitFallbackMessage = "Не удалось отправить заявку. Попробуйте ещё раз или напишите в Telegram.";
 
 const previewDarkCalculatorSchema = contactFormSchema.extend({
   layout: z.enum(layoutValues, { error: "Выберите планировку" }),
@@ -179,7 +180,7 @@ const defaultValues: PreviewDarkCalculatorValues = {
   budgetQualification: "",
   name: "",
   phone: "",
-  communicationMethod: "whatsapp",
+  communicationMethod: "telegram",
   comment: "",
   consent: false,
   honeypot: "",
@@ -190,7 +191,7 @@ export function PreviewDarkCalculator() {
   const [activeStep, setActiveStep] = useState(0);
   const [showContacts, setShowContacts] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
+  const [errorMessage, setErrorMessage] = useState(calculatorSubmitFallbackMessage);
   const [calculatorMessage, setCalculatorMessage] = useState("");
   const focusTargetRef = useRef<HTMLDivElement>(null);
   const calculatorStartedRef = useRef(false);
@@ -366,7 +367,7 @@ export function PreviewDarkCalculator() {
     }
 
     setStatus("loading");
-    setErrorMessage("Не удалось отправить заявку. Попробуйте ещё раз или напишите в WhatsApp.");
+    setErrorMessage(calculatorSubmitFallbackMessage);
     trackAnalyticsEvent("lead_submit_attempt", {
       sourcePage,
       communicationMethod: values.communicationMethod,
@@ -395,12 +396,13 @@ export function PreviewDarkCalculator() {
         sourceForm: "homepage-calculator",
       });
     } catch (error) {
+      const errorCode = getSafeLeadErrorCode(error);
       trackAnalyticsEvent("lead_submit_error", {
         sourcePage,
         communicationMethod: values.communicationMethod,
-        errorCode: getSafeLeadErrorCode(error),
+        errorCode,
       });
-      if (error instanceof Error && error.message) {
+      if (!usesCalculatorSubmitFallback(errorCode) && error instanceof Error && error.message) {
         setErrorMessage(error.message);
       }
       setStatus("error");
@@ -929,6 +931,18 @@ function CheckOption({
       <span>{label}</span>
     </label>
   );
+}
+
+function usesCalculatorSubmitFallback(errorCode: ReturnType<typeof getSafeLeadErrorCode>) {
+  switch (errorCode) {
+    case "save_failed":
+    case "unexpected_error":
+    case "network_error":
+    case "unknown_error":
+      return true;
+    default:
+      return false;
+  }
 }
 
 function DarkField({
