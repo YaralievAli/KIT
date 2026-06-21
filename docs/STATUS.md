@@ -1,6 +1,6 @@
 # Project Status — KIT
 
-Last updated: 2026-06-20
+Last updated: 2026-06-21
 
 Maintainer note: this file is the current-state handoff for the repository. Replace content on update; do not append long history. History lives in Git, PRs, and releases. Verify facts against the repository before trusting them because this file can lag behind `main`.
 
@@ -16,12 +16,13 @@ Old roadmap/handoff files outside the repository are historical references and m
 
 ## Current repo state
 
-- Verified baseline before DESIGN-0: `main` at `7af9d81` — Merge PR #39 (D1C memory-system discoverability).
+- Verified baseline before DESIGN-1: `main` at `7762750` — Merge PR #40 (DESIGN-0 homepage direction).
 - Recent merged PRs:
   - PR #35 — D1A: fixed stale facts in `README.md`, `docs/deploy.md`, and `docs/analytics-goals.md`.
   - PR #37 — D1B: strengthened `AGENTS.md` and added minimal `CLAUDE.md` pointer.
   - PR #38 — D1C: added `docs/STATUS.md` and `docs/DECISIONS.md`.
   - PR #39 — D1C follow-up: linked the memory-system docs from root instructions and refreshed status.
+  - PR #40 — DESIGN-0: documented the accepted V9.1.1 homepage direction.
 - Production: `cac0908` / tag `v1.1.6` (owner-provided; requires server verification before relying on it for release decisions).
 - Production is behind repository `main` by changes merged after `cac0908`; verify current `main` and production state before release decisions.
 - The memory-system docs changes after `v1.1.6` are docs-only and do not require production deploy.
@@ -30,13 +31,13 @@ Old roadmap/handoff files outside the repository are historical references and m
 
 ## Active phase
 
-DESIGN-0 — homepage direction decision, docs-only:
+DESIGN-1 — visual foundation:
 
-- Homepage direction V9.1.1 is accepted as a visual reference.
-- Homepage strategy is balanced/action-first, with the calculator kept early.
-- The fixed section order and implementation guardrails are recorded in `docs/design/homepage-v9-1-1-direction.md`.
-- V9.1.1 is not production code and must not be copied as standalone HTML/CSS/JS.
-- No production deploy is part of DESIGN-0.
+- Existing brand colors are mapped to RGB-channel CSS variables without intentional visual changes.
+- Tailwind keeps current token names and gains unused semantic aliases for future redesign phases.
+- Shared foundation values cover the existing 1760px site width, common card/panel radii, and soft card shadow.
+- Component classes, homepage structure, calculator shell, business logic, and production remain unchanged.
+- Inter/Spectral loading and component token migration are deferred to separate DESIGN-1B or DESIGN-2 tasks.
 
 ## Recently completed context
 
@@ -55,11 +56,12 @@ DESIGN-0 — homepage direction decision, docs-only:
 
 ## Next planned steps
 
-1. Complete DESIGN-0 through a docs-only PR.
-2. DESIGN-1 — visual foundation only, in a separate small PR: tokens, typography feasibility, and image direction; no calculator engine or lead-flow changes.
-3. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
-4. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
-5. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/` later only after separate review, traceability table, and owner approval.
+1. Complete DESIGN-1 through a small visual-foundation PR.
+2. DESIGN-1B — typography feasibility and screenshot comparison before any Inter/Spectral loading.
+3. DESIGN-2 — component-level token migration or homepage implementation only through separately approved small PRs.
+4. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
+5. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
+6. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/` later only after separate review, traceability table, and owner approval.
 
 ## Pending production notes
 
