@@ -76,6 +76,6 @@ Do not enable Webvisor, form analytics, ecommerce, userParams, userID, or client
 
 ## CTA consistency
 
-Until `docs/DECISIONS.md` exists, this section records the current owner decision for contact CTA consistency.
-
 Mobile/sticky CTA and `/thank-you` should stay Telegram-first. WhatsApp CTA must not be reintroduced without a separate owner decision.
+
+The public V2 calculator is also Telegram-first by default. WhatsApp remains accepted/selectable for compatibility unless the owner makes a separate decision.

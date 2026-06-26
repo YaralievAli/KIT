@@ -23,11 +23,12 @@ Durable owner-decision log. Record only decisions actually made by the owner or 
 ## Communication channels
 
 - **Telegram-first; no WhatsApp CTA without a separate owner decision.** Mobile/sticky CTA and `/thank-you` should stay Telegram-first unless the owner explicitly changes this decision.
+- **Public V2 calculator is Telegram-first.** The contact step defaults to Telegram and generic calculator submit-failure copy should recommend Telegram. WhatsApp remains selectable and accepted for compatibility unless the owner makes a separate decision. Do not remove backend/shared WhatsApp support in small UI phases.
 
 ## Analytics and privacy
 
 - **No GA4/GTM or new tracking platforms without separate approval.**
-- **Yandex Metrica foundation is consent-gated.** Production activation remains blocked until the owner makes the legal/cookie decision. Events must stay allowlisted and must not send PII. See `docs/analytics-goals.md`.
+- **Yandex Metrica foundation is consent-gated and implemented.** Analytics may run only with a valid numeric `NEXT_PUBLIC_YANDEX_METRIKA_ID` and explicit accepted browser consent. Rejected or missing consent means no analytics. Events must stay allowlisted and must not send PII. Production/browser verification remains a separate read-only step. See `docs/analytics-goals.md`.
 - **No real form submissions or production leads during QA** without explicit owner approval.
 
 ## Data and integrations
@@ -39,6 +40,7 @@ Durable owner-decision log. Record only decisions actually made by the owner or 
 ## Design
 
 - **Homepage V9.1.1 is the accepted visual direction.** It defines the balanced/action-first homepage strategy and fixed section order recorded in `docs/design/homepage-v9-1-1-direction.md`. The standalone prototype is reference material only: do not copy its HTML/CSS/JS into production. Implementation must use small isolated PRs and must not rewrite the calculator engine, change lead flow, add WhatsApp, fabricate reviews/ratings/counters, or add `Review`/`AggregateRating` schema. `Product`/`Offer` schema requires separate verification and approval. This docs decision does not authorize production deploy.
+- **Do not make the calculator more commercially prominent until PRICING is owner-validated.** The current engine has live range, breakdown, included/excluded/warnings, and lead context, but pricing values remain temporary placeholders until the owner validates minimum price, base values, multipliers, tiers, extra works, installation, and included/excluded items.
 - **The standalone Code Design prototype is a visual reference only, not production code.** Bundled runtime, inline styles, and fake form behavior must not be copied directly into the Next.js app.
 - **Hybrid design direction accepted as a direction.** Working concept: “Тёмные якоря на тёплой бумаге” — dark teal anchors on warm light paper while preserving KIT identity. Implementation is postponed until FABLE-1 docs cleanup stabilizes and must happen in small isolated PRs.
 

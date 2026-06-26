@@ -16,28 +16,31 @@ Old roadmap/handoff files outside the repository are historical references and m
 
 ## Current repo state
 
-- Verified baseline before DESIGN-1: `main` at `7762750` — Merge PR #40 (DESIGN-0 homepage direction).
+- Current `main` after PR #42: `e7b8ddf` — Merge PR #42 (CALC-GOV-1 Telegram-first calculator consistency).
 - Recent merged PRs:
   - PR #35 — D1A: fixed stale facts in `README.md`, `docs/deploy.md`, and `docs/analytics-goals.md`.
   - PR #37 — D1B: strengthened `AGENTS.md` and added minimal `CLAUDE.md` pointer.
   - PR #38 — D1C: added `docs/STATUS.md` and `docs/DECISIONS.md`.
   - PR #39 — D1C follow-up: linked the memory-system docs from root instructions and refreshed status.
   - PR #40 — DESIGN-0: documented the accepted V9.1.1 homepage direction.
+  - PR #41 — DESIGN-1: added visual foundation tokens without intentional visual changes.
+  - PR #42 — CALC-GOV-1: made the public V2 calculator Telegram-first.
 - Production: `cac0908` / tag `v1.1.6` (owner-provided; requires server verification before relying on it for release decisions).
 - Production is behind repository `main` by changes merged after `cac0908`; verify current `main` and production state before release decisions.
-- The memory-system docs changes after `v1.1.6` are docs-only and do not require production deploy.
+- No production deploy has been performed as part of the PR #40-#42 docs/code sequence in this status update.
 - PR #34 is a one-file metadata change. The owner decided not to deploy it separately; it should ship with the next meaningful release.
 - Expected local state after sync: clean `main`, no uncommitted changes. If a mounted Linux/WSL view shows whole-file CRLF modifications, verify against Git blobs before treating the tree as dirty.
 
 ## Active phase
 
-DESIGN-1 — visual foundation:
+Post-PR #42 cleanup and validation planning:
 
-- Existing brand colors are mapped to RGB-channel CSS variables without intentional visual changes.
-- Tailwind keeps current token names and gains unused semantic aliases for future redesign phases.
-- Shared foundation values cover the existing 1760px site width, common card/panel radii, and soft card shadow.
-- Component classes, homepage structure, calculator shell, business logic, and production remain unchanged.
-- Inter/Spectral loading and component token migration are deferred to separate DESIGN-1B or DESIGN-2 tasks.
+- DESIGN-0 is completed and merged via PR #40.
+- DESIGN-1 is completed and merged via PR #41.
+- CALC-GOV-1 is completed and merged via PR #42.
+- The public V2 calculator is Telegram-first by default and in generic submit-failure copy.
+- WhatsApp remains selectable and accepted for compatibility.
+- Production deploy remains out of scope unless the owner writes exactly: `Разрешаю deploy на production`.
 
 ## Recently completed context
 
@@ -56,12 +59,33 @@ DESIGN-1 — visual foundation:
 
 ## Next planned steps
 
-1. Complete DESIGN-1 through a small visual-foundation PR.
-2. DESIGN-1B — typography feasibility and screenshot comparison before any Inter/Spectral loading.
-3. DESIGN-2 — component-level token migration or homepage implementation only through separately approved small PRs.
-4. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
-5. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
-6. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/` later only after separate review, traceability table, and owner approval.
+1. Local cleanup after PR #42 if not done yet.
+2. PRICING validation owner task before making the calculator more commercially prominent:
+   - minimum project price;
+   - base cabinet/per-meter values;
+   - layout multipliers;
+   - facade tiers;
+   - countertop tiers;
+   - fittings tiers/options;
+   - extra works;
+   - installation rate/percent;
+   - included/excluded items.
+3. Analytics production/browser verification, read-only:
+   - consent rejected/accepted behavior;
+   - script absent before consent;
+   - valid numeric ID behavior;
+   - no PII in goals;
+   - no real production lead submissions.
+4. DESIGN-1B — typography feasibility and screenshot comparison before any Inter/Spectral loading.
+5. CALC-1 — calculator shell polish only after PRICING validation:
+   - dimension presets/inputmode;
+   - progressive disclosure for fittings/extra works;
+   - mobile density.
+6. CALC-2 — price anatomy using the existing breakdown, after PRICING validation.
+7. HERO-TRUST / homepage V9.1.1 implementation later, not before calculator/pricing trust is safe.
+8. SEO — Phase 7SEO-2A current-copy SEO/GEO audit, review-only first.
+9. QA — browser QA foundation for route smoke, viewports, and no real lead submission.
+10. D1D — evaluate consolidation of `docs/ai-workflows/` and `docs/ai-prompts/` later only after separate review, traceability table, and owner approval.
 
 ## Pending production notes
 
@@ -70,7 +94,8 @@ DESIGN-1 — visual foundation:
 
 ## Open backlog, not scheduled
 
-- Analytics/consent: Yandex Metrica activation remains blocked until owner legal/cookie decision and accepted-consent flow.
+- Analytics/consent: the code foundation is implemented; the next step is read-only production/browser verification, not a new implementation PR. Activation still requires valid numeric `NEXT_PUBLIC_YANDEX_METRIKA_ID` and accepted browser consent.
+- Calculator pricing: live range, breakdown, included/excluded/warnings, and lead context are already present, but pricing values remain temporary placeholders until owner validation.
 - Directus: governance per `docs/directus-cms-governance.md`; no partial production content fill; CMS wiring is a separate future phase.
 - Google Sheets lead sync: future backlog only. Directus/Postgres remains source of truth.
 - PM2/graceful deploy 502 monitoring.
